@@ -81,7 +81,52 @@ const NetworkAnalysisDashboard: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {/* Continental Overview KPIs */}
+        {/* Global Value Proposition */}
+        <Card className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+          <div className="text-center mb-6">
+            <h2 className="text-xl font-medium text-gray-900 mb-2">Africa Controls the World's Critical Mineral Supply Chains</h2>
+            <p className="text-gray-700 max-w-4xl mx-auto">
+              MIAR's network analysis reveals the invisible connections that make Africa the linchpin of global supply chains.
+              Understanding these networks is essential for mining companies, governments, and investors worldwide.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center p-4 bg-white rounded-lg border border-indigo-100">
+              <div className="text-2xl font-light text-indigo-900 mb-2">70%</div>
+              <div className="text-sm font-medium text-indigo-700 mb-1">Global Cobalt Supply</div>
+              <div className="text-xs text-indigo-600">Essential for EV batteries - all flows through DRC-Zambia corridor</div>
+            </div>
+            <div className="text-center p-4 bg-white rounded-lg border border-indigo-100">
+              <div className="text-2xl font-light text-indigo-900 mb-2">75%</div>
+              <div className="text-sm font-medium text-indigo-700 mb-1">Global Phosphate Supply</div>
+              <div className="text-xs text-indigo-600">Morocco feeds global food security through fertilizers</div>
+            </div>
+            <div className="text-center p-4 bg-white rounded-lg border border-indigo-100">
+              <div className="text-2xl font-light text-indigo-900 mb-2">$95B</div>
+              <div className="text-sm font-medium text-indigo-700 mb-1">Annual China Trade</div>
+              <div className="text-xs text-indigo-600">95M tonnes of African minerals flow to China annually</div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-white rounded-lg border border-indigo-100">
+            <div className="flex items-center justify-center space-x-8 text-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <span className="text-gray-700">Single Point of Failure Risk</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <span className="text-gray-700">Logistics Bottleneck</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-700">Optimization Opportunity</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+        {/* Network Intelligence KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 text-center">
             <div className="text-3xl font-light text-gray-900 mb-2">
