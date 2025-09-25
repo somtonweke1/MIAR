@@ -1,12 +1,5 @@
 {
-  "name": "miar-mining-intelligence",
   "version": 2,
-  "framework": "nextjs",
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
