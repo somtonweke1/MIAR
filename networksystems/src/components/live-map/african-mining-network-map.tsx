@@ -174,7 +174,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
       size: Math.log(mine.economics.employment) * 6, // Slightly larger for detail
       x: mine.location.lng,
       y: mine.location.lat,
-      color: mine.status === 'operational' ? '#10b981' : mine.status === 'development' ? '#f59e0b' : '#3b82f6',
+      color: mine.status === 'operational' ? '#16a34a' : mine.status === 'development' ? '#ca8a04' : '#2563eb',
       metadata: {
         type: 'johannesburg',
         operator: mine.operator,
@@ -213,7 +213,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
         source: `jb_${operationalJbMines[i].id}`,
         target: `jb_${operationalJbMines[i + 1].id}`,
         weight: 0.7,
-        color: '#10b981',
+        color: '#16a34a',
         metadata: {
           type: 'tailings_flow',
           value: 50000000, // $50M annual tailings processing value
@@ -235,19 +235,19 @@ const AfricanMiningNetworkMap: React.FC = () => {
 
   const getRegionColor = (region: string) => {
     const colors = {
-      'west_africa': '#10b981',
-      'east_africa': '#3b82f6',
-      'southern_africa': '#8b5cf6',
-      'central_africa': '#f59e0b',
-      'north_africa': '#ef4444'
+      'west_africa': '#4b5563',      // Gray 600
+      'east_africa': '#6b7280',      // Gray 500
+      'southern_africa': '#9ca3af',  // Gray 400
+      'central_africa': '#374151',   // Gray 700
+      'north_africa': '#1f2937'      // Gray 800
     };
     return colors[region as keyof typeof colors] || '#6b7280';
   };
 
   const getConnectionColor = (strength: number) => {
-    if (strength >= 0.8) return '#10b981'; // Strong - Green
-    if (strength >= 0.6) return '#f59e0b'; // Medium - Yellow
-    return '#ef4444'; // Weak - Red
+    if (strength >= 0.8) return '#16a34a'; // Strong - Green 600
+    if (strength >= 0.6) return '#ca8a04'; // Medium - Yellow 600
+    return '#dc2626'; // Weak - Red 600
   };
 
   // Calculate network metrics using algorithms
@@ -354,9 +354,9 @@ const AfricanMiningNetworkMap: React.FC = () => {
     const scaleY = (lat: number) => height - ((lat - africaBounds.minLat) / (africaBounds.maxLat - africaBounds.minLat)) * height;
 
     return (
-      <svg width={width} height={height} className="border rounded-lg bg-slate-900">
+      <svg width={width} height={height} className="w-full h-auto">
         {/* Background */}
-        <rect width={width} height={height} fill="#0f172a" />
+        <rect width={width} height={height} fill="#f9fafb" />
 
         {/* Connection lines */}
         {network.edges.map((edge, idx) => {
@@ -381,12 +381,12 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 strokeOpacity={0.8}
               />
               {/* Enhanced flow animation with value indicators */}
-              <circle r="4" fill="#10b981" opacity="0.8">
+              <circle r="4" fill="#4b5563" opacity="0.8">
                 <animateMotion dur={`${6 - (edge.weight || 0.5) * 4}s`} repeatCount="indefinite">
                   <mpath href={`#path-${idx}`} />
                 </animateMotion>
               </circle>
-              <circle r="2" fill="#ffffff" opacity="0.6">
+              <circle r="2" fill="#374151" opacity="0.6">
                 <animateMotion dur={`${6 - (edge.weight || 0.5) * 4}s`} repeatCount="indefinite" begin="0.5s">
                   <mpath href={`#path-${idx}`} />
                 </animateMotion>
@@ -398,10 +398,10 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 <text
                   x={(x1 + x2) / 2}
                   y={(y1 + y2) / 2 - 8}
-                  fill="#fbbf24"
+                  fill="#6b7280"
                   fontSize="6"
                   textAnchor="middle"
-                  className="font-bold"
+                  className="font-mono font-medium"
                 >
                   ${(edge.metadata.value / 1000000000).toFixed(1)}B
                 </text>
@@ -474,10 +474,10 @@ const AfricanMiningNetworkMap: React.FC = () => {
               <text
                 x={x}
                 y={y - radius - 5}
-                fill="#ffffff"
+                fill="#374151"
                 fontSize={node.metadata?.type === 'johannesburg' ? '8' : '10'}
                 textAnchor="middle"
-                className="font-medium"
+                className="font-mono font-medium"
               >
                 {node.metadata?.type === 'johannesburg'
                   ? `${node.metadata?.annual_oz?.toLocaleString() || '0'} oz`
@@ -564,74 +564,84 @@ const AfricanMiningNetworkMap: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      {/* Live Network Intelligence Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-700 border-b border-slate-600">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Terminal-Style Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-8xl mx-auto px-8 py-6">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-light text-white mb-2">
-                African Mining Network Intelligence
-              </h1>
-              <p className="text-slate-300 text-sm">
-                Live network analysis revealing critical global supply chain connections
-              </p>
+            <div className="flex items-center space-x-6">
+              <div>
+                <h1 className="text-2xl font-medium text-gray-900 tracking-tight">
+                  MIAR
+                </h1>
+                <p className="text-sm text-gray-600 font-light">
+                  African Mining Network Intelligence
+                </p>
+              </div>
+              <div className="hidden lg:flex items-center space-x-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-xs text-gray-500 font-mono">LIVE</span>
+              </div>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 text-center">
-              <div>
-                <div className="text-xl font-light text-green-400">${liveData.totalFlow.toFixed(1)}B</div>
-                <div className="text-xs text-slate-400">Network Flow</div>
+            <div className="grid grid-cols-5 gap-8 text-right">
+              <div className="space-y-1">
+                <div className="text-lg font-mono text-gray-900">${liveData.totalFlow.toFixed(1)}B</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Network Flow</div>
               </div>
-              <div>
-                <div className="text-xl font-light text-amber-400">${liveData.tailingsValue.toFixed(1)}B</div>
-                <div className="text-xs text-slate-400">Tailings Value</div>
+              <div className="space-y-1">
+                <div className="text-lg font-mono text-gray-900">${liveData.tailingsValue.toFixed(1)}B</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Tailings Value</div>
               </div>
-              <div>
-                <div className="text-xl font-light text-blue-400">{liveData.johannesburgProduction.toLocaleString()}</div>
-                <div className="text-xs text-slate-400">oz Gold/Year</div>
+              <div className="space-y-1">
+                <div className="text-lg font-mono text-gray-900">{liveData.johannesburgProduction.toLocaleString()}</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">oz Gold/Year</div>
               </div>
-              <div>
-                <div className="text-xl font-light text-yellow-400">{liveData.criticalPaths}</div>
-                <div className="text-xs text-slate-400">Critical Nodes</div>
+              <div className="space-y-1">
+                <div className="text-lg font-mono text-gray-900">{liveData.criticalPaths}</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Critical Nodes</div>
               </div>
-              <div>
-                <div className="text-xl font-light text-red-400">{liveData.vulnerabilities}</div>
-                <div className="text-xs text-slate-400">Risk Points</div>
+              <div className="space-y-1">
+                <div className="text-lg font-mono text-gray-900">{liveData.vulnerabilities}</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Risk Points</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Live Network Map */}
-        <Card className="p-6 bg-slate-800 border-slate-700">
-          <div className="mb-4">
-            <h3 className="text-lg font-medium text-white mb-2">Live Continental Network</h3>
-            <div className="flex items-center space-x-6 text-sm text-slate-400">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span>Strong Connection</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <span>Medium Connection</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span>Vulnerable Link</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-yellow-400 rounded-full border border-yellow-400"></div>
-                <span>Critical Node</span>
+      <div className="max-w-8xl mx-auto px-8 py-8 space-y-8">
+        {/* Main Network Visualization */}
+        <div className="bg-white rounded border border-gray-200 shadow-sm">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Continental Network Intelligence</h3>
+              <div className="flex items-center space-x-6 text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  <span className="text-gray-600">Strong</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                  <span className="text-gray-600">Medium</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                  <span className="text-gray-600">Vulnerable</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full border border-blue-600"></div>
+                  <span className="text-gray-600">Critical</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            {renderNetworkMap()}
+          <div className="p-6">
+            <div className="overflow-hidden rounded border border-gray-200 bg-gray-50">
+              {renderNetworkMap()}
+            </div>
           </div>
-        </Card>
+        </div>
 
         {/* Selected Operation Details - Enhanced for both Continental and Johannesburg */}
         {selectedOperation && (() => {
@@ -645,187 +655,205 @@ const AfricanMiningNetworkMap: React.FC = () => {
           const clustering = networkMetrics.clustering?.[selectedOperation] || 0;
 
           return operation && (
-            <Card className="mt-6 p-6 bg-slate-800 border-slate-700">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-3">
-                    {isJohannesburg ? operation.name : operation.name}
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    {isJohannesburg ? (
-                      // Johannesburg mine details
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Operator</span>
-                          <span className="text-white">{(operation as RealMineData).operator}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Annual Production</span>
-                          <span className="text-white">{(operation as RealMineData).production.annual_oz.toLocaleString()} oz</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Grade</span>
-                          <span className="text-white">{(operation as RealMineData).production.grade_gt} g/t</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">AISC</span>
-                          <span className="text-white">${(operation as RealMineData).economics.aisc_usd_oz}/oz</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Depth</span>
-                          <span className="text-white">{(operation as RealMineData).location.depth_m}m</span>
-                        </div>
-                      </>
-                    ) : (
-                      // Continental operation details
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Country</span>
-                          <span className="text-white">{(operation as AfricanMiningOperation).country}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Primary Commodity</span>
-                          <span className="text-white capitalize">{(operation as AfricanMiningOperation).production.primary_commodity}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Annual Production</span>
-                          <span className="text-white">{(operation as AfricanMiningOperation).production.annual_production.toLocaleString()} {(operation as AfricanMiningOperation).production.unit}</span>
-                        </div>
-                      </>
-                    )}
+            <div className="bg-white rounded border border-gray-200 shadow-sm">
+              <div className="border-b border-gray-200 px-6 py-4">
+                <h3 className="text-lg font-medium text-gray-900">
+                  {isJohannesburg ? operation.name : operation.name}
+                </h3>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">Operations</h4>
+                    <div className="space-y-3 text-sm">
+                      {isJohannesburg ? (
+                        // Johannesburg mine details
+                        <>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Operator</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).operator}</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Annual Production</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.annual_oz.toLocaleString()} oz</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Grade</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.grade_gt} g/t</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">AISC</span>
+                            <span className="text-gray-900 font-mono">${(operation as RealMineData).economics.aisc_usd_oz}/oz</span>
+                          </div>
+                          <div className="flex justify-between py-2">
+                            <span className="text-gray-500">Depth</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).location.depth_m}m</span>
+                          </div>
+                        </>
+                      ) : (
+                        // Continental operation details
+                        <>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Country</span>
+                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).country}</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Primary Commodity</span>
+                            <span className="text-gray-900 font-mono capitalize">{(operation as AfricanMiningOperation).production.primary_commodity}</span>
+                          </div>
+                          <div className="flex justify-between py-2">
+                            <span className="text-gray-500">Annual Production</span>
+                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).production.annual_production.toLocaleString()} {(operation as AfricanMiningOperation).production.unit}</span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <h4 className="font-medium text-white mb-3">Network Analysis</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Betweenness Centrality</span>
-                      <span className={`font-medium ${centrality > 2 ? 'text-red-400' : centrality > 1 ? 'text-yellow-400' : 'text-green-400'}`}>
-                        {centrality.toFixed(1)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Clustering Coefficient</span>
-                      <span className="text-white">{(clustering * 100).toFixed(1)}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Critical Path Risk</span>
-                      <span className={`font-medium ${centrality > 2 ? 'text-red-400' : 'text-green-400'}`}>
-                        {centrality > 2 ? 'HIGH' : 'LOW'}
-                      </span>
-                    </div>
-                    {isJohannesburg && tailingsAnalysis && (
-                      <div className="flex justify-between">
-                        <span className="text-slate-400">Tailings AI Analysis</span>
-                        <span className="text-green-400">ACTIVE</span>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">Network Analysis</h4>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">Betweenness Centrality</span>
+                        <span className={`font-mono font-medium ${centrality > 2 ? 'text-red-600' : centrality > 1 ? 'text-yellow-600' : 'text-green-600'}`}>
+                          {centrality.toFixed(1)}
+                        </span>
                       </div>
-                    )}
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">Clustering Coefficient</span>
+                        <span className="text-gray-900 font-mono">{(clustering * 100).toFixed(1)}%</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-500">Critical Path Risk</span>
+                        <span className={`font-mono font-medium ${centrality > 2 ? 'text-red-600' : 'text-green-600'}`}>
+                          {centrality > 2 ? 'HIGH' : 'LOW'}
+                        </span>
+                      </div>
+                      {isJohannesburg && tailingsAnalysis && (
+                        <div className="flex justify-between py-2">
+                          <span className="text-gray-500">Tailings AI Analysis</span>
+                          <span className="text-green-600 font-mono">ACTIVE</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <h4 className="font-medium text-white mb-3">{isJohannesburg ? 'Economic Impact' : 'Global Impact'}</h4>
-                  <div className="space-y-2 text-sm">
-                    {isJohannesburg ? (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Employment</span>
-                          <span className="text-white">{(operation as RealMineData).economics.employment.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Annual Revenue</span>
-                          <span className="text-white">${(operation as RealMineData).economics.revenue_usd_m}M</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Reserves</span>
-                          <span className="text-white">{((operation as RealMineData).production.reserves_oz / 1000).toLocaleString()}k oz</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Life of Mine</span>
-                          <span className="text-white">{(operation as RealMineData).production.life_years} years</span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Employment</span>
-                          <span className="text-white">{(operation as AfricanMiningOperation).economic_impact.employment.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Govt Revenue</span>
-                          <span className="text-white">${(operation as AfricanMiningOperation).economic_impact.government_revenue_usd_m}M/yr</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">GDP Contribution</span>
-                          <span className="text-white">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
-                        </div>
-                      </>
-                    )}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">{isJohannesburg ? 'Economic Impact' : 'Global Impact'}</h4>
+                    <div className="space-y-3 text-sm">
+                      {isJohannesburg ? (
+                        <>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Employment</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).economics.employment.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Annual Revenue</span>
+                            <span className="text-gray-900 font-mono">${(operation as RealMineData).economics.revenue_usd_m}M</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Reserves</span>
+                            <span className="text-gray-900 font-mono">{((operation as RealMineData).production.reserves_oz / 1000).toLocaleString()}k oz</span>
+                          </div>
+                          <div className="flex justify-between py-2">
+                            <span className="text-gray-500">Life of Mine</span>
+                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.life_years} years</span>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Employment</span>
+                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).economic_impact.employment.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between py-2 border-b border-gray-100">
+                            <span className="text-gray-500">Govt Revenue</span>
+                            <span className="text-gray-900 font-mono">${(operation as AfricanMiningOperation).economic_impact.government_revenue_usd_m}M/yr</span>
+                          </div>
+                          <div className="flex justify-between py-2">
+                            <span className="text-gray-500">GDP Contribution</span>
+                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           );
         })()}
 
         {/* Live Tailings Analysis Results */}
         {tailingsAnalysis && (
-          <Card className="mt-6 p-6 bg-gradient-to-r from-amber-900 to-orange-900 border-amber-700">
-            <h3 className="text-lg font-medium text-white mb-4">Live Tailings Analysis - Johannesburg Operations</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <DollarSign className="h-8 w-8 text-green-400 mx-auto mb-3" />
-                <div className="text-sm text-amber-100">
-                  <div className="font-medium text-white mb-1">${liveData.tailingsValue.toFixed(1)}B Recovery Potential</div>
-                  AI-driven reprocessing analysis shows massive value in existing tailings
-                </div>
-              </div>
-              <div className="text-center">
-                <Zap className="h-8 w-8 text-yellow-400 mx-auto mb-3" />
-                <div className="text-sm text-amber-100">
-                  <div className="font-medium text-white mb-1">Real-Time Processing Optimization</div>
-                  Live analysis of grade, chemistry, and extraction efficiency
-                </div>
-              </div>
-              <div className="text-center">
-                <TrendingUp className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-                <div className="text-sm text-amber-100">
-                  <div className="font-medium text-white mb-1">Network Effect Multiplier</div>
-                  Johannesburg operations amplify continental supply chain value
-                </div>
-              </div>
+          <div className="bg-white rounded border border-gray-200 shadow-sm">
+            <div className="border-b border-gray-200 px-6 py-4">
+              <h3 className="text-lg font-medium text-gray-900">Live Tailings Analysis</h3>
+              <p className="text-sm text-gray-600">Johannesburg Operations</p>
             </div>
-          </Card>
-        )}
-
-        {/* Global Transformation Impact */}
-        <Card className="mt-6 p-6 bg-gradient-to-r from-blue-900 to-purple-900 border-blue-700">
-          <h3 className="text-lg font-medium text-white mb-4">Revolutionary Intelligence Platform</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <Zap className="h-8 w-8 text-yellow-400 mx-auto mb-3" />
-              <div className="text-sm text-blue-100">
-                <div className="font-medium text-white mb-1">Live Network + Real Operations</div>
-                Continental mining networks combined with detailed Johannesburg operations data
-              </div>
-            </div>
-            <div className="text-center">
-              <Globe className="h-8 w-8 text-green-400 mx-auto mb-3" />
-              <div className="text-sm text-blue-100">
-                <div className="font-medium text-white mb-1">AI-Powered Tailings Analysis</div>
-                Real-time processing of $16B+ tailings opportunities with network optimization
-              </div>
-            </div>
-            <div className="text-center">
-              <TrendingUp className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-              <div className="text-sm text-blue-100">
-                <div className="font-medium text-white mb-1">Global Supply Chain Intelligence</div>
-                First platform showing how local operations impact global mineral flows
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div className="space-y-3">
+                  <DollarSign className="h-8 w-8 text-gray-600 mx-auto" />
+                  <div>
+                    <div className="text-xl font-mono text-gray-900 mb-1">${liveData.tailingsValue.toFixed(1)}B</div>
+                    <div className="text-sm text-gray-600">Recovery Potential</div>
+                    <div className="text-xs text-gray-500 mt-2">AI-driven reprocessing analysis shows massive value in existing tailings</div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <Zap className="h-8 w-8 text-gray-600 mx-auto" />
+                  <div>
+                    <div className="text-xl font-mono text-gray-900 mb-1">Real-Time</div>
+                    <div className="text-sm text-gray-600">Processing Optimization</div>
+                    <div className="text-xs text-gray-500 mt-2">Live analysis of grade, chemistry, and extraction efficiency</div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <TrendingUp className="h-8 w-8 text-gray-600 mx-auto" />
+                  <div>
+                    <div className="text-xl font-mono text-gray-900 mb-1">Network</div>
+                    <div className="text-sm text-gray-600">Effect Multiplier</div>
+                    <div className="text-xs text-gray-500 mt-2">Johannesburg operations amplify continental supply chain value</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </Card>
+        )}
+
+        {/* Platform Intelligence Summary */}
+        <div className="bg-white rounded border border-gray-200 shadow-sm">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <h3 className="text-lg font-medium text-gray-900">Intelligence Platform</h3>
+            <p className="text-sm text-gray-600">Revolutionary network analysis capabilities</p>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <div className="space-y-3">
+                <Zap className="h-8 w-8 text-gray-600 mx-auto" />
+                <div>
+                  <div className="text-base font-medium text-gray-900 mb-1">Live Network + Real Operations</div>
+                  <div className="text-sm text-gray-600">Continental mining networks combined with detailed Johannesburg operations data</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Globe className="h-8 w-8 text-gray-600 mx-auto" />
+                <div>
+                  <div className="text-base font-medium text-gray-900 mb-1">AI-Powered Tailings Analysis</div>
+                  <div className="text-sm text-gray-600">Real-time processing of $16B+ tailings opportunities with network optimization</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <TrendingUp className="h-8 w-8 text-gray-600 mx-auto" />
+                <div>
+                  <div className="text-base font-medium text-gray-900 mb-1">Global Supply Chain Intelligence</div>
+                  <div className="text-sm text-gray-600">First platform showing how local operations impact global mineral flows</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
