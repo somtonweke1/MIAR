@@ -131,7 +131,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     return NextResponse.json(
-      { error: 'Tailings analysis failed', details: error.message },
+      {
+        error: 'Tailings analysis failed',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
