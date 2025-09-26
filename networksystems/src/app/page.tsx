@@ -29,19 +29,19 @@ function HomeContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      {/* Minimal Header */}
-      <nav className="bg-slate-800/90 backdrop-blur-sm border-b border-slate-700 sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex h-12 items-center justify-between">
+    <div className="min-h-screen bg-zinc-50">
+      {/* Premium Swiss-Style Header */}
+      <nav className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50 sticky top-0 z-50">
+        <div className="mx-auto max-w-[1800px] px-12">
+          <div className="flex h-16 items-center justify-between">
             <div>
-              <h1 className="text-lg font-light text-white tracking-wide">
+              <h1 className="text-xl font-extralight text-zinc-900 tracking-wide">
                 MIAR
               </h1>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block text-sm text-slate-400 font-light">
+            <div className="flex items-center space-x-6">
+              <div className="hidden md:block text-sm text-zinc-500 font-light">
                 {user.name}
               </div>
 
@@ -49,7 +49,7 @@ function HomeContent() {
                 onClick={logout}
                 variant="outline"
                 size="sm"
-                className="h-8 w-8 p-0 border-slate-600 text-slate-400 hover:text-white hover:border-slate-500"
+                className="h-10 w-10 p-0 border-zinc-300 text-zinc-500 hover:text-zinc-900 hover:border-zinc-400 bg-white/60 backdrop-blur-sm"
               >
                 <LogOut className="h-4 w-4" />
               </Button>

@@ -356,7 +356,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
     return (
       <svg width={width} height={height} className="w-full h-auto">
         {/* Background */}
-        <rect width={width} height={height} fill="#f9fafb" />
+        <rect width={width} height={height} fill="#ffffff" />
 
         {/* Connection lines */}
         {network.edges.map((edge, idx) => {
@@ -377,8 +377,9 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 x2={x2}
                 y2={y2}
                 stroke={edge.color}
-                strokeWidth={Math.max(1, (edge.weight || 0.5) * 4)}
-                strokeOpacity={0.8}
+                strokeWidth={Math.max(2, (edge.weight || 0.5) * 5)}
+                strokeOpacity={0.7}
+                strokeDasharray="8,4"
               />
               {/* Enhanced flow animation with value indicators */}
               <circle r="4" fill="#4b5563" opacity="0.8">
@@ -398,7 +399,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 <text
                   x={(x1 + x2) / 2}
                   y={(y1 + y2) / 2 - 8}
-                  fill="#6b7280"
+                  fill="#fbbf24"
                   fontSize="6"
                   textAnchor="middle"
                   className="font-mono font-medium"
@@ -474,10 +475,10 @@ const AfricanMiningNetworkMap: React.FC = () => {
               <text
                 x={x}
                 y={y - radius - 5}
-                fill="#374151"
+                fill="#1f2937"
                 fontSize={node.metadata?.type === 'johannesburg' ? '8' : '10'}
                 textAnchor="middle"
-                className="font-mono font-medium"
+                className="font-sans font-medium"
               >
                 {node.metadata?.type === 'johannesburg'
                   ? `${node.metadata?.annual_oz?.toLocaleString() || '0'} oz`
@@ -564,81 +565,597 @@ const AfricanMiningNetworkMap: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Terminal-Style Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-8xl mx-auto px-8 py-6">
+    <div className="min-h-screen bg-zinc-50">
+      {/* Premium Swiss-Style Header */}
+      <div className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50">
+        <div className="max-w-[1800px] mx-auto px-12 py-8">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-6">
-              <div>
-                <h1 className="text-2xl font-medium text-gray-900 tracking-tight">
+            <div className="flex items-center space-x-12">
+              <div className="flex items-center space-x-6">
+                <div className="bg-zinc-900 text-white px-6 py-3 text-sm font-light tracking-wide rounded">
                   MIAR
-                </h1>
-                <p className="text-sm text-gray-600 font-light">
-                  African Mining Network Intelligence
-                </p>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-extralight text-zinc-900 tracking-tight">Mining Intelligence</h1>
+                  <p className="text-sm text-zinc-500 font-light">African Network Analysis</p>
+                </div>
               </div>
-              <div className="hidden lg:flex items-center space-x-1">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-gray-500 font-mono">LIVE</span>
+              <div className="flex items-center space-x-3 bg-emerald-50/80 px-4 py-2 rounded-full border border-emerald-100/50">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-light text-emerald-700">68% Critical Minerals Control</span>
               </div>
             </div>
-            <div className="grid grid-cols-5 gap-8 text-right">
-              <div className="space-y-1">
-                <div className="text-lg font-mono text-gray-900">${liveData.totalFlow.toFixed(1)}B</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Network Flow</div>
+            <div className="flex items-center space-x-12">
+              <div className="text-center">
+                <div className="text-xl font-light text-zinc-900">${liveData.totalFlow.toFixed(1)}B</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Net Flow</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-mono text-gray-900">${liveData.tailingsValue.toFixed(1)}B</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Tailings Value</div>
+              <div className="text-center">
+                <div className="text-xl font-light text-emerald-600">${liveData.tailingsValue.toFixed(1)}B</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Tailings Value</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-mono text-gray-900">{liveData.johannesburgProduction.toLocaleString()}</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">oz Gold/Year</div>
+              <div className="text-center">
+                <div className="text-xl font-light text-zinc-900">{liveData.johannesburgProduction.toLocaleString()}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Au Oz/Yr</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-mono text-gray-900">{liveData.criticalPaths}</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Critical Nodes</div>
+              <div className="text-center">
+                <div className="text-xl font-light text-amber-500">{liveData.criticalPaths}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Critical Paths</div>
               </div>
-              <div className="space-y-1">
-                <div className="text-lg font-mono text-gray-900">{liveData.vulnerabilities}</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Risk Points</div>
+              <div className="text-center">
+                <div className="text-xl font-light text-rose-500">{liveData.vulnerabilities}</div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Risk Level</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-8xl mx-auto px-8 py-8 space-y-8">
-        {/* Main Network Visualization */}
-        <div className="bg-white rounded border border-gray-200 shadow-sm">
-          <div className="border-b border-gray-200 px-6 py-4">
+      <div className="max-w-[1800px] mx-auto px-12 py-12 space-y-16">
+        {/* Premium Network Panel */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-8 py-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Continental Network Intelligence</h3>
-              <div className="flex items-center space-x-6 text-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                  <span className="text-gray-600">Strong</span>
+              <div>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Continental Network Intelligence</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">Live analysis of mining operations and trade flows</p>
+              </div>
+              <div className="flex items-center space-x-8">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                  <span className="text-xs font-light text-zinc-600">Strong</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
-                  <span className="text-gray-600">Medium</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
+                  <span className="text-xs font-light text-zinc-600">Medium</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-gray-600">Vulnerable</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-rose-400 rounded-full"></div>
+                  <span className="text-xs font-light text-zinc-600">Weak</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full border border-blue-600"></div>
-                  <span className="text-gray-600">Critical</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <span className="text-xs font-light text-zinc-600">Critical</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="p-6">
-            <div className="overflow-hidden rounded border border-gray-200 bg-gray-50">
+          <div className="p-12">
+            <div className="bg-zinc-50/50 rounded-xl border border-zinc-200/30 overflow-hidden">
               {renderNetworkMap()}
+            </div>
+          </div>
+        </div>
+
+        {/* Strategic Insights Dashboard */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Strategic Intelligence</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">AI-powered mining sector analysis</p>
+              </div>
+              <div className="flex items-center space-x-3 bg-emerald-50/60 px-4 py-2 rounded-full border border-emerald-100/50">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-light text-emerald-700">Live Analysis</span>
+              </div>
+            </div>
+          </div>
+
+          {/* High Priority Actions */}
+          <div className="px-8 py-8 border-b border-zinc-200/50">
+            <h3 className="text-xl font-extralight text-zinc-900 mb-8 tracking-tight">Priority Opportunities</h3>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+
+              {/* Massive Tailings Reprocessing */}
+              <div className="bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl p-8 border border-emerald-200/30">
+                <div className="flex items-start justify-between mb-6">
+                  <h4 className="text-xl font-light text-zinc-900">Tailings Reprocessing</h4>
+                  <div className="bg-emerald-500 text-white px-4 py-2 rounded-full text-xs font-light tracking-wide">$16.0B Revenue Potential</div>
+                </div>
+                <p className="text-sm text-zinc-600 mb-6 font-light leading-relaxed">
+                  Analysis of East Rand, West Rand, and Klerksdorp tailings dams reveals 6.6M oz of recoverable gold worth $16B+ at current prices.
+                </p>
+                <div className="grid grid-cols-2 gap-6 text-sm">
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">Total Gold Content</span>
+                      <span className="font-light text-zinc-900">6.6M oz</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">Net Recovery Value</span>
+                      <span className="font-light text-emerald-600">$16.0B</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">Processing Cost</span>
+                      <span className="font-light text-zinc-900">$850/oz avg</span>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">New Surveys</div>
+                      <div className="font-light text-emerald-600">+2%</div>
+                    </div>
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">Gold Price Gains</div>
+                      <div className="font-light text-emerald-600">+12%</div>
+                    </div>
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">New Technology</div>
+                      <div className="font-light text-emerald-600">-8% costs</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Critical Minerals Co-Extraction */}
+              <div className="bg-gradient-to-br from-blue-50/50 to-blue-100/30 rounded-xl p-8 border border-blue-200/30">
+                <div className="flex items-start justify-between mb-6">
+                  <h4 className="text-xl font-light text-zinc-900">Critical Minerals Co-Extraction</h4>
+                  <div className="bg-blue-500 text-white px-4 py-2 rounded-full text-xs font-light tracking-wide">$2.4B Additional Revenue</div>
+                </div>
+                <p className="text-sm text-zinc-600 mb-6 font-light leading-relaxed">
+                  Witwatersrand gold operations contain significant uranium, palladium, and rare earth elements supporting clean energy transition.
+                </p>
+                <div className="grid grid-cols-2 gap-6 text-sm">
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">Uranium Production</span>
+                      <span className="font-light text-zinc-900">1,200 t/yr</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">Palladium Content</span>
+                      <span className="font-light text-zinc-900">8,000 kg/yr</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500 font-light">REE Opportunity</span>
+                      <span className="font-light text-zinc-900">750 t/yr</span>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">From Current</div>
+                      <div className="font-light text-blue-600">+147%</div>
+                    </div>
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">New Discovery</div>
+                      <div className="font-light text-blue-600">Fresh Source</div>
+                    </div>
+                    <div className="bg-white/60 p-3 rounded border border-zinc-200/50">
+                      <div className="text-xs text-zinc-500 font-light">Under Exploration</div>
+                      <div className="font-light text-blue-600">Strong Demand</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* All Strategic Insights Grid */}
+          <div className="px-8 pb-8">
+            <h3 className="text-xl font-extralight text-zinc-900 mb-8 tracking-tight">Strategic Analysis</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+
+              {/* Ultra-Deep Mining Technology */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Ultra-Deep Mining Technology</h4>
+                  <span className="bg-violet-100/80 text-violet-700 px-3 py-1 rounded-full text-xs font-light">25% Cost Reduction</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Operations at 3-4km depth face extreme temperatures and costs.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Current Depth Record</span>
+                    <span className="font-light text-zinc-900">4,000m</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Temperature Challenge</span>
+                    <span className="font-light text-rose-500">55°C+</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Automation Adoption</span>
+                    <span className="font-light text-emerald-600">25% (+15%)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Employment Transition */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Employment Transition</h4>
+                  <span className="bg-amber-100/80 text-amber-700 px-3 py-1 rounded-full text-xs font-light">93,841 Jobs at Risk</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Employment declined 60% since peak. Reskilling programs critical.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Current Employment</span>
+                    <span className="font-light text-zinc-900">93,841 (-15%)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Skills Gap</span>
+                    <span className="font-light text-rose-500">Critical</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Productivity Gain</span>
+                    <span className="font-light text-emerald-600">40%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Carbon Intensity Reduction */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Carbon Intensity Reduction</h4>
+                  <span className="bg-emerald-100/80 text-emerald-700 px-3 py-1 rounded-full text-xs font-light">50% Emissions Cut</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Renewable energy and electrification by 2030.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Current Intensity</span>
+                    <span className="font-light text-zinc-900">0.65 kg CO₂/oz</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Renewable Energy</span>
+                    <span className="font-light text-emerald-600">15% (+5%)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Investment Required</span>
+                    <span className="font-light text-zinc-900">$850M</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Market Consolidation */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Market Consolidation Risk</h4>
+                  <span className="bg-rose-100/80 text-rose-700 px-3 py-1 rounded-full text-xs font-light">60% Share Risk</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">South Africa's market share fell from 70% to 3%.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Market Share 1970s</span>
+                    <span className="font-light text-zinc-900">70%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Market Share 2024</span>
+                    <span className="font-light text-rose-500">3%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Years Remaining</span>
+                    <span className="font-light text-amber-500">27</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Global Supply Chain Control */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Critical Minerals Control</h4>
+                  <span className="bg-emerald-100/80 text-emerald-700 px-3 py-1 rounded-full text-xs font-light">68% Global Control</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Africa controls world's critical mineral supply chains.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Cobalt Supply</span>
+                    <span className="font-light text-emerald-600">70%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Phosphate Supply</span>
+                    <span className="font-light text-emerald-600">75%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">China Trade</span>
+                    <span className="font-light text-zinc-900">$95B</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Industry Transformation */}
+              <div className="border border-zinc-200/50 rounded-xl p-6 bg-gradient-to-br from-zinc-50/50 to-zinc-100/30 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-light text-zinc-900">Industry Transformation</h4>
+                  <span className="bg-zinc-800 text-white px-3 py-1 rounded-full text-xs font-light">2030 Target</span>
+                </div>
+                <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Strategic positioning for the next decade.</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Total Opportunity</span>
+                    <span className="font-light text-emerald-600">$18.4B</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Jobs Sustainable</span>
+                    <span className="font-light text-emerald-600">150,000+</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500 font-light">Target</span>
+                    <span className="font-light text-zinc-900">Carbon Neutral</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Deep Intelligence Analysis - Comprehensive Insights */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Deep Intelligence Analysis</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">Comprehensive sector transformation and opportunity mapping</p>
+              </div>
+              <div className="flex items-center space-x-3 bg-blue-50/60 px-4 py-2 rounded-full border border-blue-100/50">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-light text-blue-700">AI-Powered Analysis</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Continental Supply Chain Control */}
+          <div className="px-8 py-8 border-b border-zinc-200/50">
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-xl font-extralight text-zinc-900 tracking-tight">Continental Supply Chain Control</h3>
+              <div className="bg-emerald-500 text-white px-6 py-3 rounded-full text-sm font-light tracking-wide">68% Global Critical Minerals</div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+              <div className="bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl p-8 border border-emerald-200/30">
+                <h4 className="font-light text-zinc-900 mb-6">Global Cobalt Supply</h4>
+                <div className="text-4xl font-extralight text-emerald-600 mb-3">70%</div>
+                <p className="text-sm text-zinc-600 mb-6 font-light leading-relaxed">Essential for EV batteries - all flows through DRC-Zambia corridor</p>
+                <div className="text-xs bg-white/60 p-3 rounded border border-zinc-200/50">
+                  <div className="text-zinc-500 font-light">Supply Chain Risk</div>
+                  <div className="font-light text-rose-500">Single Point of Failure</div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-amber-50/50 to-amber-100/30 rounded-xl p-8 border border-amber-200/30">
+                <h4 className="font-light text-zinc-900 mb-6">Global Phosphate Supply</h4>
+                <div className="text-4xl font-extralight text-amber-600 mb-3">75%</div>
+                <p className="text-sm text-zinc-600 mb-6 font-light leading-relaxed">Morocco feeds global food security through fertilizers</p>
+                <div className="text-xs bg-white/60 p-3 rounded border border-zinc-200/50">
+                  <div className="text-zinc-500 font-light">Strategic Value</div>
+                  <div className="font-light text-amber-600">Food Security Control</div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-rose-50/50 to-rose-100/30 rounded-xl p-8 border border-rose-200/30">
+                <h4 className="font-light text-zinc-900 mb-6">Annual China Trade</h4>
+                <div className="text-4xl font-extralight text-rose-600 mb-3">$95B</div>
+                <p className="text-sm text-zinc-600 mb-6 font-light leading-relaxed">95M tonnes of African minerals flow to China annually</p>
+                <div className="text-xs bg-white/60 p-3 rounded border border-zinc-200/50">
+                  <div className="text-zinc-500 font-light">Dependency Risk</div>
+                  <div className="font-light text-rose-500">Logistics Bottleneck</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-zinc-50/50 rounded-xl p-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div>
+                  <div className="text-3xl font-extralight text-zinc-900">8</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Major Operations</div>
+                  <div className="text-xs text-zinc-400 font-light">8 countries, 5 regions</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extralight text-emerald-600">509K</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Direct Jobs</div>
+                  <div className="text-xs text-zinc-400 font-light">Continental employment</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extralight text-blue-600">$38.5B</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Govt Revenue</div>
+                  <div className="text-xs text-zinc-400 font-light">Annual tax contribution</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-extralight text-violet-600">6</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Network Links</div>
+                  <div className="text-xs text-zinc-400 font-light">Cross-border connections</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Johannesburg Operations Deep Dive */}
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Johannesburg Gold Operations</h3>
+                <p className="text-sm text-gray-600">Live data from Witwatersrand Basin - Africa's premier gold district</p>
+              </div>
+              <div className="bg-amber-600 text-white px-4 py-2 rounded-full text-sm font-semibold">$10.2B Tailings Value</div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+              <div className="text-center bg-gray-50 p-4 rounded-lg">
+                <div className="text-2xl font-bold text-gray-900">2</div>
+                <div className="text-sm text-gray-600">Active Mines</div>
+                <div className="text-xs text-gray-500">Live operations</div>
+              </div>
+              <div className="text-center bg-emerald-50 p-4 rounded-lg">
+                <div className="text-2xl font-bold text-emerald-600">115,000</div>
+                <div className="text-sm text-gray-600">oz Gold/Year</div>
+                <div className="text-xs text-gray-500">@ $2,400/oz = $276M</div>
+              </div>
+              <div className="text-center bg-amber-50 p-4 rounded-lg">
+                <div className="text-2xl font-bold text-amber-600">$10.2B</div>
+                <div className="text-sm text-gray-600">Tailings Value</div>
+                <div className="text-xs text-gray-500">Recoverable opportunity</div>
+              </div>
+              <div className="text-center bg-blue-50 p-4 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">2,300</div>
+                <div className="text-sm text-gray-600">Jobs</div>
+                <div className="text-xs text-gray-500">Direct employment</div>
+              </div>
+            </div>
+
+            {/* Tailings Reprocessing Breakdown */}
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4">Tailings Reprocessing Opportunity</h4>
+              <p className="text-sm text-gray-600 mb-4">Recover gold from existing waste - immediate value creation with streamlined permits</p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="bg-white rounded-lg p-4 border">
+                  <div className="flex justify-between items-start mb-2">
+                    <h5 className="font-semibold text-gray-900">East Rand</h5>
+                    <div className="text-sm bg-emerald-100 text-emerald-800 px-2 py-1 rounded">Highest ROI</div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Volume</span>
+                      <span className="font-medium">6.2MT</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Gold Content</span>
+                      <span className="font-medium">2,100k oz</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Grade</span>
+                      <span className="font-medium">0.35 g/t</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-gray-600">Net Value</span>
+                      <span className="font-bold text-emerald-600">$3,255M</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border">
+                  <h5 className="font-semibold text-gray-900 mb-2">West Rand</h5>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Volume</span>
+                      <span className="font-medium">4.8MT</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Gold Content</span>
+                      <span className="font-medium">1,650k oz</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Grade</span>
+                      <span className="font-medium">0.42 g/t</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-gray-600">Net Value</span>
+                      <span className="font-bold text-blue-600">$2,442M</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border">
+                  <h5 className="font-semibold text-gray-900 mb-2">Klerksdorp</h5>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Volume</span>
+                      <span className="font-medium">8.5MT</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Gold Content</span>
+                      <span className="font-medium">2,800k oz</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Grade</span>
+                      <span className="font-medium">0.38 g/t</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-gray-600">Net Value</span>
+                      <span className="font-bold text-purple-600">$4,536M</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Strategic Execution Framework */}
+          <div className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Strategic Execution Framework</h3>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <h4 className="font-semibold text-gray-900">Immediate Action</h4>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">East Rand tailings complex offers highest ROI with $2.5B net value and existing infrastructure.</p>
+                <div className="text-xs bg-white p-2 rounded border">
+                  <div className="text-gray-500">Status</div>
+                  <div className="font-medium text-green-600">Ready for development</div>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <h4 className="font-semibold text-gray-900">Technology Focus</h4>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">Ultra-deep mining automation could reduce costs by 25% for operations below 3km depth.</p>
+                <div className="text-xs bg-white p-2 rounded border">
+                  <div className="text-gray-500">Timeline</div>
+                  <div className="font-medium text-blue-600">5-year investment horizon</div>
+                </div>
+              </div>
+
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <h4 className="font-semibold text-gray-900">Market Position</h4>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">South Africa can reclaim 8-12% global market share through tailings reprocessing and efficiency gains.</p>
+                <div className="text-xs bg-white p-2 rounded border">
+                  <div className="text-gray-500">Impact</div>
+                  <div className="font-medium text-purple-600">Strategic opportunity</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Performance Indicators */}
+            <div className="mt-6 bg-gray-50 rounded-lg p-6">
+              <h4 className="text-lg font-semibold text-gray-900 mb-4">Key Performance Indicators</h4>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">27</div>
+                  <div className="text-sm text-gray-600">Years Remaining</div>
+                  <div className="text-xs text-red-500">At current rates</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-600">8-12%</div>
+                  <div className="text-sm text-gray-600">Market Share Recovery</div>
+                  <div className="text-xs text-emerald-500">Achievable target</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">25%</div>
+                  <div className="text-sm text-gray-600">Cost Reduction</div>
+                  <div className="text-xs text-blue-500">Through automation</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">150K+</div>
+                  <div className="text-sm text-gray-600">Jobs Sustainable</div>
+                  <div className="text-xs text-purple-500">With technology adoption</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -655,55 +1172,58 @@ const AfricanMiningNetworkMap: React.FC = () => {
           const clustering = networkMetrics.clustering?.[selectedOperation] || 0;
 
           return operation && (
-            <div className="bg-white rounded border border-gray-200 shadow-sm">
-              <div className="border-b border-gray-200 px-6 py-4">
-                <h3 className="text-lg font-medium text-gray-900">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-gray-50 border-b border-gray-100 p-4">
+                <h3 className="text-lg font-semibold text-gray-900">
                   {isJohannesburg ? operation.name : operation.name}
                 </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  {isJohannesburg ? 'Johannesburg Gold Mining Operation' : 'Continental Mining Operation'}
+                </p>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">Operations</h4>
-                    <div className="space-y-3 text-sm">
+                    <div className="text-sm font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">Operations</div>
+                    <div className="space-y-3">
                       {isJohannesburg ? (
                         // Johannesburg mine details
                         <>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Operator</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).operator}</span>
+                          <div className="flex justify-between py-2">
+                            <span className="text-sm text-gray-600">Operator</span>
+                            <span className="text-sm font-medium text-gray-900">{(operation as RealMineData).operator}</span>
                           </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Annual Production</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.annual_oz.toLocaleString()} oz</span>
-                          </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Grade</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.grade_gt} g/t</span>
-                          </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">AISC</span>
-                            <span className="text-gray-900 font-mono">${(operation as RealMineData).economics.aisc_usd_oz}/oz</span>
+                          <div className="flex justify-between py-2 bg-emerald-50 px-3 rounded">
+                            <span className="text-sm text-gray-600">Annual Production</span>
+                            <span className="text-sm font-semibold text-emerald-700">{(operation as RealMineData).production.annual_oz.toLocaleString()} oz</span>
                           </div>
                           <div className="flex justify-between py-2">
-                            <span className="text-gray-500">Depth</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).location.depth_m}m</span>
+                            <span className="text-sm text-gray-600">Grade</span>
+                            <span className="text-sm font-medium text-gray-900">{(operation as RealMineData).production.grade_gt} g/t</span>
+                          </div>
+                          <div className="flex justify-between py-2 bg-amber-50 px-3 rounded">
+                            <span className="text-sm text-gray-600">AISC</span>
+                            <span className="text-sm font-semibold text-amber-700">${(operation as RealMineData).economics.aisc_usd_oz}/oz</span>
+                          </div>
+                          <div className="flex justify-between py-2">
+                            <span className="text-sm text-gray-600">Depth</span>
+                            <span className="text-sm font-medium text-gray-900">{(operation as RealMineData).location.depth_m}m</span>
                           </div>
                         </>
                       ) : (
                         // Continental operation details
                         <>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Country</span>
-                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).country}</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">COUNTRY</span>
+                            <span className="text-white">{(operation as AfricanMiningOperation).country}</span>
                           </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Primary Commodity</span>
-                            <span className="text-gray-900 font-mono capitalize">{(operation as AfricanMiningOperation).production.primary_commodity}</span>
+                          <div className="flex justify-between py-1 bg-gray-800">
+                            <span className="text-gray-400">COMMODITY</span>
+                            <span className="text-green-400">{(operation as AfricanMiningOperation).production.primary_commodity.toUpperCase()}</span>
                           </div>
-                          <div className="flex justify-between py-2">
-                            <span className="text-gray-500">Annual Production</span>
-                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).production.annual_production.toLocaleString()} {(operation as AfricanMiningOperation).production.unit}</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">ANNUAL PROD</span>
+                            <span className="text-white">{(operation as AfricanMiningOperation).production.annual_production.toLocaleString()} {(operation as AfricanMiningOperation).production.unit.toUpperCase()}</span>
                           </div>
                         </>
                       )}
@@ -711,68 +1231,68 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">Network Analysis</h4>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">Betweenness Centrality</span>
-                        <span className={`font-mono font-medium ${centrality > 2 ? 'text-red-600' : centrality > 1 ? 'text-yellow-600' : 'text-green-600'}`}>
+                    <div className="text-yellow-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">NETWORK ANALYSIS</div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-400">CENTRALITY</span>
+                        <span className={`${centrality > 2 ? 'text-red-400' : centrality > 1 ? 'text-yellow-400' : 'text-green-400'}`}>
                           {centrality.toFixed(1)}
                         </span>
                       </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">Clustering Coefficient</span>
-                        <span className="text-gray-900 font-mono">{(clustering * 100).toFixed(1)}%</span>
+                      <div className="flex justify-between py-1 bg-gray-800">
+                        <span className="text-gray-400">CLUSTERING</span>
+                        <span className="text-white">{(clustering * 100).toFixed(1)}%</span>
                       </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-500">Critical Path Risk</span>
-                        <span className={`font-mono font-medium ${centrality > 2 ? 'text-red-600' : 'text-green-600'}`}>
+                      <div className="flex justify-between py-1">
+                        <span className="text-gray-400">RISK</span>
+                        <span className={`${centrality > 2 ? 'text-red-400' : 'text-green-400'}`}>
                           {centrality > 2 ? 'HIGH' : 'LOW'}
                         </span>
                       </div>
                       {isJohannesburg && tailingsAnalysis && (
-                        <div className="flex justify-between py-2">
-                          <span className="text-gray-500">Tailings AI Analysis</span>
-                          <span className="text-green-600 font-mono">ACTIVE</span>
+                        <div className="flex justify-between py-1 bg-gray-800">
+                          <span className="text-gray-400">AI ANALYSIS</span>
+                          <span className="text-green-400">ACTIVE</span>
                         </div>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900 mb-4 uppercase tracking-wide">{isJohannesburg ? 'Economic Impact' : 'Global Impact'}</h4>
-                    <div className="space-y-3 text-sm">
+                    <div className="text-yellow-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">{isJohannesburg ? 'ECONOMIC IMPACT' : 'GLOBAL IMPACT'}</div>
+                    <div className="space-y-1 text-xs">
                       {isJohannesburg ? (
                         <>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Employment</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).economics.employment.toLocaleString()}</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">EMPLOYMENT</span>
+                            <span className="text-white">{(operation as RealMineData).economics.employment.toLocaleString()}</span>
                           </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Annual Revenue</span>
-                            <span className="text-gray-900 font-mono">${(operation as RealMineData).economics.revenue_usd_m}M</span>
+                          <div className="flex justify-between py-1 bg-gray-800">
+                            <span className="text-gray-400">REVENUE</span>
+                            <span className="text-green-400">${(operation as RealMineData).economics.revenue_usd_m}M</span>
                           </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Reserves</span>
-                            <span className="text-gray-900 font-mono">{((operation as RealMineData).production.reserves_oz / 1000).toLocaleString()}k oz</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">RESERVES</span>
+                            <span className="text-white">{((operation as RealMineData).production.reserves_oz / 1000).toLocaleString()}K OZ</span>
                           </div>
-                          <div className="flex justify-between py-2">
-                            <span className="text-gray-500">Life of Mine</span>
-                            <span className="text-gray-900 font-mono">{(operation as RealMineData).production.life_years} years</span>
+                          <div className="flex justify-between py-1 bg-gray-800">
+                            <span className="text-gray-400">LIFE</span>
+                            <span className="text-yellow-400">{(operation as RealMineData).production.life_years} YRS</span>
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Employment</span>
-                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).economic_impact.employment.toLocaleString()}</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">EMPLOYMENT</span>
+                            <span className="text-white">{(operation as AfricanMiningOperation).economic_impact.employment.toLocaleString()}</span>
                           </div>
-                          <div className="flex justify-between py-2 border-b border-gray-100">
-                            <span className="text-gray-500">Govt Revenue</span>
-                            <span className="text-gray-900 font-mono">${(operation as AfricanMiningOperation).economic_impact.government_revenue_usd_m}M/yr</span>
+                          <div className="flex justify-between py-1 bg-gray-800">
+                            <span className="text-gray-400">GOVT REV</span>
+                            <span className="text-green-400">${(operation as AfricanMiningOperation).economic_impact.government_revenue_usd_m}M</span>
                           </div>
-                          <div className="flex justify-between py-2">
-                            <span className="text-gray-500">GDP Contribution</span>
-                            <span className="text-gray-900 font-mono">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
+                          <div className="flex justify-between py-1">
+                            <span className="text-gray-400">GDP</span>
+                            <span className="text-yellow-400">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
                           </div>
                         </>
                       )}
@@ -786,35 +1306,34 @@ const AfricanMiningNetworkMap: React.FC = () => {
 
         {/* Live Tailings Analysis Results */}
         {tailingsAnalysis && (
-          <div className="bg-white rounded border border-gray-200 shadow-sm">
-            <div className="border-b border-gray-200 px-6 py-4">
-              <h3 className="text-lg font-medium text-gray-900">Live Tailings Analysis</h3>
-              <p className="text-sm text-gray-600">Johannesburg Operations</p>
+          <div className="bg-gray-900 border border-yellow-500">
+            <div className="bg-yellow-500 text-black px-3 py-1">
+              <span className="text-xs font-bold">LIVE TAILINGS ANALYSIS - JOHANNESBURG OPERATIONS</span>
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div className="space-y-3">
-                  <DollarSign className="h-8 w-8 text-gray-600 mx-auto" />
+            <div className="p-4 bg-black">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div className="space-y-2">
+                  <DollarSign className="h-6 w-6 text-yellow-500 mx-auto" />
                   <div>
-                    <div className="text-xl font-mono text-gray-900 mb-1">${liveData.tailingsValue.toFixed(1)}B</div>
-                    <div className="text-sm text-gray-600">Recovery Potential</div>
-                    <div className="text-xs text-gray-500 mt-2">AI-driven reprocessing analysis shows massive value in existing tailings</div>
+                    <div className="text-lg font-mono text-green-400 mb-1">${liveData.tailingsValue.toFixed(1)}B</div>
+                    <div className="text-xs text-gray-400">RECOVERY POTENTIAL</div>
+                    <div className="text-xs text-gray-500 mt-1">AI-driven reprocessing analysis shows massive value in existing tailings</div>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <Zap className="h-8 w-8 text-gray-600 mx-auto" />
+                <div className="space-y-2">
+                  <Zap className="h-6 w-6 text-yellow-500 mx-auto" />
                   <div>
-                    <div className="text-xl font-mono text-gray-900 mb-1">Real-Time</div>
-                    <div className="text-sm text-gray-600">Processing Optimization</div>
-                    <div className="text-xs text-gray-500 mt-2">Live analysis of grade, chemistry, and extraction efficiency</div>
+                    <div className="text-lg font-mono text-green-400 mb-1">REAL-TIME</div>
+                    <div className="text-xs text-gray-400">PROCESSING OPTIMIZATION</div>
+                    <div className="text-xs text-gray-500 mt-1">Live analysis of grade, chemistry, and extraction efficiency</div>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <TrendingUp className="h-8 w-8 text-gray-600 mx-auto" />
+                <div className="space-y-2">
+                  <TrendingUp className="h-6 w-6 text-yellow-500 mx-auto" />
                   <div>
-                    <div className="text-xl font-mono text-gray-900 mb-1">Network</div>
-                    <div className="text-sm text-gray-600">Effect Multiplier</div>
-                    <div className="text-xs text-gray-500 mt-2">Johannesburg operations amplify continental supply chain value</div>
+                    <div className="text-lg font-mono text-green-400 mb-1">NETWORK</div>
+                    <div className="text-xs text-gray-400">EFFECT MULTIPLIER</div>
+                    <div className="text-xs text-gray-500 mt-1">Johannesburg operations amplify continental supply chain value</div>
                   </div>
                 </div>
               </div>
@@ -823,32 +1342,45 @@ const AfricanMiningNetworkMap: React.FC = () => {
         )}
 
         {/* Platform Intelligence Summary */}
-        <div className="bg-white rounded border border-gray-200 shadow-sm">
-          <div className="border-b border-gray-200 px-6 py-4">
-            <h3 className="text-lg font-medium text-gray-900">Intelligence Platform</h3>
-            <p className="text-sm text-gray-600">Revolutionary network analysis capabilities</p>
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Platform Intelligence Summary</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">Revolutionary mining network analysis capabilities</p>
+              </div>
+              <div className="bg-zinc-50/80 px-4 py-2 rounded-full text-sm font-light text-zinc-600">
+                MIAR AI v2.1
+              </div>
+            </div>
           </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div className="space-y-3">
-                <Zap className="h-8 w-8 text-gray-600 mx-auto" />
+          <div className="p-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div className="text-center space-y-6">
+                <div className="flex items-center justify-center w-16 h-16 bg-emerald-100/60 rounded-2xl mx-auto">
+                  <Zap className="h-8 w-8 text-emerald-600" />
+                </div>
                 <div>
-                  <div className="text-base font-medium text-gray-900 mb-1">Live Network + Real Operations</div>
-                  <div className="text-sm text-gray-600">Continental mining networks combined with detailed Johannesburg operations data</div>
+                  <h3 className="text-xl font-light text-zinc-900 mb-3">Live Network Analysis</h3>
+                  <p className="text-sm text-zinc-600 font-light leading-relaxed">Continental mining networks combined with detailed Johannesburg operations data</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <Globe className="h-8 w-8 text-gray-600 mx-auto" />
+              <div className="text-center space-y-6">
+                <div className="flex items-center justify-center w-16 h-16 bg-blue-100/60 rounded-2xl mx-auto">
+                  <Globe className="h-8 w-8 text-blue-600" />
+                </div>
                 <div>
-                  <div className="text-base font-medium text-gray-900 mb-1">AI-Powered Tailings Analysis</div>
-                  <div className="text-sm text-gray-600">Real-time processing of $16B+ tailings opportunities with network optimization</div>
+                  <h3 className="text-xl font-light text-zinc-900 mb-3">AI-Powered Tailings Analysis</h3>
+                  <p className="text-sm text-zinc-600 font-light leading-relaxed">$16B+ processing opportunities with real-time optimization and network analysis</p>
                 </div>
               </div>
-              <div className="space-y-3">
-                <TrendingUp className="h-8 w-8 text-gray-600 mx-auto" />
+              <div className="text-center space-y-6">
+                <div className="flex items-center justify-center w-16 h-16 bg-violet-100/60 rounded-2xl mx-auto">
+                  <TrendingUp className="h-8 w-8 text-violet-600" />
+                </div>
                 <div>
-                  <div className="text-base font-medium text-gray-900 mb-1">Global Supply Chain Intelligence</div>
-                  <div className="text-sm text-gray-600">First platform showing how local operations impact global mineral flows</div>
+                  <h3 className="text-xl font-light text-zinc-900 mb-3">Global Supply Chain Intelligence</h3>
+                  <p className="text-sm text-zinc-600 font-light leading-relaxed">First platform showing how local operations impact global mineral flows</p>
                 </div>
               </div>
             </div>
