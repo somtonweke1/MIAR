@@ -355,8 +355,69 @@ const AfricanMiningNetworkMap: React.FC = () => {
 
     return (
       <svg width={width} height={height} className="w-full h-auto">
-        {/* Background */}
-        <rect width={width} height={height} fill="#ffffff" />
+        {/* Background with subtle map texture */}
+        <defs>
+          <pattern id="mapTexture" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <rect width="20" height="20" fill="#fafafa"/>
+            <circle cx="10" cy="10" r="1" fill="#f4f4f5" opacity="0.5"/>
+          </pattern>
+          <linearGradient id="africaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f9fafb"/>
+            <stop offset="50%" stopColor="#f4f4f5"/>
+            <stop offset="100%" stopColor="#e4e4e7"/>
+          </linearGradient>
+        </defs>
+        <rect width={width} height={height} fill="url(#africaGradient)" />
+
+        {/* Simplified African continent outline */}
+        <path
+          d="M200,150 Q250,120 350,140 Q450,160 500,200 Q550,250 580,350 Q590,450 550,520 Q500,580 400,590 Q300,580 250,550 Q200,500 180,450 Q160,400 170,350 Q180,300 200,250 Q190,200 200,150 Z"
+          fill="none"
+          stroke="#d4d4d8"
+          strokeWidth="2"
+          strokeDasharray="8,4"
+          opacity="0.3"
+        />
+
+        {/* Additional continental features */}
+        <path
+          d="M300,180 Q350,170 400,190 Q450,210 480,260 Q490,310 460,350 Q430,380 380,385 Q330,380 300,350 Q280,320 285,290 Q290,250 300,220 Q295,200 300,180 Z"
+          fill="none"
+          stroke="#a1a1aa"
+          strokeWidth="1"
+          strokeDasharray="4,2"
+          opacity="0.2"
+        />
+
+        {/* Regional zones - subtle background areas */}
+        <ellipse cx="280" cy="200" rx="80" ry="60" fill="#f0fdf4" opacity="0.3" />
+        <ellipse cx="450" cy="180" rx="70" ry="50" fill="#fef7cd" opacity="0.3" />
+        <ellipse cx="380" cy="320" rx="90" ry="70" fill="#e0f2fe" opacity="0.3" />
+        <ellipse cx="320" cy="450" rx="85" ry="65" fill="#f3e8ff" opacity="0.3" />
+        <ellipse cx="500" cy="400" rx="75" ry="55" fill="#fdf2f8" opacity="0.3" />
+
+        {/* Major trade routes as subtle background lines */}
+        <path
+          d="M200,400 Q300,350 400,380 Q500,410 580,450"
+          stroke="#d1d5db"
+          strokeWidth="2"
+          strokeDasharray="12,8"
+          fill="none"
+          opacity="0.4"
+        />
+        <path
+          d="M250,200 Q350,250 450,300 Q520,350 580,380"
+          stroke="#d1d5db"
+          strokeWidth="2"
+          strokeDasharray="12,8"
+          fill="none"
+          opacity="0.4"
+        />
+
+        {/* Port locations */}
+        <circle cx="200" cy="300" r="4" fill="#6b7280" opacity="0.6" />
+        <circle cx="580" cy="350" r="4" fill="#6b7280" opacity="0.6" />
+        <circle cx="300" cy="500" r="4" fill="#6b7280" opacity="0.6" />
 
         {/* Connection lines */}
         {network.edges.map((edge, idx) => {
@@ -1306,34 +1367,40 @@ const AfricanMiningNetworkMap: React.FC = () => {
 
         {/* Live Tailings Analysis Results */}
         {tailingsAnalysis && (
-          <div className="bg-gray-900 border border-yellow-500">
-            <div className="bg-yellow-500 text-black px-3 py-1">
-              <span className="text-xs font-bold">LIVE TAILINGS ANALYSIS - JOHANNESBURG OPERATIONS</span>
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+            <div className="bg-gradient-to-r from-amber-500/90 to-emerald-500/90 px-8 py-4">
+              <span className="text-sm font-light text-white tracking-wide">LIVE TAILINGS ANALYSIS - JOHANNESBURG OPERATIONS</span>
             </div>
-            <div className="p-4 bg-black">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="space-y-2">
-                  <DollarSign className="h-6 w-6 text-yellow-500 mx-auto" />
+            <div className="px-12 py-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-center w-16 h-16 bg-emerald-100/60 rounded-2xl mx-auto">
+                    <DollarSign className="h-8 w-8 text-emerald-600" />
+                  </div>
                   <div>
-                    <div className="text-lg font-mono text-green-400 mb-1">${liveData.tailingsValue.toFixed(1)}B</div>
-                    <div className="text-xs text-gray-400">RECOVERY POTENTIAL</div>
-                    <div className="text-xs text-gray-500 mt-1">AI-driven reprocessing analysis shows massive value in existing tailings</div>
+                    <div className="text-2xl font-extralight text-zinc-900 mb-2">${liveData.tailingsValue.toFixed(1)}B</div>
+                    <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Recovery Potential</div>
+                    <div className="text-sm text-zinc-600 mt-3 font-light leading-relaxed">AI-driven reprocessing analysis shows massive value in existing tailings</div>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Zap className="h-6 w-6 text-yellow-500 mx-auto" />
+                <div className="space-y-6">
+                  <div className="flex items-center justify-center w-16 h-16 bg-blue-100/60 rounded-2xl mx-auto">
+                    <Zap className="h-8 w-8 text-blue-600" />
+                  </div>
                   <div>
-                    <div className="text-lg font-mono text-green-400 mb-1">REAL-TIME</div>
-                    <div className="text-xs text-gray-400">PROCESSING OPTIMIZATION</div>
-                    <div className="text-xs text-gray-500 mt-1">Live analysis of grade, chemistry, and extraction efficiency</div>
+                    <div className="text-2xl font-extralight text-zinc-900 mb-2">REAL-TIME</div>
+                    <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Processing Optimization</div>
+                    <div className="text-sm text-zinc-600 mt-3 font-light leading-relaxed">Live analysis of grade, chemistry, and extraction efficiency</div>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <TrendingUp className="h-6 w-6 text-yellow-500 mx-auto" />
+                <div className="space-y-6">
+                  <div className="flex items-center justify-center w-16 h-16 bg-violet-100/60 rounded-2xl mx-auto">
+                    <TrendingUp className="h-8 w-8 text-violet-600" />
+                  </div>
                   <div>
-                    <div className="text-lg font-mono text-green-400 mb-1">NETWORK</div>
-                    <div className="text-xs text-gray-400">EFFECT MULTIPLIER</div>
-                    <div className="text-xs text-gray-500 mt-1">Johannesburg operations amplify continental supply chain value</div>
+                    <div className="text-2xl font-extralight text-zinc-900 mb-2">NETWORK</div>
+                    <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Effect Multiplier</div>
+                    <div className="text-sm text-zinc-600 mt-3 font-light leading-relaxed">Johannesburg operations amplify continental supply chain value</div>
                   </div>
                 </div>
               </div>
