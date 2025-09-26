@@ -49,7 +49,9 @@ export async function POST(request: NextRequest) {
         flowOptimization: {
           currentEfficiency: 67.5,
           optimizedEfficiency: 89.3,
-          bottleneckSites: ['Target Mine', 'Qala Shallows'],
+          bottleneckSites: REAL_JOHANNESBURG_MINES
+            .filter(mine => mine.status === 'operational')
+            .map(mine => mine.name),
           recommendedInfrastructure: [
             'Additional heap leach pads at East Rand',
             'Centralized processing hub at Johannesburg',

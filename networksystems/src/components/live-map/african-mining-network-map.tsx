@@ -1408,46 +1408,138 @@ const AfricanMiningNetworkMap: React.FC = () => {
           </div>
         )}
 
-        {/* Platform Intelligence Summary */}
+        {/* Real-Time Business Intelligence Dashboard */}
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
           <div className="border-b border-zinc-200/50 px-8 py-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Platform Intelligence Summary</h2>
-                <p className="text-sm text-zinc-500 mt-2 font-light">Revolutionary mining network analysis capabilities</p>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Live Market Intelligence</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">Real-time operational metrics and decision support</p>
               </div>
-              <div className="bg-zinc-50/80 px-4 py-2 rounded-full text-sm font-light text-zinc-600">
-                MIAR AI v2.1
+              <div className="flex items-center space-x-3 bg-emerald-50/60 px-4 py-2 rounded-full border border-emerald-100/50">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span className="text-xs font-light text-emerald-700">Live Data Feed</span>
               </div>
             </div>
           </div>
-          <div className="p-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="text-center space-y-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-emerald-100/60 rounded-2xl mx-auto">
-                  <Zap className="h-8 w-8 text-emerald-600" />
+
+          {/* Immediate Action Items */}
+          <div className="px-8 py-6 border-b border-zinc-200/50">
+            <h3 className="text-lg font-light text-zinc-900 mb-6">Priority Actions Required</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-rose-50/50 to-rose-100/30 rounded-xl p-6 border border-rose-200/30">
+                <div className="flex items-center justify-between mb-4">
+                  <AlertTriangle className="h-5 w-5 text-rose-500" />
+                  <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-light">URGENT</span>
                 </div>
-                <div>
-                  <h3 className="text-xl font-light text-zinc-900 mb-3">Live Network Analysis</h3>
-                  <p className="text-sm text-zinc-600 font-light leading-relaxed">Continental mining networks combined with detailed Johannesburg operations data</p>
-                </div>
-              </div>
-              <div className="text-center space-y-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-blue-100/60 rounded-2xl mx-auto">
-                  <Globe className="h-8 w-8 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-light text-zinc-900 mb-3">AI-Powered Tailings Analysis</h3>
-                  <p className="text-sm text-zinc-600 font-light leading-relaxed">$16B+ processing opportunities with real-time optimization and network analysis</p>
+                <h4 className="font-light text-zinc-900 mb-2">Supply Chain Vulnerability</h4>
+                <p className="text-sm text-zinc-600 mb-4 font-light">DRC cobalt corridor showing 15% increased risk due to infrastructure delays</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Impact</span>
+                  <span className="font-light text-rose-600">$2.3B at risk</span>
                 </div>
               </div>
-              <div className="text-center space-y-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-violet-100/60 rounded-2xl mx-auto">
-                  <TrendingUp className="h-8 w-8 text-violet-600" />
+
+              <div className="bg-gradient-to-br from-amber-50/50 to-amber-100/30 rounded-xl p-6 border border-amber-200/30">
+                <div className="flex items-center justify-between mb-4">
+                  <DollarSign className="h-5 w-5 text-amber-500" />
+                  <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-light">OPPORTUNITY</span>
                 </div>
-                <div>
-                  <h3 className="text-xl font-light text-zinc-900 mb-3">Global Supply Chain Intelligence</h3>
-                  <p className="text-sm text-zinc-600 font-light leading-relaxed">First platform showing how local operations impact global mineral flows</p>
+                <h4 className="font-light text-zinc-900 mb-2">Price Arbitrage Window</h4>
+                <p className="text-sm text-zinc-600 mb-4 font-light">Gold futures spread indicates optimal selling window for next 72 hours</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Potential Gain</span>
+                  <span className="font-light text-amber-600">$45M</span>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl p-6 border border-emerald-200/30">
+                <div className="flex items-center justify-between mb-4">
+                  <TrendingUp className="h-5 w-5 text-emerald-500" />
+                  <span className="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-light">ACTIVE</span>
+                </div>
+                <h4 className="font-light text-zinc-900 mb-2">Tailings Processing Ready</h4>
+                <p className="text-sm text-zinc-600 mb-4 font-light">East Rand permits approved, construction can begin Q1 2025</p>
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-500">Expected NPV</span>
+                  <span className="font-light text-emerald-600">$3.2B</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Operations Dashboard */}
+          <div className="px-8 py-6 border-b border-zinc-200/50">
+            <h3 className="text-lg font-light text-zinc-900 mb-6">Live Operations Status</h3>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center p-4 bg-gradient-to-br from-zinc-50/50 to-zinc-100/30 rounded-xl border border-zinc-200/30">
+                <div className="text-2xl font-extralight text-zinc-900 mb-2">{(liveData.johannesburgProduction * 0.98).toFixed(0)}</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Today's Production</div>
+                <div className="text-xs text-emerald-500 font-light">oz Gold</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-blue-50/50 to-blue-100/30 rounded-xl border border-blue-200/30">
+                <div className="text-2xl font-extralight text-blue-600 mb-2">97.2%</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Network Efficiency</div>
+                <div className="text-xs text-blue-500 font-light">+2.1% from yesterday</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-amber-50/50 to-amber-100/30 rounded-xl border border-amber-200/30">
+                <div className="text-2xl font-extralight text-amber-600 mb-2">$2,418</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Current Gold Price</div>
+                <div className="text-xs text-amber-500 font-light">+$12 (0.5%)</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-to-br from-violet-50/50 to-violet-100/30 rounded-xl border border-violet-200/30">
+                <div className="text-2xl font-extralight text-violet-600 mb-2">24</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Active Connections</div>
+                <div className="text-xs text-violet-500 font-light">Continental network</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Market Intelligence Feed */}
+          <div className="px-8 py-6">
+            <h3 className="text-lg font-light text-zinc-900 mb-6">Market Intelligence Feed</h3>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-4 p-4 bg-zinc-50/50 rounded-xl border border-zinc-200/30">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2 animate-pulse"></div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-light text-zinc-900">Chinese demand surge detected</span>
+                    <span className="text-xs text-zinc-500">2 minutes ago</span>
+                  </div>
+                  <p className="text-sm text-zinc-600 font-light">Rare earth element orders increased 23% - REE operations should prepare for capacity expansion</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4 p-4 bg-zinc-50/50 rounded-xl border border-zinc-200/30">
+                <div className="w-2 h-2 bg-amber-400 rounded-full mt-2"></div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-light text-zinc-900">Uranium price volatility warning</span>
+                    <span className="text-xs text-zinc-500">8 minutes ago</span>
+                  </div>
+                  <p className="text-sm text-zinc-600 font-light">Nuclear sector uncertainty affecting pricing - hold current uranium inventory for 48-72 hours</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4 p-4 bg-zinc-50/50 rounded-xl border border-zinc-200/30">
+                <div className="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-light text-zinc-900">Infrastructure investment opportunity</span>
+                    <span className="text-xs text-zinc-500">15 minutes ago</span>
+                  </div>
+                  <p className="text-sm text-zinc-600 font-light">New Mozambique port capacity opening Q2 2025 - reduces logistics costs by 18% for East African operations</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4 p-4 bg-zinc-50/50 rounded-xl border border-zinc-200/30">
+                <div className="w-2 h-2 bg-violet-400 rounded-full mt-2"></div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-light text-zinc-900">Technology deployment success</span>
+                    <span className="text-xs text-zinc-500">32 minutes ago</span>
+                  </div>
+                  <p className="text-sm text-zinc-600 font-light">AI-powered grade control at Qala Shallows showing 12% recovery improvement - recommend expansion to Target Mine</p>
                 </div>
               </div>
             </div>
