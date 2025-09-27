@@ -137,15 +137,8 @@ const GlobalTradeNetworkModeling: React.FC = () => {
     setRoutes(shippingRoutes);
     setTradeFlows(flows);
 
-    const interval = setInterval(() => {
-      setLiveData(prev => ({
-        ...prev,
-        totalCargo: prev.totalCargo + (Math.random() - 0.5) * 10,
-        routeEfficiency: Math.max(85, Math.min(98, prev.routeEfficiency + (Math.random() - 0.5) * 2))
-      }));
-    }, 4000);
-
-    return () => clearInterval(interval);
+    // Live data is now handled by the useShippingData hook
+    // No need for manual intervals
   }, []);
 
   return (
