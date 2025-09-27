@@ -13,37 +13,54 @@ import { LogOut, Network, TrendingUp, Ship } from 'lucide-react';
 type TabType = 'mining' | 'investment' | 'trade';
 
 function HomeContent() {
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
   const router = useRouter();
-  const [showLanding, setShowLanding] = useState(true);
+  const [showLanding, setShowLanding] = useState(false); // Start with false
   const [activeTab, setActiveTab] = useState<TabType>('mining');
 
-  // Show landing page first, then check authentication
+  // Check authentication immediately
   useEffect(() => {
-    if (showLanding) return;
+    if (isLoading) return; // Wait for auth to finish loading
 
-    if (!user) {
-      router.push('/login');
+    if (user) {
+      // User is authenticated, skip landing page and go to platform
+      setShowLanding(false);
+    } else {
+      // No user, show landing page
+      setShowLanding(true);
     }
-  }, [user, router, showLanding]);
+  }, [user, isLoading]);
 
   const handleGetStarted = () => {
-    setShowLanding(false);
-    // This will trigger the useEffect to check authentication
+    // Redirect to login when Get Started is clicked
+    router.push('/login');
   };
 
-  // Show landing page first
-  if (showLanding) {
-    return <ProfessionalLandingPage onGetStarted={handleGetStarted} />;
-  }
-
   // Show loading while checking authentication
-  if (!user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto"></div>
-          <div className="mt-4 text-zinc-600 font-light">Redirecting to secure login...</div>
+          <div className="mt-4 text-zinc-600 font-light">Loading platform...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show landing page only if no user
+  if (!user && showLanding) {
+    return <ProfessionalLandingPage onGetStarted={handleGetStarted} />;
+  }
+
+  // If no user and not showing landing, redirect to login
+  if (!user) {
+    router.push('/login');
+    return (
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto"></div>
+          <div className="mt-4 text-zinc-600 font-light">Redirecting to login...</div>
         </div>
       </div>
     );
