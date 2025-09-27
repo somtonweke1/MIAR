@@ -6,12 +6,14 @@ import { AFRICAN_MINING_OPERATIONS, NETWORK_CONNECTIONS, AfricanMiningNetwork, A
 import { REAL_JOHANNESBURG_MINES, TAILINGS_OPPORTUNITIES, RealMiningDataService, RealMineData } from '@/services/real-mining-data';
 import { Network, Node, Edge } from '@/stores/network-store';
 import { useMiningStore } from '@/stores/mining-store';
+import { useMiningOperations, useCommodityPrices, useMarketIntelligence } from '@/hooks/use-live-data';
 import {
   Zap,
   AlertTriangle,
   TrendingUp,
   Globe,
-  DollarSign
+  DollarSign,
+  Activity
 } from 'lucide-react';
 
 // Real-time network algorithm implementations
@@ -133,17 +135,15 @@ const AfricanMiningNetworkMap: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
   const [networkMetrics, setNetworkMetrics] = useState<any>({});
-  const [liveData, setLiveData] = useState({
-    totalFlow: 0,
-    criticalPaths: 0,
-    vulnerabilities: 0,
-    tailingsValue: 0,
-    johannesburgProduction: 0
-  });
   const [animationFrame, setAnimationFrame] = useState(0);
   const [tailingsAnalysis, setTailingsAnalysis] = useState<any>(null);
 
   const { runTailingsAnalysis } = useMiningStore();
+
+  // Live data hooks
+  const { data: miningOpsData, lastUpdated: miningUpdated } = useMiningOperations();
+  const { data: commodityPrices } = useCommodityPrices();
+  const { data: marketIntel } = useMarketIntelligence();
 
   // Convert mining operations to network format including real Johannesburg data
   const createMiningNetwork = (): Network => {

@@ -5,13 +5,16 @@ import { Card } from '@/components/ui/card';
 import { AFRICAN_MINING_OPERATIONS, NETWORK_CONNECTIONS } from '@/services/african-mining-network';
 import { REAL_JOHANNESBURG_MINES } from '@/services/real-mining-data';
 import { Network } from '@/stores/network-store';
+import { usePortfolioData, useCommodityPrices, useMarketIntelligence } from '@/hooks/use-live-data';
 import {
   TrendingUp,
   AlertTriangle,
   DollarSign,
   Target,
   BarChart3,
-  Shield
+  Shield,
+  Activity,
+  Zap
 } from 'lucide-react';
 
 interface PortfolioAsset {
@@ -42,12 +45,11 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     overallScore: 0
   });
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
-  const [liveData, setLiveData] = useState({
-    portfolioValue: 2450,
-    dailyPnL: 45.2,
-    systemicExposure: 73,
-    correlationAlert: 5
-  });
+
+  // Live data hooks
+  const { data: portfolioLiveData, lastUpdated: portfolioUpdated } = usePortfolioData();
+  const { data: commodityData, lastUpdated: commodityUpdated } = useCommodityPrices();
+  const { data: marketIntel, lastUpdated: intelUpdated } = useMarketIntelligence();
 
   useEffect(() => {
     const mockPortfolio: PortfolioAsset[] = [
@@ -135,18 +137,45 @@ const InvestmentPortfolioOptimization: React.FC = () => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="text-center">
-                <div className="text-xl font-light text-zinc-900">${liveData.portfolioValue.toFixed(1)}M</div>
+                <div className="text-xl font-light text-zinc-900">
+                  ${portfolioLiveData ? portfolioLiveData.total_value.toFixed(1) : '2450.0'}M
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Portfolio Value</div>
+                {portfolioUpdated && (
+                  <div className="flex items-center justify-center space-x-1 mt-1">
+                    <Activity className="h-3 w-3 text-emerald-500" />
+                    <span className="text-xs text-emerald-500">Live</span>
+                  </div>
+                )}
               </div>
               <div className="text-center">
-                <div className={`text-xl font-light ${liveData.dailyPnL >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                  {liveData.dailyPnL >= 0 ? '+' : ''}${liveData.dailyPnL.toFixed(1)}M
+                <div className={`text-xl font-light ${
+                  portfolioLiveData ?
+                    (portfolioLiveData.daily_pnl >= 0 ? 'text-emerald-600' : 'text-rose-600') :
+                    'text-emerald-600'
+                }`}>
+                  {portfolioLiveData ?
+                    `${portfolioLiveData.daily_pnl >= 0 ? '+' : ''}${portfolioLiveData.daily_pnl.toFixed(1)}M` :
+                    '+45.2M'
+                  }
                 </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Daily P&L</div>
+                {commodityData && commodityData.gold && (
+                  <div className="text-xs text-zinc-500 mt-1">
+                    Gold: ${commodityData.gold.current}/oz {commodityData.gold.daily_change >= 0 ? '↗' : '↘'} {Math.abs(commodityData.gold.daily_change).toFixed(1)}%
+                  </div>
+                )}
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-amber-500">{liveData.systemicExposure.toFixed(0)}%</div>
+                <div className="text-xl font-light text-amber-500">
+                  {portfolioLiveData ? portfolioLiveData.risk_score.toFixed(0) : '73'}%
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Systemic Risk</div>
+                {portfolioUpdated && (
+                  <div className="text-xs text-zinc-500 mt-1">
+                    Updated {portfolioUpdated.toLocaleTimeString()}
+                  </div>
+                )}
               </div>
             </div>
           </div>

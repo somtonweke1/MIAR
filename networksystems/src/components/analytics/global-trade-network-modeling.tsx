@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
+import { useShippingData, useMarketIntelligence } from '@/hooks/use-live-data';
 import {
   Ship,
   Anchor,
@@ -10,7 +11,9 @@ import {
   Navigation,
   Globe,
   Clock,
-  MapPin
+  MapPin,
+  Activity,
+  Zap
 } from 'lucide-react';
 
 interface TradePort {
@@ -49,12 +52,10 @@ const GlobalTradeNetworkModeling: React.FC = () => {
   const [routes, setRoutes] = useState<ShippingRoute[]>([]);
   const [tradeFlows, setTradeFlows] = useState<TradeFlow[]>([]);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
-  const [liveData, setLiveData] = useState({
-    totalCargo: 847.3,
-    activePorts: 12,
-    routeEfficiency: 94.2,
-    disruptionAlerts: 3
-  });
+
+  // Live data hooks
+  const { data: shippingData, lastUpdated: shippingUpdated } = useShippingData();
+  const { data: marketIntel } = useMarketIntelligence();
 
   useEffect(() => {
     const tradePorts: TradePort[] = [
@@ -158,16 +159,51 @@ const GlobalTradeNetworkModeling: React.FC = () => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="text-center">
-                <div className="text-xl font-light text-zinc-900">{liveData.totalCargo.toFixed(1)}M</div>
-                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Tonnes in Transit</div>
+                <div className="text-xl font-light text-zinc-900">
+                  {shippingData ?
+                    shippingData.ports.reduce((acc: number, port: any) => acc + port.cargo_processed, 0).toFixed(1) :
+                    '847.3'
+                  }M
+                </div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Tonnes Processed</div>
+                {shippingUpdated && (
+                  <div className="flex items-center justify-center space-x-1 mt-1">
+                    <Activity className="h-3 w-3 text-blue-500" />
+                    <span className="text-xs text-blue-500">Live</span>
+                  </div>
+                )}
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-emerald-600">{liveData.routeEfficiency.toFixed(1)}%</div>
+                <div className="text-xl font-light text-emerald-600">
+                  {shippingData && shippingData.routes[0] ?
+                    (100 - (shippingData.routes[0].transit_time - 18) * 2).toFixed(1) :
+                    '94.2'
+                  }%
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Route Efficiency</div>
+                {shippingData && shippingData.routes[0] && shippingData.routes[0].congestion_level === 'high' && (
+                  <div className="text-xs text-amber-500 mt-1">High Congestion</div>
+                )}
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-blue-600">{liveData.activePorts}</div>
+                <div className="text-xl font-light text-blue-600">
+                  {shippingData ? shippingData.ports.length : '6'}
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Active Ports</div>
+                {shippingUpdated && (
+                  <div className="text-xs text-zinc-500 mt-1">
+                    Updated {shippingUpdated.toLocaleTimeString()}
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <div className="text-xl font-light text-amber-500">
+                  {shippingData ?
+                    shippingData.ports.filter((port: any) => port.delays > 0).length :
+                    '2'
+                  }
+                </div>
+                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Delay Alerts</div>
               </div>
             </div>
           </div>
