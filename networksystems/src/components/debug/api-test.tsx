@@ -66,7 +66,7 @@ const ApiTest: React.FC = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-3">API Health Status</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {Object.entries(testResults.api_health).map(([api, status]) => (
+                  {Object.entries(testResults.api_health).map(([api, status]: [string, any]) => (
                     <div key={api} className="text-center p-3 rounded border">
                       <div className="font-medium">{api.replace('_', ' ')}</div>
                       <div className={`mt-1 ${status === 'healthy' ? 'text-green-600' : 'text-red-600'}`}>
