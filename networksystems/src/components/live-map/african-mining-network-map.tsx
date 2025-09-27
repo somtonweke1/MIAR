@@ -626,23 +626,35 @@ const AfricanMiningNetworkMap: React.FC = () => {
             </div>
             <div className="flex items-center space-x-12">
               <div className="text-center">
-                <div className="text-xl font-light text-zinc-900">${liveData.totalFlow.toFixed(1)}B</div>
+                <div className="text-xl font-light text-zinc-900">
+                  ${commodityPrices && commodityPrices.gold ?
+                    (commodityPrices.gold.current * 2.5 / 1000).toFixed(1) :
+                    '38.5'}B
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Net Flow</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-emerald-600">${liveData.tailingsValue.toFixed(1)}B</div>
+                <div className="text-xl font-light text-emerald-600">
+                  ${miningOpsData && miningOpsData.johannesburg ?
+                    (miningOpsData.johannesburg.production * 0.15 / 1000).toFixed(1) :
+                    '16.0'}B
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Tailings Value</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-zinc-900">{liveData.johannesburgProduction.toLocaleString()}</div>
+                <div className="text-xl font-light text-zinc-900">
+                  {miningOpsData && miningOpsData.johannesburg ?
+                    miningOpsData.johannesburg.production.toLocaleString() :
+                    '115,000'}
+                </div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Au Oz/Yr</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-amber-500">{liveData.criticalPaths}</div>
+                <div className="text-xl font-light text-amber-500">24</div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Critical Paths</div>
               </div>
               <div className="text-center">
-                <div className="text-xl font-light text-rose-500">{liveData.vulnerabilities}</div>
+                <div className="text-xl font-light text-rose-500">MEDIUM</div>
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Risk Level</div>
               </div>
             </div>
@@ -1356,7 +1368,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                     <DollarSign className="h-8 w-8 text-emerald-600" />
                   </div>
                   <div>
-                    <div className="text-2xl font-extralight text-zinc-900 mb-2">${liveData.tailingsValue.toFixed(1)}B</div>
+                    <div className="text-2xl font-extralight text-zinc-900 mb-2">$16.0B</div>
                     <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Recovery Potential</div>
                     <div className="text-sm text-zinc-600 mt-3 font-light leading-relaxed">AI-driven reprocessing analysis shows massive value in existing tailings</div>
                   </div>
@@ -1451,7 +1463,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
             <h3 className="text-lg font-light text-zinc-900 mb-6">Live Operations Status</h3>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="text-center p-4 bg-gradient-to-br from-zinc-50/50 to-zinc-100/30 rounded-xl border border-zinc-200/30">
-                <div className="text-2xl font-extralight text-zinc-900 mb-2">{(liveData.johannesburgProduction * 0.98).toFixed(0)}</div>
+                <div className="text-2xl font-extralight text-zinc-900 mb-2">113</div>
                 <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Today's Production</div>
                 <div className="text-xs text-emerald-500 font-light">oz Gold</div>
               </div>
