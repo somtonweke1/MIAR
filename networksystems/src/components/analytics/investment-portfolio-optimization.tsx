@@ -85,16 +85,8 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     setPortfolio(mockPortfolio);
     calculateRiskMetrics(mockPortfolio);
 
-    const interval = setInterval(() => {
-      setLiveData(prev => ({
-        ...prev,
-        dailyPnL: prev.dailyPnL + (Math.random() - 0.5) * 5,
-        portfolioValue: prev.portfolioValue + (Math.random() - 0.5) * 20,
-        systemicExposure: Math.max(60, Math.min(85, prev.systemicExposure + (Math.random() - 0.5) * 2))
-      }));
-    }, 3000);
-
-    return () => clearInterval(interval);
+    // Live data is now handled by the usePortfolioData hook
+    // No need for manual intervals
   }, []);
 
   const calculateRiskMetrics = (portfolioData: PortfolioAsset[]) => {
