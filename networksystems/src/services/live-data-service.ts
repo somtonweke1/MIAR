@@ -1,9 +1,13 @@
 // Live Data Service for Real-Time Market Intelligence
+import RealMarketDataService from './real-market-data-service';
+
 export class LiveDataService {
   private static instance: LiveDataService;
   private wsConnections: Map<string, WebSocket> = new Map();
   private dataCache: Map<string, any> = new Map();
   private updateCallbacks: Map<string, Function[]> = new Map();
+
+  private realMarketService: RealMarketDataService;
 
   static getInstance(): LiveDataService {
     if (!LiveDataService.instance) {
@@ -12,32 +16,38 @@ export class LiveDataService {
     return LiveDataService.instance;
   }
 
-  // Commodity Prices API Integration
+  constructor() {
+    this.realMarketService = RealMarketDataService.getInstance();
+  }
+
+  // Real Commodity Prices API Integration
   async getCommodityPrices(): Promise<any> {
     try {
-      // Using multiple free APIs for redundancy
-      const endpoints = [
-        'https://api.metals.live/v1/spot',
-        'https://api.coindesk.com/v1/bpi/currentprice.json'
-      ];
+      // Use real market data service
+      const realData = await this.realMarketService.getRealCommodityPrices();
 
-      const responses = await Promise.allSettled(
-        endpoints.map(url => fetch(url).then(res => res.json()))
-      );
-
-      // Process successful responses
-      const validData = responses
-        .filter(result => result.status === 'fulfilled')
-        .map(result => (result as PromiseFulfilledResult<any>).value);
-
-      if (validData.length === 0) {
-        // Fallback to simulated live data with realistic variations
-        return this.generateLiveCommodityData();
+      if (realData && Object.keys(realData).length > 0) {
+        this.dataCache.set('commodities', realData);
+        return realData;
       }
 
-      return this.processCommodityData(validData);
+      // Fallback to cached data if available
+      const cachedData = this.dataCache.get('commodities');
+      if (cachedData) {
+        return cachedData;
+      }
+
+      // Last resort: realistic fallback data
+      return this.generateLiveCommodityData();
     } catch (error) {
-      console.error('Error fetching commodity prices:', error);
+      console.error('Error fetching real commodity prices:', error);
+
+      // Try cached data first
+      const cachedData = this.dataCache.get('commodities');
+      if (cachedData) {
+        return cachedData;
+      }
+
       return this.generateLiveCommodityData();
     }
   }
@@ -165,35 +175,39 @@ export class LiveDataService {
     }
   }
 
-  // Live Financial Markets Data
+  // Live Financial Markets Data (Real APIs)
   async getFinancialData(): Promise<any> {
     try {
-      const baseRates = {
-        gold: 2418,
-        silver: 28.5,
-        copper: 8450,
-        iron_ore: 105,
-        cobalt: 32500
+      // Get real market data including mining stocks and crypto
+      const [commodities, miningStocks, crypto, economic] = await Promise.all([
+        this.realMarketService.getRealCommodityPrices(),
+        this.realMarketService.getRealMiningStocks(),
+        this.realMarketService.getCryptoPrices(),
+        this.realMarketService.getEconomicIndicators()
+      ]);
+
+      const financialData = {
+        commodities,
+        mining_stocks: miningStocks,
+        crypto,
+        economic_indicators: economic,
+        last_updated: new Date().toISOString(),
+        source: 'real_market_apis'
       };
 
-      const liveRates = Object.entries(baseRates).reduce((acc, [commodity, basePrice]) => {
-        const variation = (Math.random() - 0.5) * 0.1; // ±5% daily variation
-        const currentPrice = basePrice * (1 + variation);
-        const dailyChange = variation * 100;
-
-        acc[commodity] = {
-          current: Number(currentPrice.toFixed(2)),
-          daily_change: Number(dailyChange.toFixed(2)),
-          volume: Math.floor(Math.random() * 100000 + 50000),
-          last_updated: new Date().toISOString()
-        };
-        return acc;
-      }, {} as any);
-
-      return liveRates;
+      this.dataCache.set('financial', financialData);
+      return financialData;
     } catch (error) {
-      console.error('Error fetching financial data:', error);
-      return {};
+      console.error('Error fetching real financial data:', error);
+
+      // Try cached data
+      const cachedData = this.dataCache.get('financial');
+      if (cachedData) {
+        return cachedData;
+      }
+
+      // Fallback to basic commodity data
+      return this.getCommodityPrices();
     }
   }
 
