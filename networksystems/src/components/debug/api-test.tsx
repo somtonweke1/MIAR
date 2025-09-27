@@ -28,7 +28,7 @@ const ApiTest: React.FC = () => {
       });
     } catch (error) {
       console.error('API test failed:', error);
-      setTestResults({ error: error.message });
+      setTestResults({ error: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setIsLoading(false);
     }
