@@ -3,16 +3,16 @@ export class RealMarketDataService {
   private static instance: RealMarketDataService;
   private cache: Map<string, { data: any; timestamp: number; ttl: number }> = new Map();
 
-  // Free API configurations
+  // Real API configurations with actual keys
   private apis = {
     alphaVantage: {
       baseUrl: 'https://www.alphavantage.co/query',
-      key: 'demo', // Replace with real key: https://www.alphavantage.co/support/#api-key
+      key: '4WDXO5G1LWE47YBH', // Real Alpha Vantage API key
       rateLimit: 500 // per day
     },
     twelveData: {
       baseUrl: 'https://api.twelvedata.com',
-      key: 'demo', // Replace with real key: https://twelvedata.com/
+      key: 'cd5607aa49084906b4bf821598dc22f3', // Real Twelve Data API key
       rateLimit: 800 // per day
     },
     yahooFinance: {
@@ -138,54 +138,95 @@ export class RealMarketDataService {
     }
   }
 
-  // Alpha Vantage API
+  // Alpha Vantage API with real commodities data
   private async getAlphaVantagePrices(): Promise<any> {
     try {
-      // Note: Replace 'demo' with actual API key from https://www.alphavantage.co/support/#api-key
-      const commodities = ['GOLD', 'SILVER', 'COPPER'];
-      const promises = commodities.map(async (commodity) => {
-        const url = `${this.apis.alphaVantage.baseUrl}?function=GLOBAL_QUOTE&symbol=${commodity}&apikey=${this.apis.alphaVantage.key}`;
+      // Using Alpha Vantage commodity endpoints
+      const commodityMap = {
+        'WTI': 'oil',
+        'BRENT': 'oil_brent',
+        'NATURAL_GAS': 'natural_gas'
+      };
+
+      const promises = Object.entries(commodityMap).map(async ([symbol, commodity]) => {
+        const url = `${this.apis.alphaVantage.baseUrl}?function=WTI&interval=monthly&apikey=${this.apis.alphaVantage.key}`;
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data['Global Quote']) {
-          const quote = data['Global Quote'];
+        if (data['data'] && data['data'].length > 0) {
+          const latest = data['data'][0];
           return {
-            [commodity.toLowerCase()]: {
-              current: parseFloat(quote['05. price']),
-              daily_change: parseFloat(quote['09. change']),
-              volume: parseFloat(quote['06. volume']),
+            [commodity]: {
+              current: parseFloat(latest.value),
               timestamp: new Date().toISOString(),
-              source: 'alpha_vantage'
+              source: 'alpha_vantage',
+              interval: 'monthly'
             }
           };
         }
         return null;
       });
 
+      // Also get currency data for gold pricing context
+      const forexUrl = `${this.apis.alphaVantage.baseUrl}?function=FX_DAILY&from_symbol=USD&to_symbol=EUR&apikey=${this.apis.alphaVantage.key}`;
+      const forexResponse = await fetch(forexUrl);
+      const forexData = await forexResponse.json();
+
       const results = await Promise.all(promises);
-      return results
+      const commodityData = results
         .filter(result => result !== null)
         .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
+      // Add forex data if available
+      if (forexData['Time Series (Daily)']) {
+        const latestDate = Object.keys(forexData['Time Series (Daily)'])[0];
+        const latestFx = forexData['Time Series (Daily)'][latestDate];
+        commodityData.usd_eur = {
+          current: parseFloat(latestFx['4. close']),
+          timestamp: new Date().toISOString(),
+          source: 'alpha_vantage'
+        };
+      }
+
+      return commodityData;
     } catch (error) {
       console.error('Alpha Vantage API error:', error);
       throw error;
     }
   }
 
-  // Twelve Data API
+  // Twelve Data API with real commodity symbols
   private async getTwelveDataPrices(): Promise<any> {
     try {
-      const symbols = ['GOLD', 'SILVER', 'COPPER'];
-      const promises = symbols.map(async (symbol) => {
+      // Using real commodity symbols that Twelve Data supports
+      const commoditySymbols = {
+        'GC': 'gold',        // Gold futures
+        'SI': 'silver',      // Silver futures
+        'CL': 'oil',         // Crude oil
+        'HG': 'copper',      // Copper futures
+        'PL': 'platinum'     // Platinum futures
+      };
+
+      const promises = Object.entries(commoditySymbols).map(async ([symbol, commodity]) => {
         const url = `${this.apis.twelveData.baseUrl}/price?symbol=${symbol}&apikey=${this.apis.twelveData.key}`;
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.price) {
+        if (data.price && !data.message) {
+          // Also get the quote for more detailed info
+          const quoteUrl = `${this.apis.twelveData.baseUrl}/quote?symbol=${symbol}&apikey=${this.apis.twelveData.key}`;
+          const quoteResponse = await fetch(quoteUrl);
+          const quoteData = await quoteResponse.json();
+
           return {
-            [symbol.toLowerCase()]: {
+            [commodity]: {
               current: parseFloat(data.price),
+              open: quoteData.open ? parseFloat(quoteData.open) : null,
+              high: quoteData.high ? parseFloat(quoteData.high) : null,
+              low: quoteData.low ? parseFloat(quoteData.low) : null,
+              previous_close: quoteData.previous_close ? parseFloat(quoteData.previous_close) : null,
+              daily_change: quoteData.previous_close ?
+                ((parseFloat(data.price) - parseFloat(quoteData.previous_close)) / parseFloat(quoteData.previous_close)) * 100 : 0,
               timestamp: new Date().toISOString(),
               source: 'twelve_data'
             }
