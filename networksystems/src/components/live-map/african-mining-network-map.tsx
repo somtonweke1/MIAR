@@ -277,31 +277,9 @@ const AfricanMiningNetworkMap: React.FC = () => {
       .filter(m => m.status === 'operational')
       .reduce((sum, m) => sum + m.production.annual_oz, 0);
 
-    setLiveData({
-      totalFlow: totalFlow / 1000000000, // Convert to billions
-      criticalPaths,
-      vulnerabilities,
-      tailingsValue: tailingsValue / 1000000000, // Convert to billions
-      johannesburgProduction
-    });
-
+    // Live data is now handled by the useMiningOperations hook
     // Run live tailings analysis for network intelligence
     runLiveTailingsAnalysis();
-
-    // Setup live animation loop
-    const animationInterval = setInterval(() => {
-      setAnimationFrame(prev => prev + 1);
-
-      // Update live metrics with slight variations for realism
-      setLiveData(prev => ({
-        ...prev,
-        totalFlow: prev.totalFlow + (Math.random() - 0.5) * 0.1,
-        johannesburgProduction: johannesburgProduction + Math.floor(Math.random() * 100 - 50),
-        tailingsValue: tailingsValue / 1000000000 + (Math.random() - 0.5) * 0.05
-      }));
-    }, 3000);
-
-    return () => clearInterval(animationInterval);
   }, []);
 
   // Live tailings analysis integration
