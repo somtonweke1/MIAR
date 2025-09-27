@@ -14,13 +14,12 @@ import {
   Shield
 } from 'lucide-react';
 
-// Portfolio data structure
 interface PortfolioAsset {
   id: string;
   name: string;
-  allocation: number; // percentage
-  value: number; // USD millions
-  networkNode: string; // references mining operation ID
+  allocation: number;
+  value: number;
+  networkNode: string;
   risk: 'low' | 'medium' | 'high';
   correlation: number[];
 }
@@ -50,7 +49,6 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     correlationAlert: 5
   });
 
-  // Initialize portfolio data based on network operations
   useEffect(() => {
     const mockPortfolio: PortfolioAsset[] = [
       {
@@ -79,40 +77,12 @@ const InvestmentPortfolioOptimization: React.FC = () => {
         networkNode: 'ashanti_goldfields',
         risk: 'low',
         correlation: [0.6, 0.9, 0.1, 0.3, 0.8]
-      },
-      {
-        id: 'p4',
-        name: 'Botswana Diamond Fund',
-        allocation: 15,
-        value: 367.5,
-        networkNode: 'jwaneng_mine',
-        risk: 'medium',
-        correlation: [0.3, 0.2, 0.1, 0.4, 0.2]
-      },
-      {
-        id: 'p5',
-        name: 'Zambian Copper ETF',
-        allocation: 12,
-        value: 294,
-        networkNode: 'konkola_copper',
-        risk: 'high',
-        correlation: [0.4, 0.5, 0.3, 0.4, 0.6]
-      },
-      {
-        id: 'p6',
-        name: 'Morocco Phosphate Co.',
-        allocation: 10,
-        value: 245,
-        networkNode: 'ocp_morocco',
-        risk: 'low',
-        correlation: [0.7, 0.6, 0.8, 0.2, 0.6]
       }
     ];
 
     setPortfolio(mockPortfolio);
     calculateRiskMetrics(mockPortfolio);
 
-    // Setup live updates
     const interval = setInterval(() => {
       setLiveData(prev => ({
         ...prev,
@@ -126,22 +96,18 @@ const InvestmentPortfolioOptimization: React.FC = () => {
   }, []);
 
   const calculateRiskMetrics = (portfolioData: PortfolioAsset[]) => {
-    // Calculate systemic risk based on network centrality
     const systemicRisk = portfolioData.reduce((acc, asset) => {
       const centralityWeight = asset.risk === 'high' ? 0.8 : asset.risk === 'medium' ? 0.5 : 0.2;
       return acc + (asset.allocation / 100) * centralityWeight;
     }, 0) * 100;
 
-    // Calculate concentration risk
     const concentrationRisk = Math.max(...portfolioData.map(a => a.allocation));
 
-    // Calculate correlation risk
     const avgCorrelation = portfolioData.reduce((acc, asset) => {
       const avgAssetCorr = asset.correlation.reduce((sum, corr) => sum + corr, 0) / asset.correlation.length;
       return acc + avgAssetCorr * (asset.allocation / 100);
     }, 0) * 100;
 
-    // Calculate liquidity risk
     const liquidityRisk = portfolioData.reduce((acc, asset) => {
       const liquidityScore = asset.risk === 'high' ? 0.7 : asset.risk === 'medium' ? 0.4 : 0.1;
       return acc + (asset.allocation / 100) * liquidityScore;
@@ -158,199 +124,8 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     });
   };
 
-  const renderPortfolioMap = () => {
-    const width = 1200;
-    const height = 600;
-
-    // Africa bounds
-    const africaBounds = {
-      minLat: -35,
-      maxLat: 37,
-      minLng: -20,
-      maxLng: 55
-    };
-
-    const scaleX = (lng: number) => ((lng - africaBounds.minLng) / (africaBounds.maxLng - africaBounds.minLng)) * width;
-    const scaleY = (lat: number) => height - ((lat - africaBounds.minLat) / (africaBounds.maxLat - africaBounds.minLat)) * height;
-
-    return (
-      <svg width={width} height={height} className="w-full h-auto">
-        <defs>
-          <linearGradient id="riskGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fef3c7"/>
-            <stop offset="50%" stopColor="#fbbf24"/>
-            <stop offset="100%" stopColor="#dc2626"/>
-          </linearGradient>
-          <radialGradient id="portfolioGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3"/>
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0"/>
-          </radialGradient>
-        </defs>
-
-        {/* Africa background */}
-        <rect width={width} height={height} fill="#f8fafc" />
-
-        {/* Regional risk heatmap */}
-        <ellipse cx="400" cy="300" rx="150" ry="100" fill="url(#riskGradient)" opacity="0.3" />
-        <ellipse cx="300" cy="450" rx="120" ry="80" fill="#fbbf24" opacity="0.2" />
-        <ellipse cx="500" cy="200" rx="100" ry="70" fill="#10b981" opacity="0.2" />
-
-        {/* Portfolio correlation web */}
-        {portfolio.map((asset, i) =>
-          portfolio.slice(i + 1).map((otherAsset, j) => {
-            const correlation = asset.correlation[j] || 0;
-            if (correlation < 0.5) return null;
-
-            const sourceOp = AFRICAN_MINING_OPERATIONS.find(op => op.id === asset.networkNode);
-            const targetOp = AFRICAN_MINING_OPERATIONS.find(op => op.id === otherAsset.networkNode);
-
-            if (!sourceOp || !targetOp) return null;
-
-            const x1 = scaleX(sourceOp.location.lng);
-            const y1 = scaleY(sourceOp.location.lat);
-            const x2 = scaleX(targetOp.location.lng);
-            const y2 = scaleY(targetOp.location.lat);
-
-            return (
-              <g key={`${i}-${j}`}>
-                <line
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke={correlation > 0.7 ? "#dc2626" : "#f59e0b"}
-                  strokeWidth={correlation * 4}
-                  strokeOpacity={0.6}
-                  strokeDasharray="8,4"
-                />
-                <text
-                  x={(x1 + x2) / 2}
-                  y={(y1 + y2) / 2 - 5}
-                  fill="#374151"
-                  fontSize="8"
-                  textAnchor="middle"
-                  className="font-mono"
-                >
-                  {(correlation * 100).toFixed(0)}%
-                </text>
-              </g>
-            );
-          })
-        )}
-
-        {/* Portfolio assets as nodes */}
-        {portfolio.map((asset, idx) => {
-          const operation = AFRICAN_MINING_OPERATIONS.find(op => op.id === asset.networkNode);
-          if (!operation) return null;
-
-          const x = scaleX(operation.location.lng);
-          const y = scaleY(operation.location.lat);
-          const radius = Math.max(15, asset.allocation * 1.2);
-          const isSelected = selectedAsset === asset.id;
-
-          return (
-            <g key={idx}>
-              {/* Portfolio glow */}
-              <circle
-                cx={x}
-                cy={y}
-                r={radius + 20}
-                fill="url(#portfolioGlow)"
-                opacity={isSelected ? 0.8 : 0.4}
-              />
-
-              {/* Risk indicator ring */}
-              <circle
-                cx={x}
-                cy={y}
-                r={radius + 8}
-                fill="none"
-                stroke={asset.risk === 'high' ? "#dc2626" : asset.risk === 'medium' ? "#f59e0b" : "#10b981"}
-                strokeWidth="3"
-                opacity="0.8"
-              />
-
-              {/* Main asset node */}
-              <circle
-                cx={x}
-                cy={y}
-                r={radius}
-                fill="#3b82f6"
-                stroke={isSelected ? "#ffffff" : "#1e40af"}
-                strokeWidth={isSelected ? "4" : "2"}
-                opacity="0.9"
-                className="cursor-pointer hover:opacity-100"
-                onClick={() => setSelectedAsset(selectedAsset === asset.id ? null : asset.id)}
-              />
-
-              {/* Capital flow animation */}
-              <circle r="5" fill="#10b981" opacity="0.8">
-                <animateMotion dur="3s" repeatCount="indefinite">
-                  <mpath href={`#flow-${idx}`} />
-                </animateMotion>
-              </circle>
-              <path id={`flow-${idx}`} d={`M ${x - 30} ${y} Q ${x} ${y - 30} ${x + 30} ${y}`} fill="none" opacity="0" />
-
-              {/* Asset allocation label */}
-              <text
-                x={x}
-                y={y - radius - 12}
-                fill="#1f2937"
-                fontSize="10"
-                textAnchor="middle"
-                className="font-sans font-medium"
-              >
-                {asset.allocation}%
-              </text>
-
-              {/* Value indicator */}
-              <text
-                x={x}
-                y={y + radius + 15}
-                fill="#059669"
-                fontSize="8"
-                textAnchor="middle"
-                className="font-mono font-bold"
-              >
-                ${asset.value}M
-              </text>
-            </g>
-          );
-        })}
-
-        {/* Systemic risk indicators */}
-        {portfolio.filter(asset => asset.risk === 'high').map((asset, idx) => {
-          const operation = AFRICAN_MINING_OPERATIONS.find(op => op.id === asset.networkNode);
-          if (!operation) return null;
-
-          return (
-            <circle
-              key={`risk-${idx}`}
-              cx={scaleX(operation.location.lng)}
-              cy={scaleY(operation.location.lat)}
-              r="35"
-              fill="none"
-              stroke="#dc2626"
-              strokeWidth="2"
-              strokeDasharray="6,6"
-              opacity="0.7"
-            >
-              <animate
-                attributeName="r"
-                values="30;40;30"
-                dur="2s"
-                repeatCount="indefinite"
-              />
-            </circle>
-          );
-        })}
-      </svg>
-    );
-  };
-
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
         <div className="border-b border-zinc-200/50 px-8 py-6">
           <div className="flex items-center justify-between">
@@ -378,40 +153,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
         </div>
       </div>
 
-      {/* Portfolio Map */}
-      <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
-        <div className="border-b border-zinc-200/50 px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-extralight text-zinc-900 tracking-tight">Portfolio Network Visualization</h3>
-              <p className="text-sm text-zinc-500 mt-2 font-light">Asset allocation and correlation risk mapping</p>
-            </div>
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span className="text-xs font-light text-zinc-600">Low Risk</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-                <span className="text-xs font-light text-zinc-600">Medium Risk</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-rose-500 rounded-full"></div>
-                <span className="text-xs font-light text-zinc-600">High Risk</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-8">
-          <div className="bg-zinc-50/50 rounded-xl border border-zinc-200/30 overflow-hidden">
-            {renderPortfolioMap()}
-          </div>
-        </div>
-      </div>
-
-      {/* Risk Metrics Dashboard */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Risk Analysis */}
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
           <div className="border-b border-zinc-200/50 px-6 py-4">
             <h3 className="text-lg font-light text-zinc-900">Risk Analysis</h3>
@@ -449,22 +191,6 @@ const InvestmentPortfolioOptimization: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <BarChart3 className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm font-light text-zinc-700">Correlation Risk</span>
-                </div>
-                <span className="text-sm font-medium text-blue-600">{riskMetrics.correlationRisk.toFixed(1)}%</span>
-              </div>
-              <div className="w-full bg-zinc-200 rounded-full h-2">
-                <div
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${riskMetrics.correlationRisk}%` }}
-                ></div>
-              </div>
-            </div>
-
             <div className="bg-zinc-50 rounded-lg p-4 mt-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-zinc-700">Overall Risk Score</span>
@@ -476,7 +202,6 @@ const InvestmentPortfolioOptimization: React.FC = () => {
           </div>
         </div>
 
-        {/* Portfolio Holdings */}
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
           <div className="border-b border-zinc-200/50 px-6 py-4">
             <h3 className="text-lg font-light text-zinc-900">Portfolio Holdings</h3>
@@ -499,7 +224,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
                       <span className={`w-2 h-2 rounded-full ${
                         asset.risk === 'high' ? 'bg-rose-500' :
                         asset.risk === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
-                      }`}></div>
+                      }`}></span>
                       <span className="text-xs text-zinc-500">{asset.risk}</span>
                     </div>
                   </div>
@@ -514,7 +239,6 @@ const InvestmentPortfolioOptimization: React.FC = () => {
         </div>
       </div>
 
-      {/* Actionable Intelligence */}
       <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
         <div className="border-b border-zinc-200/50 px-8 py-6">
           <h3 className="text-xl font-extralight text-zinc-900 tracking-tight">Actionable Intelligence</h3>
@@ -527,7 +251,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
                 <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-light">HIGH PRIORITY</span>
               </div>
               <h4 className="font-light text-zinc-900 mb-2">Reduce DRC Exposure</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">Portfolio has 73% exposure to high-centrality nodes - reduce concentration by 15%</p>
+              <p className="text-sm text-zinc-600 mb-4 font-light">Portfolio has 73% exposure to high-centrality nodes</p>
               <div className="text-sm">
                 <span className="text-zinc-500">Recommended Action:</span>
                 <span className="font-light text-zinc-900 ml-2">Rebalance to West African gold</span>
@@ -540,7 +264,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
                 <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-light">OPPORTUNITY</span>
               </div>
               <h4 className="font-light text-zinc-900 mb-2">Correlation Alert</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">DRC disruption would affect 5 of 8 holdings simultaneously - diversify routing</p>
+              <p className="text-sm text-zinc-600 mb-4 font-light">DRC disruption would affect 5 of 8 holdings simultaneously</p>
               <div className="text-sm">
                 <span className="text-zinc-500">Expected Impact:</span>
                 <span className="font-light text-amber-600 ml-2">$145M portfolio protection</span>
@@ -553,7 +277,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
                 <span className="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-light">REBALANCE</span>
               </div>
               <h4 className="font-light text-zinc-900 mb-2">Optimization Opportunity</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">Network analysis suggests increasing Morocco phosphate exposure by 8%</p>
+              <p className="text-sm text-zinc-600 mb-4 font-light">Network analysis suggests increasing Morocco phosphate exposure</p>
               <div className="text-sm">
                 <span className="text-zinc-500">Risk Reduction:</span>
                 <span className="font-light text-emerald-600 ml-2">12% overall portfolio risk</span>
