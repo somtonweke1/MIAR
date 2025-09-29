@@ -1,8 +1,8 @@
 # MIAR - Mining Intelligence & African Network Analysis
 
-🌍 **A sophisticated mining intelligence platform providing real-time analysis of African mining operations, supply chains, and global critical mineral flows.**
+ **A sophisticated mining intelligence platform providing real-time analysis of African mining operations, supply chains, and global critical mineral flows.**
 
-## 🚀 Live Demo
+## Live Demo
 
 **Production**: https://networksystems-7ojf0682d-somtonweke1s-projects.vercel.app
 
