@@ -433,7 +433,7 @@ const SupplyChainOptimization: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Supply Chain Optimization</h2>
-              <p className="text-sm text-zinc-500 mt-2 font-light">Enhanced SC-GEP Model: Maryland/PJM supply chain analysis</p>
+              <p className="text-sm text-zinc-500 mt-2 font-light">Enhanced SC-GEP Model: Multi-region supply chain analysis</p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-full p-1 border border-zinc-200/50">
@@ -533,8 +533,8 @@ const SupplyChainOptimization: React.FC = () => {
                     onChange={(e) => setSelectedRegion(e.target.value)}
                     className="px-4 py-2 border border-zinc-200 rounded-lg bg-white/60 backdrop-blur-sm text-sm font-light"
                   >
-                    <option value="maryland">Maryland/PJM</option>
-                    <option value="africa">African Mining</option>
+                    <option value="africa">African Mining Supply Chain</option>
+                    <option value="maryland">Maryland/PJM Region</option>
                   </select>
                   <select
                     value={selectedScenario}

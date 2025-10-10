@@ -11,7 +11,7 @@ The **Supply Chain-Constrained Generation Expansion Planning (SC-GEP)** system h
 ### 1. **Enhanced Data Models** (`sc-gep-enhanced.ts`)
 - ✅ 14 critical materials with USGS/DOE specifications
 - ✅ Component-to-product flow mapping
-- ✅ Maryland/PJM zone configuration (BGE, APS, DPL, PEPCO)
+- ✅ Multi-region zone configuration (Maryland/PJM & African Mining) (BGE, APS, DPL, PEPCO)
 - ✅ 8 technology products (Solar PV variants, Battery chemistries, Wind types)
 - ✅ 5 scenario types (baseline, low/high demand, w/o SC, lim_SC)
 - ✅ Complete system parameters (reserve margin, RPS, penalties, etc.)
@@ -391,7 +391,7 @@ Every file includes proper attribution:
 
 The SC-GEP integration is **complete and production-ready**. All major components from the research paper have been implemented, tested, and documented. The system can now:
 
-- ✅ Optimize generation expansion plans for Maryland/PJM
+- ✅ Optimize generation expansion plans for multiple regions (African Mining & Maryland/PJM)
 - ✅ Identify supply chain bottlenecks
 - ✅ Compare multiple scenarios
 - ✅ Visualize results interactively

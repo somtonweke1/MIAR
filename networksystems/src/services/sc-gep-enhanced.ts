@@ -1,6 +1,7 @@
 /**
- * Enhanced SC-GEP Configuration for Maryland/PJM Region
+ * Enhanced SC-GEP Configuration with Supply Chain Constraints
  * Based on the research paper: "Integrating Upstream Supply Chains into Generation Expansion Planning"
+ * Supports multiple regions: Maryland/PJM and African Mining supply chains
  */
 
 export type ScenarioType = 'baseline' | 'high_demand' | 'constrained_supply' | 'rapid_expansion';

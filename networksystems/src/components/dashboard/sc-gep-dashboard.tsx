@@ -129,7 +129,7 @@ export default function SCGEPDashboard({
                 Supply Chain-Constrained Generation Expansion Planning
               </h1>
               <p className="text-lg font-light text-zinc-600">
-                Maryland/PJM Case Study • 2024-2053 Planning Horizon
+                Multi-Region Supply Chain Analysis • 2024-2053 Planning Horizon
               </p>
             </div>
             <div className="flex items-center space-x-3">

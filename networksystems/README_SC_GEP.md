@@ -302,7 +302,7 @@ console.log(comparison.insights);
 
 **Key Contributions**:
 1. First comprehensive SC-GEP model with 14 critical materials
-2. Maryland/PJM case study with 5 scenarios
+2. Multi-region analysis (African Mining & Maryland/PJM) with 5 scenarios
 3. Demonstrates $1.2B+ cost increase from supply chain constraints
 4. Shows persistent reliability issues under high demand + constraints
 5. Nested Benders decomposition algorithm for efficient solving
@@ -368,7 +368,7 @@ networksystems/
 
 - [x] Mathematical formulation implemented
 - [x] All 14 critical materials tracked
-- [x] Maryland/PJM configuration complete
+- [x] Multi-region configuration (Maryland/PJM & African Mining) complete
 - [x] 5 scenarios implemented
 - [x] Optimization solver functional
 - [x] Bottleneck analysis working
