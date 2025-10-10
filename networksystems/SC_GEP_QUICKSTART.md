@@ -345,7 +345,6 @@ Response:
 
 4. **Read Full Documentation**
    - See `SC_GEP_INTEGRATION.md` for complete details
-   - Review paper: arXiv:2508.03001v1
 
 ## Support
 

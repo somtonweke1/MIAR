@@ -1,924 +1,592 @@
 /**
- * Enhanced Supply Chain-Constrained Generation Expansion Planning (SC-GEP) Model
- * Based on research: "Integrating Upstream Supply Chains into Generation Expansion Planning"
- * Yao, Bernstein, Dvorkin (2025) - arXiv:2508.03001v1
- *
- * This implementation includes:
- * - Complete material-component-product flow modeling
- * - 14 critical materials (lithium, cobalt, nickel, neodymium, etc.)
- * - Lead time constraints and deployment delays
- * - Spatial constraints (land and offshore)
- * - Reserve margin and RPS compliance
- * - Multi-scenario analysis (Low/High demand, constrained/unconstrained supply)
- * - Maryland/PJM case study data
+ * Enhanced SC-GEP Configuration for Maryland/PJM Region
+ * Based on the research paper: "Integrating Upstream Supply Chains into Generation Expansion Planning"
  */
 
-// ============================================================================
-// TYPES AND INTERFACES
-// ============================================================================
+export type ScenarioType = 'baseline' | 'high_demand' | 'constrained_supply' | 'rapid_expansion';
 
-export type MaterialType = 'critical' | 'standard' | 'rare_earth';
-export type TechnologyType = 'spv' | 'lbw' | 'osw' | 'bse' | 'ngcc' | 'ngct' | 'nuc' | 'hyd' | 'coal' | 'bio' | 'oil';
-export type ScenarioType = 'baseline' | 'low_demand' | 'high_demand' | 'w/o_SC' | 'lim_SC';
-
-/**
- * Critical materials as identified in the paper (Table from USGS/DOE)
- */
-export interface CriticalMaterial {
+export interface EnhancedMaterial {
   id: string;
   name: string;
-  type: MaterialType;
-  usgsCode?: string;
-  // Primary supply (M_my) - from domestic + imports
+  type: 'critical' | 'standard' | 'rare_earth';
   primarySupply: number; // tonnes/year
-  // Recovery rate (RRM_mg) from retired units
-  recoveryRate: number; // 0-1 (typically 0.1 for 10%)
-  // Current stock level (s_my initial)
-  initialStock: number; // tonnes
-  // Sectoral allocation (energy sector share)
-  energySectorShare: number; // 0-1 (0.1 or 0.3 as per paper)
-  // Material cost
+  recoveryRate: number; // percentage from retired units
+  stockLevel: number; // current stock in tonnes
   costPerTonne: number; // $/tonne
+  geopoliticalRisk: 'low' | 'medium' | 'high';
+  domesticAvailability: number; // percentage
 }
 
-/**
- * Components that are manufactured from materials
- */
-export interface Component {
+export interface EnhancedTechnology {
   id: string;
   name: string;
-  // Material demand coefficient (DCO_mc) - tonnes of material m per unit of component c
-  materialDemand: Record<string, number>; // material_id -> tonnes/unit
-  // Production capacity
-  productionCapacity: number; // units/year
-  // Manufacturing lead time
-  leadTime: number; // years
-}
-
-/**
- * Products (final technologies) assembled from components
- */
-export interface Product {
-  id: string;
-  name: string;
-  technologyType: TechnologyType;
-  // Component demand coefficient (DPR_cp) - units of component c per MW of product p
+  type: 'renewable' | 'storage' | 'thermal' | 'nuclear';
   componentDemand: Record<string, number>; // component_id -> units/MW
-  // Technology parameters
-  capacityDensity: number; // MW/km² (RCAP_k)
-  leadTime: number; // years (T_LEAD_g)
-  lifetime: number; // years (T_LT_g)
-  // Cost parameters
-  capitalCost: number; // $/MW (CI_gy)
-  fixedOMCost: number; // $/MW/year (CF_gy)
-  variableOMCost: number; // $/MWh (CV_g)
-  // Reliability parameters
-  elccFactor: number; // ELCC factor (F_ELCC_ky)
-  availabilityFactor?: number; // for renewables (F_GEN_igthy)
+  capacityDensity: number; // MW/km²
+  leadTime: number; // years
+  lifetime: number; // years
+  capitalCost: number; // $/MW
+  variableCost: number; // $/MWh
+  elccFactor: number; // effective load carrying capability
+  materialIntensity: number; // tonnes/MW
+  manufacturingCapacity: number; // MW/year
 }
 
-/**
- * Existing generation units
- */
-export interface ExistingUnit {
+export interface MarylandZone {
   id: string;
   name: string;
-  zone: string;
-  technology: TechnologyType;
-  capacity: number; // MW (P_G_g)
-  retirementYear?: number; // T_RT_g for existing units
-  commissionYear?: number;
+  availableLand: number; // km²
+  peakLoad: number; // MW
+  demandGrowth: number; // CAGR %
+  existingCapacity: Record<string, number>; // tech_id -> MW
+  transmissionCapacity: number; // MW
+  rpsTarget: number; // percentage
 }
 
-/**
- * Zones (Maryland utility service territories: BGE, APS, DPL, PEPCO)
- */
-export interface Zone {
-  id: string;
-  name: string;
-  // Spatial availability
-  availableLand: number; // km² (A_k_i initial)
-  availableOffshore?: number; // km² for offshore wind
-  // Load parameters
-  baselinePeakLoad: number; // MW for year 1 (L_y at y=1)
-  demandCAGR: number; // Compound Annual Growth Rate (%)
-  // Existing capacity by technology
-  existingUnits: ExistingUnit[];
-  // Representative load profiles (4 seasons × 24 hours)
-  loadProfiles: number[][]; // [season][hour]
-  // Renewable availability factors
-  renewableProfiles?: Record<TechnologyType, number[][]>; // [season][hour]
-}
-
-/**
- * Transmission corridor between zones
- */
-export interface TransmissionLine {
-  id: string;
-  from: string; // zone id
-  to: string; // zone id
-  capacity: number; // MW (P_L_l)
-}
-
-/**
- * System-wide parameters
- */
-export interface SystemParameters {
-  // Planning horizon
+export interface EnhancedSCGEPConfig {
+  materials: EnhancedMaterial[];
+  technologies: EnhancedTechnology[];
+  zones: MarylandZone[];
   planningHorizon: number; // years
-  baseYear: number; // e.g., 2024
-
-  // Reliability requirements
-  reserveMargin: number; // percentage (RRM_y)
-
-  // Policy requirements (RPS)
-  rpsTargets: Record<TechnologyType, number>; // RRPS_ky - renewable portfolio standard by technology
-
-  // Penalty costs
-  voll: number; // $/MWh - Value of Lost Load (P_VOLL)
-  reserveMarginPenalty: number; // $/MW-year (P_RM)
-  rpsPenalty: number; // $/MWh (P_RPS)
-
-  // Discount rate for NPV calculations
-  discountRate: number; // e.g., 0.05 for 5%
-
-  // Representative days per year
-  representativeDays: {
-    season: 'spring' | 'summer' | 'fall' | 'winter';
-    occurrences: number; // days per year (N_ty)
-  }[];
-}
-
-/**
- * Complete SC-GEP configuration
- */
-export interface SCGEPConfiguration {
-  materials: CriticalMaterial[];
-  components: Component[];
-  products: Product[];
-  zones: Zone[];
-  transmissionLines: TransmissionLine[];
-  systemParameters: SystemParameters;
-  scenario: ScenarioType;
-  // Scenario-specific modifications
-  scenarioModifiers?: {
-    supplyConstraintMultiplier?: number; // for lim_SC scenarios
-    removeLeadTimes?: boolean; // for w/o_SC scenarios
-    expandLandAvailability?: boolean; // for w/o_SC scenarios
+  reserveMargin: number; // percentage
+  rpsTarget: Record<string, number>; // tech_id -> percentage
+  scenarioType: ScenarioType;
+  region: 'maryland' | 'africa';
+  costParameters: {
+    voll: number; // $/MWh
+    rpsPenalty: number; // $/MWh
+    reservePenalty: number; // $/MW-year
+  };
+  supplyChainConstraints: {
+    maxLeadTime: number; // years
+    minRecoveryRate: number; // percentage
+    maxMaterialUtilization: number; // percentage
   };
 }
 
-/**
- * Decision variables for SC-GEP
- */
-export interface SCGEPVariables {
-  // ===== Supply Chain Module Variables =====
-  // Material utilization (u_my) - tonnes of material m used in year y
-  materialUtilization: Record<string, number[]>; // material_id -> [year]
-
-  // Component production (v_cy) - units of component c produced in year y
-  componentProduction: Record<string, number[]>; // component_id -> [year]
-
-  // Product production (w_py) - GW of product p produced in year y
-  productProduction: Record<string, number[]>; // product_id -> [year]
-
-  // Material stock (s_my) - tonnes of material m in stock at end of year y
-  materialStock: Record<string, number[]>; // material_id -> [year]
-
-  // Available field area (f_k_iy) - km² available for technology k in zone i at start of year y
-  availableArea: Record<string, Record<string, number[]>>; // tech_id -> zone_id -> [year]
-
-  // ===== Investment Variables =====
-  // Planning decision (d_gy) - capacity planned for unit g in year y (MW or 0-1)
-  plannedCapacity: Record<string, number[]>; // unit_id -> [year]
-
-  // Build status (b_gy) - binary, 1 if unit g is built in year y
-  builtStatus: Record<string, number[]>; // unit_id -> [year]
-
-  // Operational status (o_gy) - 1 if unit g is operational in year y
-  operationalStatus: Record<string, number[]>; // unit_id -> [year]
-
-  // Retirement decision (r_gy) - 1 if unit g is retired in year y
-  retirementStatus: Record<string, number[]>; // unit_id -> [year]
-
-  // ===== Operational Variables (hourly) =====
-  // Generation (p_gthy) - MW generated by unit g in period t, hour h, year y
-  generation: Record<string, number[][][]>; // unit_id -> [year][period][hour]
-
-  // Transmission flow (q_lthy) - MW flow through line l in period t, hour h, year y
-  transmissionFlow: Record<string, number[][][]>; // line_id -> [year][period][hour]
-
-  // Storage charging (cg_thy) - MW charging for storage g in period t, hour h, year y
-  storageCharging: Record<string, number[][][]>; // unit_id -> [year][period][hour]
-
-  // Storage discharging (dcg_thy) - MW discharging for storage g in period t, hour h, year y
-  storageDischarging: Record<string, number[][][]>; // unit_id -> [year][period][hour]
-
-  // State of charge (esoc_gthy) - MWh stored in storage g in period t, hour h, year y
-  stateOfCharge: Record<string, number[][][]>; // unit_id -> [year][period][hour]
-
-  // ===== Slack/Penalty Variables =====
-  // Load shedding (pLS_ithy) - MW of unserved load in zone i, period t, hour h, year y
-  loadShedding: Record<string, number[][][]>; // zone_id -> [year][period][hour]
-
-  // Reserve margin violation (pRM_y) - MW of reserve margin shortfall in year y
-  reserveMarginViolation: number[]; // [year]
-
-  // RPS violation (eRPS_ky) - MWh of RPS non-compliance for technology k in year y
-  rpsViolation: Record<TechnologyType, number[]>; // tech_type -> [year]
-}
-
-/**
- * Solution output from SC-GEP optimization
- */
-export interface SCGEPSolution {
-  // Optimization metadata
-  objectiveValue: number; // Total system cost ($)
-  feasibility: boolean;
-  convergence: 'optimal' | 'feasible' | 'infeasible' | 'unbounded' | 'time_limit';
-  solveTime: number; // seconds
-  iterations: number;
-  gap?: number; // MIP gap if applicable
-
-  // Solution variables
-  variables: SCGEPVariables;
-
-  // Cost breakdown
-  costs: {
-    investment: number[]; // by year
-    operational: number[]; // by year
-    penalty: number[]; // by year
-    total: number;
-  };
-
-  // Performance metrics
-  metrics: {
-    totalCapacityByYear: Record<TechnologyType, number[]>; // [year]
-    materialUtilizationRate: Record<string, number[]>; // [year]
-    landUtilizationRate: Record<string, Record<string, number[]>>; // zone -> tech -> [year]
-    reserveMarginSatisfaction: number[]; // [year]
-    rpsCompliance: Record<TechnologyType, number[]>; // [year]
-    loadSheddingTotal: number[]; // MWh by year
-  };
-}
-
-/**
- * Bottleneck analysis results
- */
-export interface BottleneckAnalysis {
-  materialBottlenecks: {
-    material: string;
-    years: number[];
-    severity: 'critical' | 'high' | 'medium' | 'low';
-    peakUtilization: number; // percentage
-    impactOnDeployment: string;
-    affectedTechnologies: TechnologyType[];
-  }[];
-
-  spatialBottlenecks: {
-    zone: string;
-    technology: TechnologyType;
-    years: number[];
-    landUtilization: number; // percentage
-    constraint: boolean;
-  }[];
-
-  leadTimeDelays: {
-    technology: TechnologyType;
-    plannedYear: number;
-    deployedYear: number;
-    delayYears: number;
-    reason: string;
-  }[];
-
-  reliabilityIssues: {
-    year: number;
-    loadSheddingMWh: number;
-    reserveMarginDeficitMW: number;
-    affectedZones: string[];
-  }[];
-}
-
-/**
- * Scenario comparison results
- */
-export interface ScenarioComparison {
-  scenarios: ScenarioType[];
-  comparison: {
-    totalInvestment: Record<ScenarioType, number>;
-    totalOperationalCost: Record<ScenarioType, number>;
-    totalPenaltyCost: Record<ScenarioType, number>;
-    loadSheddingTotal: Record<ScenarioType, number>;
-    technologyMix: Record<ScenarioType, Record<TechnologyType, number>>; // final year capacity
-    materialConstraintYears: Record<ScenarioType, number>; // years with material constraints
-    deploymentDelays: Record<ScenarioType, number>; // average delay in years
-  };
-  insights: string[];
-}
-
-// ============================================================================
-// CONFIGURATION FACTORIES
-// ============================================================================
-
-/**
- * Create Maryland/PJM case study configuration
- * Based on the paper's Maryland study (Section IV)
- */
-export function createMarylandSCGEPConfig(scenario: ScenarioType = 'baseline'): SCGEPConfiguration {
-  // 14 critical materials from USGS/DOE lists
-  const materials: CriticalMaterial[] = [
+export function createMarylandSCGEPConfig(scenarioType: ScenarioType): EnhancedSCGEPConfig {
+  const baseMaterials: EnhancedMaterial[] = [
     {
-      id: 'aluminum',
-      name: 'Aluminum',
-      type: 'standard',
-      primarySupply: 45000, // MD share of US supply (1.6%)
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.1,
-      costPerTonne: 2500
+      id: 'lithium',
+      name: 'Lithium',
+      type: 'critical',
+      primarySupply: 86000,
+      recoveryRate: 0.10,
+      stockLevel: 45000,
+      costPerTonne: 15000,
+      geopoliticalRisk: 'high',
+      domesticAvailability: 0.05
     },
     {
       id: 'cobalt',
       name: 'Cobalt',
       type: 'critical',
-      usgsCode: 'Co',
-      primarySupply: 2880, // 1.6% of 180k tonnes
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 55000
-    },
-    {
-      id: 'dysprosium',
-      name: 'Dysprosium',
-      type: 'rare_earth',
-      usgsCode: 'Dy',
-      primarySupply: 16, // very limited supply
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 350000
-    },
-    {
-      id: 'gallium',
-      name: 'Gallium',
-      type: 'critical',
-      usgsCode: 'Ga',
-      primarySupply: 6.4, // very limited
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.1,
-      costPerTonne: 300000
-    },
-    {
-      id: 'graphite',
-      name: 'Graphite',
-      type: 'critical',
-      usgsCode: 'C',
-      primarySupply: 16000,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 1500
-    },
-    {
-      id: 'lithium',
-      name: 'Lithium',
-      type: 'critical',
-      usgsCode: 'Li',
-      primarySupply: 1376, // 1.6% of 86k tonnes
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 15000
-    },
-    {
-      id: 'manganese',
-      name: 'Manganese',
-      type: 'standard',
-      primarySupply: 80000,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.1,
-      costPerTonne: 2000
-    },
-    {
-      id: 'neodymium',
-      name: 'Neodymium',
-      type: 'rare_earth',
-      usgsCode: 'Nd',
-      primarySupply: 480,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 80000
+      primarySupply: 180000,
+      recoveryRate: 0.15,
+      stockLevel: 25000,
+      costPerTonne: 55000,
+      geopoliticalRisk: 'high',
+      domesticAvailability: 0.01
     },
     {
       id: 'nickel',
       name: 'Nickel',
       type: 'critical',
-      usgsCode: 'Ni',
-      primarySupply: 51200, // 1.6% of 3.2M tonnes
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 18000
-    },
-    {
-      id: 'praseodymium',
-      name: 'Praseodymium',
-      type: 'rare_earth',
-      usgsCode: 'Pr',
-      primarySupply: 160,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 75000
+      primarySupply: 3200000,
+      recoveryRate: 0.80,
+      stockLevel: 450000,
+      costPerTonne: 18000,
+      geopoliticalRisk: 'medium',
+      domesticAvailability: 0.15
     },
     {
       id: 'silicon',
       name: 'Silicon',
-      type: 'critical',
-      usgsCode: 'Si',
-      primarySupply: 128000,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 2000
+      type: 'standard',
+      primarySupply: 8000000,
+      recoveryRate: 0.85,
+      stockLevel: 1200000,
+      costPerTonne: 2500,
+      geopoliticalRisk: 'low',
+      domesticAvailability: 0.40
     },
     {
-      id: 'terbium',
-      name: 'Terbium',
+      id: 'neodymium',
+      name: 'Neodymium',
       type: 'rare_earth',
-      usgsCode: 'Tb',
-      primarySupply: 4.8,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.3,
-      costPerTonne: 1200000
-    },
-    {
-      id: 'tin',
-      name: 'Tin',
-      type: 'standard',
-      primarySupply: 4800,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.1,
-      costPerTonne: 25000
-    },
-    {
-      id: 'titanium',
-      name: 'Titanium',
-      type: 'standard',
       primarySupply: 32000,
-      recoveryRate: 0.1,
-      initialStock: 0,
-      energySectorShare: 0.1,
-      costPerTonne: 8000
+      recoveryRate: 0.05,
+      stockLevel: 8000,
+      costPerTonne: 120000,
+      geopoliticalRisk: 'high',
+      domesticAvailability: 0.02
     }
   ];
 
-  // Apply scenario modifiers to materials
-  if (scenario === 'lim_SC') {
-    // Reduce supply from geopolitical constraints (allied countries only)
-    materials.forEach(m => {
-      if (m.type === 'rare_earth') {
-        m.primarySupply *= 0.5; // 50% reduction for rare earths
-      } else if (m.type === 'critical') {
-        m.primarySupply *= 0.7; // 30% reduction for critical materials
-      }
-    });
-  }
-
-  // Components (simplified subset from paper's 12 products)
-  const components: Component[] = [
+  const baseTechnologies: EnhancedTechnology[] = [
     {
-      id: 'c_si_solar_cells',
-      name: 'Crystalline Silicon Solar Cells',
-      materialDemand: { silicon: 5.5, aluminum: 2.0, tin: 0.02 },
-      productionCapacity: 50000,
-      leadTime: 1
-    },
-    {
-      id: 'cdte_solar_cells',
-      name: 'CdTe Thin Film Solar Cells',
-      materialDemand: { aluminum: 1.8, tin: 0.015 },
-      productionCapacity: 30000,
-      leadTime: 1
-    },
-    {
-      id: 'nmc_111_cells',
-      name: 'NMC 111 Battery Cells',
-      materialDemand: { lithium: 0.4, nickel: 0.6, cobalt: 0.6, graphite: 1.2, manganese: 0.6 },
-      productionCapacity: 20000,
-      leadTime: 1
-    },
-    {
-      id: 'nmc_811_cells',
-      name: 'NMC 811 Battery Cells',
-      materialDemand: { lithium: 0.4, nickel: 1.6, cobalt: 0.2, graphite: 1.2, manganese: 0.2 },
-      productionCapacity: 25000,
-      leadTime: 1
-    },
-    {
-      id: 'lbw_gearbox_components',
-      name: 'Land-based Wind Gearbox Components',
-      materialDemand: { nickel: 8.0, neodymium: 0.15, dysprosium: 0.01 },
-      productionCapacity: 5000,
-      leadTime: 2
-    },
-    {
-      id: 'lbw_direct_drive_components',
-      name: 'Land-based Wind Direct Drive Components',
-      materialDemand: { nickel: 6.0, neodymium: 0.6, praseodymium: 0.08, dysprosium: 0.04 },
-      productionCapacity: 4000,
-      leadTime: 2
-    },
-    {
-      id: 'osw_gearbox_components',
-      name: 'Offshore Wind Gearbox Components',
-      materialDemand: { nickel: 12.0, neodymium: 0.2, dysprosium: 0.015 },
-      productionCapacity: 2000,
-      leadTime: 3
-    },
-    {
-      id: 'osw_direct_drive_components',
-      name: 'Offshore Wind Direct Drive Components',
-      materialDemand: { nickel: 8.0, neodymium: 0.9, praseodymium: 0.12, dysprosium: 0.06 },
-      productionCapacity: 1500,
-      leadTime: 3
-    }
-  ];
-
-  // Products (final technologies)
-  const products: Product[] = [
-    {
-      id: 'spv_c_si',
-      name: 'Solar PV (c-Si)',
-      technologyType: 'spv',
-      componentDemand: { c_si_solar_cells: 1.0 },
+      id: 'solar_pv',
+      name: 'Solar PV',
+      type: 'renewable',
+      componentDemand: { solar_panels: 1.0, inverters: 1.0 },
       capacityDensity: 36,
       leadTime: 2,
       lifetime: 30,
       capitalCost: 1200000,
-      fixedOMCost: 15000,
-      variableOMCost: 0,
-      elccFactor: 0.7,
-      availabilityFactor: 0.25
+      variableCost: 0,
+      elccFactor: 0.80,
+      materialIntensity: 15.5,
+      manufacturingCapacity: 50000
     },
     {
-      id: 'spv_cdte',
-      name: 'Solar PV (CdTe)',
-      technologyType: 'spv',
-      componentDemand: { cdte_solar_cells: 1.0 },
-      capacityDensity: 36,
-      leadTime: 2,
-      lifetime: 30,
-      capitalCost: 1150000,
-      fixedOMCost: 14000,
-      variableOMCost: 0,
-      elccFactor: 0.7,
-      availabilityFactor: 0.25
-    },
-    {
-      id: 'bse_nmc_111',
-      name: 'Battery Storage (NMC 111)',
-      technologyType: 'bse',
-      componentDemand: { nmc_111_cells: 2.0 },
+      id: 'battery_storage',
+      name: 'Battery Storage',
+      type: 'storage',
+      componentDemand: { battery_cells: 2.0, inverters: 1.0 },
       capacityDensity: 900,
       leadTime: 1,
       lifetime: 15,
       capitalCost: 350000,
-      fixedOMCost: 7000,
-      variableOMCost: 5,
-      elccFactor: 0.95
+      variableCost: 5,
+      elccFactor: 0.95,
+      materialIntensity: 8.2,
+      manufacturingCapacity: 25000
     },
     {
-      id: 'bse_nmc_811',
-      name: 'Battery Storage (NMC 811)',
-      technologyType: 'bse',
-      componentDemand: { nmc_811_cells: 2.0 },
-      capacityDensity: 900,
-      leadTime: 1,
-      lifetime: 15,
-      capitalCost: 340000,
-      fixedOMCost: 6800,
-      variableOMCost: 5,
-      elccFactor: 0.95
-    },
-    {
-      id: 'lbw_gearbox',
-      name: 'Land-based Wind (Gearbox)',
-      technologyType: 'lbw',
-      componentDemand: { lbw_gearbox_components: 0.1 },
+      id: 'wind_onshore',
+      name: 'Onshore Wind',
+      type: 'renewable',
+      componentDemand: { wind_turbines: 0.1, gearboxes: 0.1 },
       capacityDensity: 3.09,
       leadTime: 3,
       lifetime: 30,
       capitalCost: 1500000,
-      fixedOMCost: 45000,
-      variableOMCost: 0,
-      elccFactor: 0.85,
-      availabilityFactor: 0.35
+      variableCost: 0,
+      elccFactor: 0.90,
+      materialIntensity: 45.8,
+      manufacturingCapacity: 8000
     },
     {
-      id: 'lbw_direct_drive',
-      name: 'Land-based Wind (Direct Drive)',
-      technologyType: 'lbw',
-      componentDemand: { lbw_direct_drive_components: 0.1 },
-      capacityDensity: 3.09,
-      leadTime: 3,
-      lifetime: 30,
-      capitalCost: 1520000,
-      fixedOMCost: 46000,
-      variableOMCost: 0,
-      elccFactor: 0.85,
-      availabilityFactor: 0.35
-    },
-    {
-      id: 'osw_gearbox',
-      name: 'Offshore Wind (Gearbox)',
-      technologyType: 'osw',
-      componentDemand: { osw_gearbox_components: 0.1 },
+      id: 'wind_offshore',
+      name: 'Offshore Wind',
+      type: 'renewable',
+      componentDemand: { wind_turbines: 0.08, foundations: 0.08 },
       capacityDensity: 5.2,
       leadTime: 4,
       lifetime: 30,
-      capitalCost: 4000000,
-      fixedOMCost: 120000,
-      variableOMCost: 0,
-      elccFactor: 0.9,
-      availabilityFactor: 0.45
-    },
-    {
-      id: 'osw_direct_drive',
-      name: 'Offshore Wind (Direct Drive)',
-      technologyType: 'osw',
-      componentDemand: { osw_direct_drive_components: 0.1 },
-      capacityDensity: 5.2,
-      leadTime: 4,
-      lifetime: 30,
-      capitalCost: 4050000,
-      fixedOMCost: 122000,
-      variableOMCost: 0,
-      elccFactor: 0.9,
-      availabilityFactor: 0.45
+      capitalCost: 2800000,
+      variableCost: 0,
+      elccFactor: 0.92,
+      materialIntensity: 68.4,
+      manufacturingCapacity: 3000
     }
   ];
 
-  // Maryland zones (BGE, APS, DPL, PEPCO)
-  const zones: Zone[] = [
+  const marylandZones: MarylandZone[] = [
     {
       id: 'bge',
-      name: 'BGE (Baltimore Gas & Electric)',
-      availableLand: 500, // km²
-      availableOffshore: 2000, // km²
-      baselinePeakLoad: scenario === 'high_demand' ? 6491 : 6428,
-      demandCAGR: scenario === 'high_demand' ? 0.60 : -0.65,
-      existingUnits: [
-        { id: 'brandon_shores', name: 'Brandon Shores', zone: 'bge', technology: 'coal', capacity: 1350, retirementYear: 2025 },
-        { id: 'wagner', name: 'Wagner', zone: 'bge', technology: 'coal', capacity: 1070, retirementYear: 2025 },
-        { id: 'calvert_cliffs_1', name: 'Calvert Cliffs 1', zone: 'bge', technology: 'nuc', capacity: 873, retirementYear: 2035 },
-        { id: 'calvert_cliffs_2', name: 'Calvert Cliffs 2', zone: 'bge', technology: 'nuc', capacity: 862, retirementYear: 2037 }
-      ],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles(),
-        lbw: generateWindProfiles(),
-        osw: generateOffshoreWindProfiles()
-      } as Record<TechnologyType, number[][]>
+      name: 'Baltimore Gas & Electric',
+      availableLand: 1200,
+      peakLoad: 6428,
+      demandGrowth: 1.2,
+      existingCapacity: { solar_pv: 800, battery_storage: 200, wind_onshore: 150 },
+      transmissionCapacity: 8500,
+      rpsTarget: 50
     },
     {
       id: 'aps',
-      name: 'APS (Allegheny Power System)',
+      name: 'Allegheny Power Systems',
       availableLand: 800,
-      baselinePeakLoad: scenario === 'high_demand' ? 1683 : 1554,
-      demandCAGR: scenario === 'high_demand' ? 4.67 : 0.21,
-      existingUnits: [],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles(),
-        lbw: generateWindProfiles()
-      } as Record<TechnologyType, number[][]>
+      peakLoad: 1554,
+      demandGrowth: 2.1,
+      existingCapacity: { solar_pv: 300, battery_storage: 100, wind_onshore: 75 },
+      transmissionCapacity: 2200,
+      rpsTarget: 50
     },
     {
       id: 'dpl',
-      name: 'DPL (Delmarva Power & Light)',
-      availableLand: 300,
-      availableOffshore: 1500,
-      baselinePeakLoad: scenario === 'high_demand' ? 1036 : 961,
-      demandCAGR: scenario === 'high_demand' ? 0.42 : -0.45,
-      existingUnits: [
-        { id: 'rock_springs', name: 'Essential Power Rock Springs', zone: 'dpl', technology: 'ngcc', capacity: 775, retirementYear: 2033 }
-      ],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles(),
-        lbw: generateWindProfiles(),
-        osw: generateOffshoreWindProfiles()
-      } as Record<TechnologyType, number[][]>
+      name: 'Delmarva Power & Light',
+      availableLand: 600,
+      peakLoad: 961,
+      demandGrowth: 1.8,
+      existingCapacity: { solar_pv: 200, battery_storage: 50, wind_onshore: 25 },
+      transmissionCapacity: 1400,
+      rpsTarget: 50
     },
     {
       id: 'pepco',
-      name: 'PEPCO (Potomac Electric Power Company)',
+      name: 'Potomac Electric Power Company',
       availableLand: 400,
-      baselinePeakLoad: scenario === 'high_demand' ? 4472 : 2958,
-      demandCAGR: scenario === 'high_demand' ? 0.65 : 0.20,
-      existingUnits: [
-        { id: 'morgantown', name: 'Morgantown', zone: 'pepco', technology: 'coal', capacity: 1178, retirementYear: 2025 }
-      ],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles(),
-        lbw: generateWindProfiles()
-      } as Record<TechnologyType, number[][]>
+      peakLoad: 2958,
+      demandGrowth: 2.5,
+      existingCapacity: { solar_pv: 400, battery_storage: 150, wind_onshore: 50 },
+      transmissionCapacity: 4200,
+      rpsTarget: 50
     }
   ];
 
-  // Apply w/o_SC scenario modifications
-  if (scenario === 'w/o_SC') {
-    zones.forEach(zone => {
-      zone.availableLand *= 3; // Triple land availability
-      if (zone.availableOffshore) {
-        zone.availableOffshore *= 3;
-      }
-    });
+  // Apply scenario-specific modifications
+  let modifiedMaterials = [...baseMaterials];
+  let modifiedTechnologies = [...baseTechnologies];
+  let modifiedZones = [...marylandZones];
+
+  switch (scenarioType) {
+    case 'high_demand':
+      modifiedZones = modifiedZones.map(zone => ({
+        ...zone,
+        demandGrowth: zone.demandGrowth * 1.5,
+        peakLoad: zone.peakLoad * 1.3
+      }));
+      break;
+
+    case 'constrained_supply':
+      modifiedMaterials = modifiedMaterials.map(material => ({
+        ...material,
+        primarySupply: material.primarySupply * 0.7,
+        stockLevel: material.stockLevel * 0.5,
+        geopoliticalRisk: 'high' as const
+      }));
+      break;
+
+    case 'rapid_expansion':
+      modifiedTechnologies = modifiedTechnologies.map(tech => ({
+        ...tech,
+        leadTime: Math.max(0.5, tech.leadTime * 0.7),
+        manufacturingCapacity: tech.manufacturingCapacity * 1.5
+      }));
+      break;
   }
-
-  // Transmission lines (simplified Maryland grid)
-  const transmissionLines: TransmissionLine[] = [
-    { id: 'bge_aps', from: 'bge', to: 'aps', capacity: 2000 },
-    { id: 'bge_dpl', from: 'bge', to: 'dpl', capacity: 1500 },
-    { id: 'bge_pepco', from: 'bge', to: 'pepco', capacity: 2500 },
-    { id: 'dpl_pepco', from: 'dpl', to: 'pepco', capacity: 1000 },
-    { id: 'aps_pepco', from: 'aps', to: 'pepco', capacity: 800 }
-  ];
-
-  // System parameters
-  const systemParameters: SystemParameters = {
-    planningHorizon: 30,
-    baseYear: 2024,
-    reserveMargin: 15, // 15% as per paper
-    rpsTargets: {
-      spv: 40,
-      lbw: 20,
-      osw: 20,
-      bse: 0 // Storage doesn't count toward RPS
-    } as Record<TechnologyType, number>,
-    voll: 10000, // $/MWh
-    reserveMarginPenalty: 263000, // $/MW-year (PJM Net CONE for 4-hr battery)
-    rpsPenalty: 60, // $/MWh (Maryland ACP)
-    discountRate: 0.05,
-    representativeDays: [
-      { season: 'spring', occurrences: 92 },
-      { season: 'summer', occurrences: 92 },
-      { season: 'fall', occurrences: 91 },
-      { season: 'winter', occurrences: 90 }
-    ]
-  };
 
   return {
-    materials,
-    components,
-    products,
-    zones,
-    transmissionLines,
-    systemParameters,
-    scenario,
-    scenarioModifiers: {
-      supplyConstraintMultiplier: scenario === 'lim_SC' ? 0.7 : 1.0,
-      removeLeadTimes: scenario === 'w/o_SC',
-      expandLandAvailability: scenario === 'w/o_SC'
+    materials: modifiedMaterials,
+    technologies: modifiedTechnologies,
+    zones: modifiedZones,
+    planningHorizon: 30,
+    reserveMargin: 15,
+    rpsTarget: {
+      solar_pv: 25,
+      wind_onshore: 15,
+      wind_offshore: 10,
+      battery_storage: 5
+    },
+    scenarioType,
+    region: 'maryland',
+    costParameters: {
+      voll: 10000, // $/MWh
+      rpsPenalty: 60, // $/MWh (Maryland ACP)
+      reservePenalty: 263000 // $/MW-year (PJM Net CONE)
+    },
+    supplyChainConstraints: {
+      maxLeadTime: 5, // years
+      minRecoveryRate: 0.05, // 5%
+      maxMaterialUtilization: 0.95 // 95%
     }
   };
 }
 
-// ============================================================================
-// HELPER FUNCTIONS
-// ============================================================================
+export function createAfricanMiningSCGEPConfig(scenarioType: ScenarioType): EnhancedSCGEPConfig {
+  const africanMaterials: EnhancedMaterial[] = [
+    {
+      id: 'lithium',
+      name: 'Lithium',
+      type: 'critical',
+      primarySupply: 45000, // African lithium production
+      recoveryRate: 0.12,
+      stockLevel: 8000,
+      costPerTonne: 18000,
+      geopoliticalRisk: 'medium',
+      domesticAvailability: 0.25 // Zimbabwe, DRC have lithium deposits
+    },
+    {
+      id: 'cobalt',
+      name: 'Cobalt',
+      type: 'critical',
+      primarySupply: 165000, // DRC produces 70% of world cobalt
+      recoveryRate: 0.20,
+      stockLevel: 35000,
+      costPerTonne: 52000,
+      geopoliticalRisk: 'high',
+      domesticAvailability: 0.80 // DRC dominates global supply
+    },
+    {
+      id: 'nickel',
+      name: 'Nickel',
+      type: 'critical',
+      primarySupply: 180000, // South Africa, Madagascar
+      recoveryRate: 0.75,
+      stockLevel: 28000,
+      costPerTonne: 22000,
+      geopoliticalRisk: 'medium',
+      domesticAvailability: 0.15
+    },
+    {
+      id: 'copper',
+      name: 'Copper',
+      type: 'standard',
+      primarySupply: 2100000, // Zambia, DRC, South Africa
+      recoveryRate: 0.85,
+      stockLevel: 180000,
+      costPerTonne: 9500,
+      geopoliticalRisk: 'medium',
+      domesticAvailability: 0.35
+    },
+    {
+      id: 'platinum',
+      name: 'Platinum Group Metals',
+      type: 'rare_earth',
+      primarySupply: 150000, // South Africa dominates
+      recoveryRate: 0.30,
+      stockLevel: 25000,
+      costPerTonne: 950000,
+      geopoliticalRisk: 'medium',
+      domesticAvailability: 0.70
+    },
+    {
+      id: 'manganese',
+      name: 'Manganese',
+      type: 'standard',
+      primarySupply: 800000, // South Africa, Gabon
+      recoveryRate: 0.80,
+      stockLevel: 120000,
+      costPerTonne: 1800,
+      geopoliticalRisk: 'low',
+      domesticAvailability: 0.60
+    }
+  ];
 
-function generateSeasonalLoadProfiles(): number[][] {
-  // Returns [4 seasons][24 hours] - normalized 0-1
-  // Spring, Summer, Fall, Winter
-  const profiles: number[][] = [];
+  const africanTechnologies: EnhancedTechnology[] = [
+    {
+      id: 'solar_pv',
+      name: 'Solar PV',
+      type: 'renewable',
+      componentDemand: { solar_panels: 1.0, inverters: 1.0 },
+      capacityDensity: 40, // Higher density in sunny African conditions
+      leadTime: 1.5, // Faster deployment in Africa
+      lifetime: 30,
+      capitalCost: 900000, // Lower cost due to abundant sunlight
+      variableCost: 0,
+      elccFactor: 0.85, // Higher capacity factor in Africa
+      materialIntensity: 12.0,
+      manufacturingCapacity: 30000 // Growing African manufacturing
+    },
+    {
+      id: 'battery_storage',
+      name: 'Battery Storage',
+      type: 'storage',
+      componentDemand: { battery_cells: 2.0, inverters: 1.0 },
+      capacityDensity: 900,
+      leadTime: 1,
+      lifetime: 15,
+      capitalCost: 420000, // Higher cost due to material intensity
+      variableCost: 8,
+      elccFactor: 0.95,
+      materialIntensity: 12.5, // High cobalt/lithium content
+      manufacturingCapacity: 15000
+    },
+    {
+      id: 'wind_onshore',
+      name: 'Onshore Wind',
+      type: 'renewable',
+      componentDemand: { wind_turbines: 0.1, gearboxes: 0.1 },
+      capacityDensity: 2.5, // Lower density due to terrain
+      leadTime: 2.5,
+      lifetime: 30,
+      capitalCost: 1800000, // Higher cost due to logistics
+      variableCost: 0,
+      elccFactor: 0.35, // Lower capacity factor
+      materialIntensity: 55.0, // Higher steel content
+      manufacturingCapacity: 5000
+    },
+    {
+      id: 'hydro_small',
+      name: 'Small Hydro',
+      type: 'renewable',
+      componentDemand: { turbines: 0.2, generators: 0.2 },
+      capacityDensity: 15,
+      leadTime: 3,
+      lifetime: 50,
+      capitalCost: 2500000,
+      variableCost: 0,
+      elccFactor: 0.45,
+      materialIntensity: 35.0,
+      manufacturingCapacity: 2000
+    },
+    {
+      id: 'mining_power',
+      name: 'Mining Power Integration',
+      type: 'thermal',
+      componentDemand: { generators: 1.0, fuel_systems: 1.0 },
+      capacityDensity: 200,
+      leadTime: 1,
+      lifetime: 25,
+      capitalCost: 1200000,
+      variableCost: 45,
+      elccFactor: 0.90,
+      materialIntensity: 8.0,
+      manufacturingCapacity: 10000
+    }
+  ];
 
-  const springProfile = Array.from({ length: 24 }, (_, h) => {
-    // Peak at hour 18 (6pm)
-    return 0.7 + 0.3 * Math.exp(-Math.pow((h - 18) / 4, 2));
-  });
-
-  const summerProfile = Array.from({ length: 24 }, (_, h) => {
-    // Higher peak at hour 16 (4pm) - AC load
-    return 0.75 + 0.25 * Math.exp(-Math.pow((h - 16) / 3.5, 2));
-  });
-
-  const fallProfile = Array.from({ length: 24 }, (_, h) => {
-    // Similar to spring
-    return 0.65 + 0.35 * Math.exp(-Math.pow((h - 17) / 4, 2));
-  });
-
-  const winterProfile = Array.from({ length: 24 }, (_, h) => {
-    // Two peaks: morning (7am) and evening (6pm) - heating
-    const morning = 0.15 * Math.exp(-Math.pow((h - 7) / 2, 2));
-    const evening = 0.30 * Math.exp(-Math.pow((h - 18) / 3, 2));
-    return 0.7 + morning + evening;
-  });
-
-  return [springProfile, summerProfile, fallProfile, winterProfile];
-}
-
-function generateSolarProfiles(): number[][] {
-  // Returns [4 seasons][24 hours] - normalized 0-1 solar availability
-  const profiles: number[][] = [];
-
-  for (let season = 0; season < 4; season++) {
-    const profile = Array.from({ length: 24 }, (_, h) => {
-      // Solar available from ~6am to ~8pm, peak at noon
-      if (h < 6 || h > 20) return 0;
-      return Math.sin(((h - 6) / 14) * Math.PI) * (0.85 + season * 0.05);
-    });
-    profiles.push(profile);
-  }
-
-  return profiles;
-}
-
-function generateWindProfiles(): number[][] {
-  // Returns [4 seasons][24 hours] - normalized 0-1 wind availability
-  const profiles: number[][] = [];
-
-  for (let season = 0; season < 4; season++) {
-    const profile = Array.from({ length: 24 }, (_, h) => {
-      // Wind typically higher at night and in winter
-      const baseWind = 0.35;
-      const nightBonus = h < 6 || h > 20 ? 0.15 : 0;
-      const seasonFactor = season === 3 ? 1.2 : season === 1 ? 0.8 : 1.0; // Higher in winter
-      return Math.min(1.0, (baseWind + nightBonus + Math.random() * 0.1) * seasonFactor);
-    });
-    profiles.push(profile);
-  }
-
-  return profiles;
-}
-
-function generateOffshoreWindProfiles(): number[][] {
-  // Returns [4 seasons][24 hours] - normalized 0-1 offshore wind availability
-  // Offshore wind has higher and more consistent capacity factors
-  const profiles: number[][] = [];
-
-  for (let season = 0; season < 4; season++) {
-    const profile = Array.from({ length: 24 }, (_, h) => {
-      const baseWind = 0.45; // Higher than onshore
-      const seasonFactor = season === 3 ? 1.15 : season === 1 ? 0.85 : 1.0;
-      return Math.min(1.0, (baseWind + Math.random() * 0.08) * seasonFactor);
-    });
-    profiles.push(profile);
-  }
-
-  return profiles;
-}
-
-/**
- * Create default African mining SC-GEP configuration
- * (Keeps existing functionality)
- */
-export function createAfricanMiningSCGEPConfig(scenario: ScenarioType = 'baseline'): SCGEPConfiguration {
-  // This would be similar to Maryland config but with African context
-  // For now, delegate to Maryland config as template
-  const config = createMarylandSCGEPConfig(scenario);
-
-  // Modify for African context
-  config.zones = [
+  const africanZones: MarylandZone[] = [
     {
       id: 'south_africa',
       name: 'South Africa',
-      availableLand: 10000,
-      baselinePeakLoad: 35000,
-      demandCAGR: 2.5,
-      existingUnits: [],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles(),
-        lbw: generateWindProfiles()
-      } as Record<TechnologyType, number[][]>
+      availableLand: 45000, // Large land availability
+      peakLoad: 35000,
+      demandGrowth: 2.5,
+      existingCapacity: { 
+        solar_pv: 2500, 
+        battery_storage: 800, 
+        wind_onshore: 200,
+        mining_power: 5000
+      },
+      transmissionCapacity: 45000,
+      rpsTarget: 40
     },
     {
       id: 'drc',
       name: 'Democratic Republic of Congo',
-      availableLand: 50000,
-      baselinePeakLoad: 2500,
-      demandCAGR: 4.0,
-      existingUnits: [],
-      loadProfiles: generateSeasonalLoadProfiles(),
-      renewableProfiles: {
-        spv: generateSolarProfiles()
-      } as Record<TechnologyType, number[][]>
+      availableLand: 180000, // Massive land area
+      peakLoad: 2500,
+      demandGrowth: 8.0, // High growth due to mining expansion
+      existingCapacity: { 
+        solar_pv: 150, 
+        battery_storage: 50, 
+        hydro_small: 800,
+        mining_power: 1200
+      },
+      transmissionCapacity: 3500,
+      rpsTarget: 30
+    },
+    {
+      id: 'ghana',
+      name: 'Ghana',
+      availableLand: 12000,
+      peakLoad: 3200,
+      demandGrowth: 6.5,
+      existingCapacity: { 
+        solar_pv: 400, 
+        battery_storage: 120, 
+        wind_onshore: 50,
+        mining_power: 800
+      },
+      transmissionCapacity: 4200,
+      rpsTarget: 35
+    },
+    {
+      id: 'zambia',
+      name: 'Zambia',
+      availableLand: 25000,
+      peakLoad: 2100,
+      demandGrowth: 5.5,
+      existingCapacity: { 
+        solar_pv: 300, 
+        battery_storage: 80, 
+        hydro_small: 1200,
+        mining_power: 600
+      },
+      transmissionCapacity: 2800,
+      rpsTarget: 45
+    },
+    {
+      id: 'nigeria',
+      name: 'Nigeria',
+      availableLand: 28000,
+      peakLoad: 12000,
+      demandGrowth: 4.8,
+      existingCapacity: { 
+        solar_pv: 800, 
+        battery_storage: 200, 
+        wind_onshore: 100,
+        mining_power: 2000
+      },
+      transmissionCapacity: 15000,
+      rpsTarget: 25
+    },
+    {
+      id: 'kenya',
+      name: 'Kenya',
+      availableLand: 10000,
+      peakLoad: 1800,
+      demandGrowth: 7.2,
+      existingCapacity: { 
+        solar_pv: 250, 
+        battery_storage: 60, 
+        wind_onshore: 300,
+        hydro_small: 400
+      },
+      transmissionCapacity: 2400,
+      rpsTarget: 50
     }
   ];
 
-  return config;
-}
+  // Apply scenario-specific modifications for African context
+  let modifiedMaterials = [...africanMaterials];
+  let modifiedTechnologies = [...africanTechnologies];
+  let modifiedZones = [...africanZones];
 
-export default {
-  createMarylandSCGEPConfig,
-  createAfricanMiningSCGEPConfig
-};
+  switch (scenarioType) {
+    case 'high_demand':
+      modifiedZones = modifiedZones.map(zone => ({
+        ...zone,
+        demandGrowth: zone.demandGrowth * 1.3, // Mining boom scenario
+        peakLoad: zone.peakLoad * 1.4
+      }));
+      break;
+
+    case 'constrained_supply':
+      modifiedMaterials = modifiedMaterials.map(material => ({
+        ...material,
+        primarySupply: material.primarySupply * 0.6, // Supply chain disruptions
+        stockLevel: material.stockLevel * 0.3,
+        geopoliticalRisk: 'high' as const
+      }));
+      // Add mining-specific constraints
+      modifiedTechnologies = modifiedTechnologies.map(tech => ({
+        ...tech,
+        leadTime: tech.leadTime * 1.5, // Longer lead times due to logistics
+        manufacturingCapacity: tech.manufacturingCapacity * 0.7
+      }));
+      break;
+
+    case 'rapid_expansion':
+      modifiedTechnologies = modifiedTechnologies.map(tech => ({
+        ...tech,
+        leadTime: Math.max(0.5, tech.leadTime * 0.6), // Accelerated deployment
+        manufacturingCapacity: tech.manufacturingCapacity * 2.0
+      }));
+      // Increase material availability for rapid expansion
+      modifiedMaterials = modifiedMaterials.map(material => ({
+        ...material,
+        primarySupply: material.primarySupply * 1.3,
+        stockLevel: material.stockLevel * 1.5
+      }));
+      break;
+  }
+
+  return {
+    materials: modifiedMaterials,
+    technologies: modifiedTechnologies,
+    zones: modifiedZones,
+    planningHorizon: 30,
+    reserveMargin: 20, // Higher reserve margin for African grid stability
+    rpsTarget: {
+      solar_pv: 35,
+      wind_onshore: 10,
+      hydro_small: 15,
+      battery_storage: 8
+    },
+    scenarioType,
+    region: 'africa',
+    costParameters: {
+      voll: 15000, // Higher VOLL in Africa
+      rpsPenalty: 40, // Lower penalty, focus on development
+      reservePenalty: 200000 // Adjusted for African context
+    },
+    supplyChainConstraints: {
+      maxLeadTime: 6, // Longer lead times due to logistics
+      minRecoveryRate: 0.08, // 8%
+      maxMaterialUtilization: 0.90 // 90% - more conservative
+    }
+  };
+}

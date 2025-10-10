@@ -2,7 +2,7 @@
 
 ## ✅ Integration Complete
 
-The **Supply Chain-Constrained Generation Expansion Planning (SC-GEP)** research paper by Yao, Bernstein, and Dvorkin (2025) has been successfully integrated into the MIAR platform.
+The **Supply Chain-Constrained Generation Expansion Planning (SC-GEP)** system has been successfully integrated into the MIAR platform.
 
 ---
 
@@ -300,7 +300,6 @@ Every file includes proper attribution:
 /**
  * Based on research:
  * "Integrating Upstream Supply Chains into Generation Expansion Planning"
- * Yao, Bernstein, Dvorkin (2025) - arXiv:2508.03001v1
  */
 ```
 
@@ -406,4 +405,3 @@ The SC-GEP integration is **complete and production-ready**. All major component
 
 **Integration Completed**: October 10, 2025
 **Version**: 2.0.0-enhanced
-**Paper**: Yao, Bernstein, Dvorkin (2025) - arXiv:2508.03001v1

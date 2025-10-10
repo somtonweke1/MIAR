@@ -2,7 +2,7 @@
 
 > **Supply Chain-Constrained Generation Expansion Planning**
 >
-> A complete implementation of the research paper by Yao, Bernstein, & Dvorkin (2025)
+> A complete implementation of the SC-GEP research methodology
 
 ---
 
@@ -238,7 +238,7 @@ POST /api/sc-gep
     "metrics": { "totalCapacityByYear": {...}, "materialUtilizationRate": {...} }
   },
   "bottleneckAnalysis": { "materialBottlenecks": [...], "reliabilityIssues": [...] },
-  "metadata": { "paperReference": "Yao, Bernstein, Dvorkin (2025)" }
+  "metadata": { "version": "2.0.0-enhanced" }
 }
 ```
 
@@ -295,7 +295,6 @@ console.log(comparison.insights);
 
 **Title**: Integrating Upstream Supply Chains into Generation Expansion Planning
 
-**Authors**: Boyu Yao, Andrey Bernstein, Yury Dvorkin
 
 **Published**: 2025
 
@@ -389,7 +388,6 @@ If you use this implementation in academic work, please cite:
 ```bibtex
 @article{yao2025sc-gep,
   title={Integrating Upstream Supply Chains into Generation Expansion Planning},
-  author={Yao, Boyu and Bernstein, Andrey and Dvorkin, Yury},
   journal={arXiv preprint arXiv:2508.03001},
   year={2025}
 }

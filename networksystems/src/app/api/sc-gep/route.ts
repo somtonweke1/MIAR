@@ -1,30 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { SCGEPModel, createAfricanMiningSCGEPConfig, SupplyChainConstraints } from '@/services/sc-gep-model';
-import { createMarylandSCGEPConfig, ScenarioType } from '@/services/sc-gep-enhanced';
+import { SCGEPModel, createAfricanMiningSCGEPConfig as createLegacyAfricanConfig, SupplyChainConstraints } from '@/services/sc-gep-model';
+import { createMarylandSCGEPConfig, createAfricanMiningSCGEPConfig, ScenarioType, EnhancedSCGEPConfig } from '@/services/sc-gep-enhanced';
 import SCGEPSolver from '@/services/sc-gep-solver';
+import { AdvancedSCGEPSolver } from '@/services/sc-gep-advanced-solver';
+import { getSolutionCacheService } from '@/services/solution-cache-service';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      scenario = 'baseline',
-      region = 'maryland',
-      constraints = {},
-      analysis_type = 'full',
-      use_enhanced = true
-    } = body;
+        const {
+          scenario = 'baseline',
+          region = 'africa',
+          constraints = {},
+          analysis_type = 'full',
+          use_enhanced = true,
+          optimization_method = 'standard',
+          warm_start_scenario = null,
+          multi_scenario = false,
+          scenarios_list = [],
+          use_cache = true
+        } = body;
+
+    const cacheService = getSolutionCacheService();
+    const startTime = Date.now();
 
     if (use_enhanced) {
-      // Use enhanced SC-GEP model with Maryland/PJM configuration
+      // Use enhanced SC-GEP model with African mining configuration
       const scenarioType = scenario as ScenarioType;
-      let config;
-
+      let config: EnhancedSCGEPConfig;
       if (region === 'maryland') {
         config = createMarylandSCGEPConfig(scenarioType);
+      } else if (region === 'africa') {
+        config = createAfricanMiningSCGEPConfig(scenarioType);
       } else {
-        // For African mining, create a compatible enhanced config
-        config = createMarylandSCGEPConfig(scenarioType);
-        // TODO: Create proper African config in sc-gep-enhanced.ts
+        // Default to African mining configuration
+        config = createAfricanMiningSCGEPConfig(scenarioType);
       }
 
       // Apply any custom constraints
@@ -32,8 +42,104 @@ export async function POST(request: NextRequest) {
         Object.assign(config, constraints);
       }
 
-      const solver = new SCGEPSolver(config);
-      const solution = await solver.solve();
+      // Multi-scenario optimization
+      if (multi_scenario && scenarios_list.length > 0) {
+        const advancedSolver = new AdvancedSCGEPSolver(config);
+        const scenarioResults = await advancedSolver.solveMultiScenario(scenarios_list as ScenarioType[]);
+
+        const results: Record<string, any> = {};
+        scenarioResults.forEach((solution, scenario) => {
+          results[scenario] = {
+            objectiveValue: solution.objectiveValue,
+            feasibility: solution.feasibility,
+            solveTime: solution.solveTime,
+            iterations: solution.iterations,
+            convergence: solution.convergence,
+            costs: solution.costs,
+            metrics: solution.metrics
+          };
+        });
+
+        return NextResponse.json({
+          success: true,
+          multi_scenario: true,
+          results,
+          metadata: {
+            scenarios: scenarios_list,
+            region,
+            timestamp: new Date().toISOString(),
+            modelVersion: '3.0.0-advanced',
+          }
+        });
+      }
+
+      // Advanced solver with warm start and optimization methods
+      let solver;
+      if (optimization_method === 'advanced') {
+        solver = new AdvancedSCGEPSolver(config);
+        const solution = await solver.solveWithWarmStart(warm_start_scenario as ScenarioType | undefined);
+
+        const optimizationMetrics = solver.getOptimizationMetrics();
+        let bottleneckAnalysis = null;
+
+        if (analysis_type === 'full' || analysis_type === 'bottlenecks') {
+          const enhancedAnalysis = await solver.analyzeBottlenecksWithSensitivity();
+          bottleneckAnalysis = {
+            ...enhancedAnalysis.bottlenecks,
+            sensitivity: Object.fromEntries(enhancedAnalysis.sensitivity),
+            criticalPath: enhancedAnalysis.criticalPath
+          };
+        }
+
+        return NextResponse.json({
+          success: true,
+          solution: {
+            objectiveValue: solution.objectiveValue,
+            feasibility: solution.feasibility,
+            solveTime: solution.solveTime,
+            iterations: solution.iterations,
+            convergence: solution.convergence,
+            costs: solution.costs,
+            metrics: solution.metrics
+          },
+          bottleneckAnalysis,
+          optimizationMetrics,
+          metadata: {
+            scenario: scenarioType,
+            region,
+            optimization_method: 'advanced',
+            warm_start_used: !!warm_start_scenario,
+            timestamp: new Date().toISOString(),
+            modelVersion: '3.0.0-advanced',
+          }
+        });
+      }
+
+      // Standard solver with cache support
+      solver = new SCGEPSolver(config);
+
+      // Check cache first
+      let solution;
+      let fromCache = false;
+
+      if (use_cache) {
+        const cached = cacheService.get(scenarioType, region);
+        if (cached) {
+          solution = cached.solution;
+          fromCache = true;
+        }
+      }
+
+      // Compute if not cached
+      if (!solution) {
+        solution = await solver.solve();
+
+        // Cache the solution
+        if (use_cache && solution.feasibility) {
+          const computeTime = (Date.now() - startTime) / 1000;
+          cacheService.set(scenarioType, region, solution, config, computeTime);
+        }
+      }
 
       if (!solution.feasibility) {
         return NextResponse.json({
@@ -65,18 +171,18 @@ export async function POST(request: NextRequest) {
         metadata: {
           scenario: scenarioType,
           region,
+          fromCache,
           timestamp: new Date().toISOString(),
           modelVersion: '2.0.0-enhanced',
-          paperReference: 'Yao, Bernstein, Dvorkin (2025) arXiv:2508.03001v1'
         }
       });
-    } else {
-      // Use legacy SC-GEP model
-      const baseConfig = createAfricanMiningSCGEPConfig();
-      const customConstraints: Partial<SupplyChainConstraints> = {
-        ...baseConfig,
-        ...constraints
-      };
+        } else {
+          // Use legacy SC-GEP model
+          const baseConfig = createLegacyAfricanConfig();
+          const customConstraints: Partial<SupplyChainConstraints> = {
+            ...baseConfig,
+            ...constraints
+          };
 
       const model = new SCGEPModel(customConstraints as SupplyChainConstraints);
       const solution = await model.solve();
@@ -128,7 +234,7 @@ export async function GET(request: NextRequest) {
     const scenario = searchParams.get('scenario') || 'default';
     
     // Return default configuration for the specified scenario
-    const config = createAfricanMiningSCGEPConfig();
+    const config = createLegacyAfricanConfig();
     
     return NextResponse.json({
       success: true,

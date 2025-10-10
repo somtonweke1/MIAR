@@ -5,8 +5,6 @@
 This document describes the complete integration of the **Supply Chain-Constrained Generation Expansion Planning (SC-GEP)** model into the MIAR platform, based on the research paper:
 
 > **"Integrating Upstream Supply Chains into Generation Expansion Planning"**
-> Boyu Yao, Andrey Bernstein, Yury Dvorkin (2025)
-> arXiv:2508.03001v1 [eess.SY]
 
 The integration provides a comprehensive framework for optimizing power system capacity expansion while accounting for:
 - Material supply constraints (14 critical materials)
@@ -243,7 +241,6 @@ Solve SC-GEP optimization model
     "region": "maryland",
     "timestamp": "2025-10-10T...",
     "modelVersion": "2.0.0-enhanced",
-    "paperReference": "Yao, Bernstein, Dvorkin (2025) arXiv:2508.03001v1"
   }
 }
 ```
@@ -473,7 +470,6 @@ test('SC-GEP API returns valid solution', async () => {
 ## References
 
 1. **Primary Paper**:
-   - Yao, B., Bernstein, A., & Dvorkin, Y. (2025). "Integrating Upstream Supply Chains into Generation Expansion Planning." arXiv:2508.03001v1 [eess.SY].
 
 2. **Data Sources**:
    - U.S. Geological Survey (USGS) - Critical Minerals List
