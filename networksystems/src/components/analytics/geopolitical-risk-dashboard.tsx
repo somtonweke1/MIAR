@@ -1,476 +1,374 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { 
-  Globe, 
-  AlertTriangle, 
-  TrendingUp, 
-  TrendingDown, 
-  MapPin, 
-  Shield, 
+import {
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown,
+  Globe,
+  Shield,
   Activity,
-  RefreshCw,
-  Eye,
-  Download,
-  Filter,
-  Search,
-  BarChart3,
-  PieChart,
-  Map
+  MapPin,
+  Clock
 } from 'lucide-react';
-import RealTimeMaterialsService, { GeopoliticalRisk, SupplyChainEvent } from '@/services/real-time-materials-service';
 
-interface RiskAssessment {
-  region: string;
-  overallRisk: 'low' | 'medium' | 'high' | 'critical';
-  riskScore: number; // 0-100
+interface GeopoliticalRisk {
+  country: string;
+  materials: string[];
+  riskScore: number;
+  factors: {
+    political_stability: number;
+    trade_restrictions: number;
+    infrastructure: number;
+    environmental_regulations: number;
+    labor_relations: number;
+  };
   trend: 'improving' | 'stable' | 'deteriorating';
-  keyFactors: string[];
-  impactOnMaterials: Record<string, number>;
-  recentEvents: string[];
-  recommendations: string[];
-  lastUpdated: Date;
+  lastUpdated: string;
 }
 
-interface RiskIndicator {
+interface SupplyChainEvent {
   id: string;
-  name: string;
-  value: number;
-  trend: 'up' | 'down' | 'stable';
-  impact: 'low' | 'medium' | 'high';
+  type: 'disruption' | 'policy_change' | 'new_source' | 'capacity_expansion' | 'mine_closure';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  affectedMaterials: string[];
+  country: string;
   description: string;
+  impact: string;
+  startDate: string;
+  endDate?: string;
+  probabilityEstimate?: number;
 }
 
-const GeopoliticalRiskDashboard: React.FC = () => {
-  const [riskAssessments, setRiskAssessments] = useState<RiskAssessment[]>([]);
-  const [riskIndicators, setRiskIndicators] = useState<RiskIndicator[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<string>('all');
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
-  const [isLoading, setIsLoading] = useState(false);
-  const [viewMode, setViewMode] = useState<'overview' | 'detailed' | 'forecast'>('overview');
+interface GeopoliticalRiskDashboardProps {
+  region?: 'maryland' | 'africa' | 'global';
+  autoRefresh?: boolean;
+  refreshInterval?: number;
+}
+
+export default function GeopoliticalRiskDashboard({
+  region = 'global',
+  autoRefresh = false,
+  refreshInterval = 300
+}: GeopoliticalRiskDashboardProps) {
+  const [risks, setRisks] = useState<Record<string, GeopoliticalRisk>>({});
+  const [events, setEvents] = useState<SupplyChainEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [view, setView] = useState<'overview' | 'country_detail' | 'events' | 'heatmap'>('overview');
 
   useEffect(() => {
-    fetchRiskData();
-  }, [selectedTimeframe]);
+    loadRiskData();
 
-  const fetchRiskData = async () => {
-    setIsLoading(true);
-    
+    if (autoRefresh) {
+      const interval = setInterval(loadRiskData, refreshInterval * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [region, autoRefresh, refreshInterval]);
+
+  const loadRiskData = async () => {
     try {
-      // Fetch geopolitical risks from market intelligence service
-      const geopoliticalRisks = await marketIntelligence.getGeopoliticalRisks();
-      const alerts = await marketIntelligence.getSupplyChainAlerts('high', selectedRegion);
-      
-      // Transform data into risk assessments
-      const assessments: RiskAssessment[] = geopoliticalRisks.map(risk => ({
-        region: risk.region,
-        overallRisk: risk.riskLevel,
-        riskScore: getRiskScore(risk.riskLevel),
-        trend: risk.trend,
-        keyFactors: risk.factors,
-        impactOnMaterials: risk.impactOnMaterials,
-        recentEvents: generateRecentEvents(risk.region, risk.riskLevel),
-        recommendations: generateRecommendations(risk),
-        lastUpdated: risk.lastUpdated
-      }));
-      
-      setRiskAssessments(assessments);
-      
-      // Generate risk indicators
-      const indicators: RiskIndicator[] = [
-        {
-          id: 'political_stability',
-          name: 'Political Stability Index',
-          value: calculatePoliticalStability(assessments),
-          trend: 'down',
-          impact: 'high',
-          description: 'Overall political stability across African mining regions'
-        },
-        {
-          id: 'regulatory_risk',
-          name: 'Regulatory Risk Score',
-          value: calculateRegulatoryRisk(assessments),
-          trend: 'up',
-          impact: 'medium',
-          description: 'Risk from changing mining regulations and policies'
-        },
-        {
-          id: 'social_unrest',
-          name: 'Social Unrest Index',
-          value: calculateSocialUnrest(assessments),
-          trend: 'stable',
-          impact: 'high',
-          description: 'Community relations and social license to operate'
-        },
-        {
-          id: 'infrastructure_quality',
-          name: 'Infrastructure Quality',
-          value: calculateInfrastructureQuality(assessments),
-          trend: 'up',
-          impact: 'medium',
-          description: 'Transport and energy infrastructure reliability'
-        },
-        {
-          id: 'currency_stability',
-          name: 'Currency Stability',
-          value: calculateCurrencyStability(assessments),
-          trend: 'down',
-          impact: 'medium',
-          description: 'Exchange rate volatility and currency risk'
-        },
-        {
-          id: 'corruption_index',
-          name: 'Corruption Perception',
-          value: calculateCorruptionIndex(assessments),
-          trend: 'stable',
-          impact: 'high',
-          description: 'Transparency and corruption levels'
-        }
-      ];
-      
-      setRiskIndicators(indicators);
-      
+      setLoading(true);
+
+      const [riskResponse, eventResponse] = await Promise.all([
+        fetch('/api/sc-gep/market-intelligence?type=risks'),
+        fetch('/api/sc-gep/market-intelligence?type=events')
+      ]);
+
+      if (riskResponse.ok) {
+        const riskData = await riskResponse.json();
+        setRisks(riskData.data);
+      }
+
+      if (eventResponse.ok) {
+        const eventData = await eventResponse.json();
+        setEvents(eventData.data);
+      }
     } catch (error) {
-      console.error('Failed to fetch risk data:', error);
+      console.error('Failed to load risk data:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const getRiskScore = (riskLevel: string): number => {
-    switch (riskLevel) {
-      case 'low': return 25;
-      case 'medium': return 50;
-      case 'high': return 75;
-      case 'critical': return 95;
-      default: return 50;
-    }
+  const getRiskColor = (score: number): string => {
+    if (score >= 70) return 'text-red-600 bg-red-50 border-red-200';
+    if (score >= 50) return 'text-orange-600 bg-orange-50 border-orange-200';
+    if (score >= 30) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    return 'text-emerald-600 bg-emerald-50 border-emerald-200';
   };
 
-  const calculatePoliticalStability = (assessments: RiskAssessment[]): number => {
-    const avgScore = assessments.reduce((sum, assessment) => {
-      const stabilityScore = 100 - assessment.riskScore;
-      return sum + stabilityScore;
-    }, 0) / assessments.length;
-    return Math.round(avgScore);
-  };
-
-  const calculateRegulatoryRisk = (assessments: RiskAssessment[]): number => {
-    return Math.round(45 + Math.random() * 20); // Simulated regulatory risk
-  };
-
-  const calculateSocialUnrest = (assessments: RiskAssessment[]): number => {
-    return Math.round(35 + Math.random() * 30); // Simulated social unrest
-  };
-
-  const calculateInfrastructureQuality = (assessments: RiskAssessment[]): number => {
-    return Math.round(55 + Math.random() * 25); // Simulated infrastructure quality
-  };
-
-  const calculateCurrencyStability = (assessments: RiskAssessment[]): number => {
-    return Math.round(40 + Math.random() * 30); // Simulated currency stability
-  };
-
-  const calculateCorruptionIndex = (assessments: RiskAssessment[]): number => {
-    return Math.round(30 + Math.random() * 40); // Simulated corruption index
-  };
-
-  const generateRecentEvents = (region: string, riskLevel: string): string[] => {
-    const eventTemplates = {
-      drc: [
-        'New mining code implementation',
-        'Export licensing requirements updated',
-        'Community protests at mining sites',
-        'Infrastructure development delays'
-      ],
-      south_africa: [
-        'Energy crisis affecting mining operations',
-        'Labor union negotiations ongoing',
-        'Infrastructure maintenance backlogs',
-        'Political uncertainty ahead of elections'
-      ],
-      zambia: [
-        'Mining tax reforms implemented',
-        'Copper export restrictions eased',
-        'Infrastructure investment announced',
-        'Community development programs launched'
-      ],
-      ghana: [
-        'Gold mining regulations updated',
-        'Environmental compliance requirements',
-        'Community benefit agreements signed',
-        'Infrastructure projects approved'
-      ]
-    };
-    
-    const events = eventTemplates[region as keyof typeof eventTemplates] || [
-      'Market conditions stable',
-      'No significant events reported'
-    ];
-    
-    return events.slice(0, 3);
-  };
-
-  const generateRecommendations = (risk: GeopoliticalRisk): string[] => {
-    const recommendations: string[] = [];
-    
-    if (risk.riskLevel === 'critical' || risk.riskLevel === 'high') {
-      recommendations.push('Implement enhanced security protocols');
-      recommendations.push('Diversify supply chain sources');
-      recommendations.push('Increase local community engagement');
-    }
-    
-    if (risk.factors.includes('political_instability')) {
-      recommendations.push('Monitor political developments closely');
-      recommendations.push('Establish local partnerships');
-    }
-    
-    if (risk.factors.includes('corruption')) {
-      recommendations.push('Implement strict compliance programs');
-      recommendations.push('Conduct regular audits');
-    }
-    
-    if (risk.factors.includes('environmental_regulations')) {
-      recommendations.push('Invest in sustainable mining practices');
-      recommendations.push('Engage with environmental groups');
-    }
-    
-    return recommendations.length > 0 ? recommendations : ['Monitor market conditions'];
-  };
-
-  const getRiskColor = (riskLevel: string): string => {
-    switch (riskLevel) {
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'critical': return 'text-red-600 bg-red-50 border-red-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+  const getSeverityColor = (severity: string): string => {
+    switch (severity) {
+      case 'critical':
+        return 'bg-red-100 text-red-800 border-red-300';
+      case 'high':
+        return 'bg-orange-100 text-orange-800 border-orange-300';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      default:
+        return 'bg-emerald-100 text-emerald-800 border-emerald-300';
     }
   };
 
   const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case 'up': return <TrendingUp className="h-4 w-4 text-red-500" />;
-      case 'down': return <TrendingDown className="h-4 w-4 text-green-500" />;
-      default: return <Activity className="h-4 w-4 text-gray-500" />;
+    if (trend === 'improving') return <TrendingDown className="w-4 h-4 text-emerald-600" />;
+    if (trend === 'deteriorating') return <TrendingUp className="w-4 h-4 text-red-600" />;
+    return <Activity className="w-4 h-4 text-zinc-600" />;
+  };
+
+  const getEventTypeIcon = (type: string) => {
+    switch (type) {
+      case 'disruption':
+        return <AlertTriangle className="w-5 h-5 text-red-600" />;
+      case 'policy_change':
+        return <Shield className="w-5 h-5 text-orange-600" />;
+      case 'new_source':
+        return <Globe className="w-5 h-5 text-emerald-600" />;
+      case 'capacity_expansion':
+        return <TrendingUp className="w-5 h-5 text-blue-600" />;
+      case 'mine_closure':
+        return <AlertTriangle className="w-5 h-5 text-red-600" />;
+      default:
+        return <Activity className="w-5 h-5 text-zinc-600" />;
     }
   };
 
-  const filteredAssessments = selectedRegion === 'all' 
-    ? riskAssessments 
-    : riskAssessments.filter(assessment => assessment.region === selectedRegion);
+  const criticalEvents = events.filter(e => e.severity === 'critical');
+  const avgRiskScore = Object.values(risks).reduce((sum, r) => sum + r.riskScore, 0) / Object.keys(risks).length || 0;
+  const deterioratingCountries = Object.values(risks).filter(r => r.trend === 'deteriorating').length;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[500px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+          <p className="text-zinc-600">Loading geopolitical risk data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
-        <div className="border-b border-zinc-200/50 px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight flex items-center">
-                <Globe className="h-6 w-6 mr-3 text-blue-600" />
-                Geopolitical Risk Intelligence
-              </h2>
-              <p className="text-sm text-zinc-500 mt-2 font-light">
-                Real-time monitoring of political, regulatory, and social risks affecting African mining operations
-              </p>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <select
-                value={selectedRegion}
-                onChange={(e) => setSelectedRegion(e.target.value)}
-                className="px-4 py-2 border border-zinc-200 rounded-lg bg-white/60 backdrop-blur-sm text-sm font-light"
-              >
-                <option value="all">All Regions</option>
-                <option value="drc">Democratic Republic of Congo</option>
-                <option value="south_africa">South Africa</option>
-                <option value="zambia">Zambia</option>
-                <option value="ghana">Ghana</option>
-                <option value="nigeria">Nigeria</option>
-                <option value="kenya">Kenya</option>
-              </select>
-              
-              <select
-                value={selectedTimeframe}
-                onChange={(e) => setSelectedTimeframe(e.target.value as any)}
-                className="px-4 py-2 border border-zinc-200 rounded-lg bg-white/60 backdrop-blur-sm text-sm font-light"
-              >
-                <option value="7d">Last 7 Days</option>
-                <option value="30d">Last 30 Days</option>
-                <option value="90d">Last 90 Days</option>
-                <option value="1y">Last Year</option>
-              </select>
-              
-              <Button
-                onClick={fetchRiskData}
-                disabled={isLoading}
-                className="bg-blue-600 text-white hover:bg-blue-700"
-              >
-                {isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                Refresh
-              </Button>
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-6">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-light text-zinc-900 mb-2">
+              Geopolitical Risk Dashboard
+            </h1>
+            <p className="text-zinc-600">
+              Real-time supply chain risk monitoring and alerts
+            </p>
+          </div>
+          <button
+            onClick={loadRiskData}
+            className="px-4 py-2 bg-white/95 backdrop-blur-md border border-zinc-200 rounded-lg hover:bg-white transition-colors"
+          >
+            <Clock className="w-4 h-4 inline mr-2" />
+            Refresh Data
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-red-50 rounded-lg">
+              <AlertTriangle className="w-6 h-6 text-red-600" />
             </div>
           </div>
+          <div className="text-3xl font-light text-zinc-900 mb-1">
+            {criticalEvents.length}
+          </div>
+          <div className="text-sm text-zinc-600">Critical Alerts</div>
         </div>
 
-        {/* Risk Indicators */}
-        <div className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {riskIndicators.map((indicator) => (
-              <Card key={indicator.id} className="p-6 border border-zinc-200/50">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-sm font-medium text-zinc-700">{indicator.name}</h3>
-                    <p className="text-xs text-zinc-500 mt-1">{indicator.description}</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {getTrendIcon(indicator.trend)}
-                  </div>
-                </div>
-                
-                <div className="text-2xl font-bold text-zinc-900 mb-2">{indicator.value}</div>
-                
-                <div className="w-full bg-zinc-200 rounded-full h-2">
-                  <div
-                    className={`h-2 rounded-full transition-all duration-500 ${
-                      indicator.value > 70 ? 'bg-red-500' :
-                      indicator.value > 50 ? 'bg-yellow-500' : 'bg-green-500'
-                    }`}
-                    style={{ width: `${indicator.value}%` }}
-                  ></div>
-                </div>
-                
-                <div className="flex items-center justify-between mt-2 text-xs text-zinc-600">
-                  <span>Impact: {indicator.impact}</span>
-                  <span>Updated: Now</span>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {/* Regional Risk Assessments */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-light text-zinc-900">Regional Risk Assessments</h3>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setViewMode('overview')}
-                  className={`h-8 px-3 text-xs ${viewMode === 'overview' ? 'bg-blue-50 text-blue-600' : ''}`}
-                >
-                  Overview
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setViewMode('detailed')}
-                  className={`h-8 px-3 text-xs ${viewMode === 'detailed' ? 'bg-blue-50 text-blue-600' : ''}`}
-                >
-                  Detailed
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setViewMode('forecast')}
-                  className={`h-8 px-3 text-xs ${viewMode === 'forecast' ? 'bg-blue-50 text-blue-600' : ''}`}
-                >
-                  Forecast
-                </Button>
-              </div>
+        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-orange-50 rounded-lg">
+              <Globe className="w-6 h-6 text-orange-600" />
             </div>
+          </div>
+          <div className="text-3xl font-light text-zinc-900 mb-1">
+            {Object.keys(risks).length}
+          </div>
+          <div className="text-sm text-zinc-600">Countries Monitored</div>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredAssessments.map((assessment) => (
-                <Card key={assessment.region} className={`p-6 border ${getRiskColor(assessment.overallRisk)}`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <MapPin className="h-5 w-5 text-zinc-600" />
-                      <h4 className="text-lg font-medium text-zinc-900 capitalize">
-                        {assessment.region.replace('_', ' ')}
-                      </h4>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getRiskColor(assessment.overallRisk)}`}>
-                        {assessment.overallRisk.toUpperCase()}
-                      </span>
-                      {assessment.trend === 'deteriorating' && <TrendingUp className="h-4 w-4 text-red-500" />}
-                      {assessment.trend === 'improving' && <TrendingDown className="h-4 w-4 text-green-500" />}
-                      {assessment.trend === 'stable' && <Activity className="h-4 w-4 text-gray-500" />}
-                    </div>
-                  </div>
+        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-blue-50 rounded-lg">
+              <Shield className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+          <div className="text-3xl font-light text-zinc-900 mb-1">
+            {avgRiskScore.toFixed(0)}
+          </div>
+          <div className="text-sm text-zinc-600">Average Risk Score</div>
+        </div>
 
-                  <div className="mb-4">
-                    <div className="text-3xl font-bold text-zinc-900 mb-2">{assessment.riskScore}/100</div>
-                    <div className="w-full bg-zinc-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          assessment.riskScore > 70 ? 'bg-red-500' :
-                          assessment.riskScore > 50 ? 'bg-yellow-500' : 'bg-green-500'
-                        }`}
-                        style={{ width: `${assessment.riskScore}%` }}
-                      ></div>
-                    </div>
-                  </div>
+        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 bg-red-50 rounded-lg">
+              <TrendingUp className="w-6 h-6 text-red-600" />
+            </div>
+          </div>
+          <div className="text-3xl font-light text-zinc-900 mb-1">
+            {deterioratingCountries}
+          </div>
+          <div className="text-sm text-zinc-600">Deteriorating Trends</div>
+        </div>
+      </div>
 
-                  <div className="space-y-4">
-                    <div>
-                      <h5 className="text-sm font-medium text-zinc-800 mb-2">Key Risk Factors</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {assessment.keyFactors.map((factor, idx) => (
-                          <span key={idx} className="px-2 py-1 bg-zinc-100 text-zinc-700 rounded text-xs">
-                            {factor.replace('_', ' ')}
-                          </span>
-                        ))}
+      <div className="flex space-x-2 mb-6">
+        {(['overview', 'country_detail', 'events', 'heatmap'] as const).map((v) => (
+          <button
+            key={v}
+            onClick={() => setView(v)}
+            className={`px-4 py-2 rounded-lg transition-colors ${
+              view === v
+                ? 'bg-emerald-600 text-white'
+                : 'bg-white/95 text-zinc-700 border border-zinc-200 hover:bg-white'
+            }`}
+          >
+            {v.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+          </button>
+        ))}
+      </div>
+
+      {view === 'overview' && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+            <h2 className="text-xl font-light text-zinc-900 mb-6">Country Risk Rankings</h2>
+            <div className="space-y-4">
+              {Object.entries(risks)
+                .sort((a, b) => b[1].riskScore - a[1].riskScore)
+                .map(([country, risk]) => (
+                  <div
+                    key={country}
+                    className="p-4 border border-zinc-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => {
+                      setSelectedCountry(country);
+                      setView('country_detail');
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        <MapPin className="w-5 h-5 text-zinc-400" />
+                        <div>
+                          <div className="font-medium text-zinc-900">{country}</div>
+                          <div className="text-sm text-zinc-500">
+                            {risk.materials.length} critical materials
+                          </div>
+                        </div>
+                      </div>
+                      {getTrendIcon(risk.trend)}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm text-zinc-600">Risk Score</div>
+                      <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getRiskColor(risk.riskScore)}`}>
+                        {risk.riskScore}
                       </div>
                     </div>
+                  </div>
+                ))}
+            </div>
+          </div>
 
-                    <div>
-                      <h5 className="text-sm font-medium text-zinc-800 mb-2">Recent Events</h5>
-                      <ul className="space-y-1">
-                        {assessment.recentEvents.map((event, idx) => (
-                          <li key={idx} className="text-xs text-zinc-600 flex items-start">
-                            <AlertTriangle className="h-3 w-3 mr-1 mt-0.5 text-amber-500" />
-                            {event}
-                          </li>
-                        ))}
-                      </ul>
+          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+            <h2 className="text-xl font-light text-zinc-900 mb-6">Recent Supply Chain Events</h2>
+            <div className="space-y-4">
+              {events.slice(0, 5).map((event) => (
+                <div
+                  key={event.id}
+                  className={`p-4 border rounded-lg ${getSeverityColor(event.severity)}`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      {getEventTypeIcon(event.type)}
+                      <div className="font-medium">{event.country}</div>
                     </div>
-
-                    <div>
-                      <h5 className="text-sm font-medium text-zinc-800 mb-2">Recommendations</h5>
-                      <ul className="space-y-1">
-                        {assessment.recommendations.slice(0, 3).map((rec, idx) => (
-                          <li key={idx} className="text-xs text-zinc-600 flex items-start">
-                            <Shield className="h-3 w-3 mr-1 mt-0.5 text-blue-500" />
-                            {rec}
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="text-xs px-2 py-1 bg-white/50 rounded">
+                      {event.severity.toUpperCase()}
                     </div>
                   </div>
-
-                  <div className="mt-4 pt-4 border-t border-zinc-200">
-                    <div className="flex items-center justify-between text-xs text-zinc-500">
-                      <span>Last updated: {assessment.lastUpdated.toLocaleDateString()}</span>
-                      <Button variant="outline" size="sm" className="h-6 px-2 text-xs">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Details
-                      </Button>
-                    </div>
+                  <div className="text-sm mb-2">{event.description}</div>
+                  <div className="text-xs text-zinc-600 mb-2">
+                    <strong>Impact:</strong> {event.impact}
                   </div>
-                </Card>
+                  <div className="flex flex-wrap gap-1">
+                    {event.affectedMaterials.map((material) => (
+                      <span
+                        key={material}
+                        className="text-xs px-2 py-1 bg-white/70 rounded"
+                      >
+                        {material}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {view === 'events' && (
+        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <h2 className="text-xl font-light text-zinc-900 mb-6">All Supply Chain Events</h2>
+          <div className="space-y-4">
+            {events.map((event) => (
+              <div
+                key={event.id}
+                className={`p-6 border rounded-lg ${getSeverityColor(event.severity)}`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    {getEventTypeIcon(event.type)}
+                    <div>
+                      <div className="font-medium text-lg">{event.country}</div>
+                      <div className="text-sm text-zinc-600 capitalize">
+                        {event.type.replace(/_/g, ' ')}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className={`text-xs px-3 py-1 rounded-full font-medium ${getSeverityColor(event.severity)}`}>
+                      {event.severity.toUpperCase()}
+                    </div>
+                    {event.probabilityEstimate && (
+                      <div className="text-xs text-zinc-600 mt-2">
+                        Probability: {(event.probabilityEstimate * 100).toFixed(0)}%
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="mb-3">{event.description}</div>
+                <div className="text-sm text-zinc-600 mb-4">
+                  <strong>Impact:</strong> {event.impact}
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap gap-2">
+                    {event.affectedMaterials.map((material) => (
+                      <span
+                        key={material}
+                        className="text-xs px-3 py-1 bg-white/70 border border-zinc-300 rounded-full"
+                      >
+                        {material}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="text-xs text-zinc-600">
+                    {new Date(event.startDate).toLocaleDateString()}
+                    {event.endDate && ` - ${new Date(event.endDate).toLocaleDateString()}`}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default GeopoliticalRiskDashboard;
-
+}
