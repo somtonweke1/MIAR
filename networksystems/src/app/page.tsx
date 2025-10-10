@@ -1,70 +1,63 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProfessionalLandingPage from '@/components/landing/professional-landing-page';
 import AfricanMiningNetworkMap from '@/components/live-map/african-mining-network-map';
 import InvestmentPortfolioOptimization from '@/components/analytics/investment-portfolio-optimization';
 import GlobalTradeNetworkModeling from '@/components/analytics/global-trade-network-modeling';
+import SupplyChainOptimization from '@/components/analytics/supply-chain-optimization';
 import { AuthProvider, useAuth } from '@/components/auth/auth-provider';
+import PlatformGuide from '@/components/guide/platform-guide';
 import { Button } from '@/components/ui/button';
-import { LogOut, Network, TrendingUp, Ship } from 'lucide-react';
+import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle } from 'lucide-react';
 
-type TabType = 'mining' | 'investment' | 'trade';
+type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain';
 
 function HomeContent() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
-  const [showLanding, setShowLanding] = useState(false); // Start with false
+  const searchParams = useSearchParams();
+  const [showLanding, setShowLanding] = useState(true); // Always start with landing page
   const [activeTab, setActiveTab] = useState<TabType>('mining');
+  const [showGuide, setShowGuide] = useState(false);
+  const [forceShowLanding, setForceShowLanding] = useState(false);
 
-  // Check authentication immediately
+  // Check if user just logged in and should go to platform
   useEffect(() => {
     if (isLoading) return; // Wait for auth to finish loading
 
+    const accessParam = searchParams.get('access');
+    if (user && accessParam === 'platform') {
+      // User is authenticated and coming from login, go directly to platform
+      setShowLanding(false);
+      // Clean up the URL
+      router.replace('/');
+    }
+  }, [user, isLoading, searchParams, router]);
+
+  const handleAccessPlatform = () => {
     if (user) {
-      // User is authenticated, skip landing page and go to platform
+      // User is authenticated, go to platform
       setShowLanding(false);
     } else {
-      // No user, show landing page
-      setShowLanding(true);
+      // No user, redirect to login
+      router.push('/login');
     }
-  }, [user, isLoading]);
+  };
 
   const handleGetStarted = () => {
     // Redirect to login when Get Started is clicked
     router.push('/login');
   };
 
-  // Show loading while checking authentication
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto"></div>
-          <div className="mt-4 text-zinc-600 font-light">Loading platform...</div>
-        </div>
-      </div>
-    );
+  // Show landing page for public access (no user) or when explicitly requested
+  if (!user || showLanding) {
+    return <ProfessionalLandingPage onGetStarted={handleGetStarted} user={user} onAccessPlatform={handleAccessPlatform} />;
   }
 
-  // Show landing page only if no user
-  if (!user && showLanding) {
-    return <ProfessionalLandingPage onGetStarted={handleGetStarted} />;
-  }
-
-  // If no user and not showing landing, redirect to login
-  if (!user) {
-    router.push('/login');
-    return (
-      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mx-auto"></div>
-          <div className="mt-4 text-zinc-600 font-light">Redirecting to login...</div>
-        </div>
-      </div>
-    );
-  }
+  // If user is authenticated and showLanding is false, show the dashboard
+  // This happens after successful login or when accessing platform
 
   const renderActiveTab = () => {
     switch (activeTab) {
@@ -74,6 +67,8 @@ function HomeContent() {
         return <InvestmentPortfolioOptimization />;
       case 'trade':
         return <GlobalTradeNetworkModeling />;
+      case 'supply-chain':
+        return <SupplyChainOptimization />;
       default:
         return <AfricanMiningNetworkMap />;
     }
@@ -126,13 +121,34 @@ function HomeContent() {
                   <Ship className="h-4 w-4" />
                   <span>Trade Network</span>
                 </button>
+                <button
+                  onClick={() => setActiveTab('supply-chain')}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-light transition-all ${
+                    activeTab === 'supply-chain'
+                      ? 'bg-purple-500 text-white shadow-sm'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
+                  }`}
+                >
+                  <Package className="h-4 w-4" />
+                  <span>SC-GEP Model</span>
+                </button>
               </div>
             </div>
 
             <div className="flex items-center space-x-6">
               <div className="hidden md:block text-sm text-zinc-500 font-light">
-                {user.name}
+                {user?.name}
               </div>
+
+              <Button
+                onClick={() => setShowGuide(true)}
+                variant="outline"
+                size="sm"
+                className="h-10 w-10 p-0 border-zinc-300 text-zinc-500 hover:text-zinc-900 hover:border-zinc-400 bg-white/60 backdrop-blur-sm"
+                title="Platform Guide"
+              >
+                <HelpCircle className="h-4 w-4" />
+              </Button>
 
               <Button
                 onClick={logout}
@@ -153,6 +169,11 @@ function HomeContent() {
           {renderActiveTab()}
         </div>
       </main>
+
+      {/* Platform Guide Modal */}
+      {showGuide && (
+        <PlatformGuide onClose={() => setShowGuide(false)} />
+      )}
     </div>
   );
 }
@@ -164,3 +185,4 @@ export default function Home() {
     </AuthProvider>
   );
 }
+

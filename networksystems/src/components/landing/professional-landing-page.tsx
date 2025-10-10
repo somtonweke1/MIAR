@@ -5,9 +5,11 @@ import { ArrowRight, CheckCircle, TrendingUp, Globe, DollarSign, Shield, Target,
 
 interface ProfessionalLandingPageProps {
   onGetStarted: () => void;
+  user?: any;
+  onAccessPlatform?: () => void;
 }
 
-export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLandingPageProps) {
+export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPlatform }: ProfessionalLandingPageProps) {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -15,13 +17,70 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
     phone: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
-    console.log('Demo request submitted:', formData);
-    // For now, just proceed to login
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        alert('Thank you for your interest! We will contact you within 24 hours to schedule your strategic briefing.');
+        // Reset form
+        setFormData({ name: '', company: '', email: '', phone: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+        alert('There was an error submitting your request. Please try again or contact us directly.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      alert('There was an error submitting your request. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleContactSales = () => {
+    // Scroll to contact form or open email
+    document.getElementById('demo-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleStartTrial = () => {
+    // Redirect to login for trial signup
     onGetStarted();
+  };
+
+  const handleFooterLink = (section: string) => {
+    // For demo purposes, scroll to top or show alert
+    if (section === 'Network Analysis' || section === 'Real-time Intelligence' || section === 'Strategic Advisory' || section === 'API Access') {
+      if (user && onAccessPlatform) {
+        onAccessPlatform();
+      } else {
+        onGetStarted();
+      }
+    } else {
+      alert(`${section} page coming soon. Contact us for more information.`);
+    }
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = 'mailto:hello@miar.ai?subject=Strategic Briefing Request';
+  };
+
+  const handlePhoneClick = () => {
+    window.location.href = 'tel:+15551234567';
   };
 
   return (
@@ -36,12 +95,21 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
               </div>
               <span className="text-lg font-extralight text-zinc-900">Mining Intelligence & African Research</span>
             </div>
-            <button
-              onClick={onGetStarted}
-              className="bg-zinc-900 text-white px-6 py-2 rounded font-light hover:bg-zinc-800 transition-colors"
-            >
-              Client Login
-            </button>
+            {user ? (
+              <button
+                onClick={onAccessPlatform}
+                className="bg-emerald-600 text-white px-6 py-2 rounded font-light hover:bg-emerald-700 transition-colors"
+              >
+                Access Platform
+              </button>
+            ) : (
+              <button
+                onClick={onGetStarted}
+                className="bg-zinc-900 text-white px-6 py-2 rounded font-light hover:bg-zinc-800 transition-colors"
+              >
+                Client Login
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -57,17 +125,23 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
             MIAR is the first comprehensive mining intelligence platform that transforms complex African mining data
             into actionable insights for strategic decision-making.
           </p>
-          <div className="bg-emerald-50/80 border border-emerald-200/50 rounded-xl p-6 max-w-2xl mx-auto mb-12">
-            <div className="text-2xl font-light text-emerald-800 mb-2">$16 Billion Opportunity Identified</div>
-            <p className="text-emerald-700 font-light">3.2 million ounces of recoverable gold in Johannesburg tailings alone</p>
-          </div>
-          <button
-            onClick={() => document.getElementById('demo-form')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-zinc-900 text-white px-8 py-4 rounded-lg font-light text-lg hover:bg-zinc-800 transition-colors inline-flex items-center space-x-2"
-          >
-            <span>Request Strategic Briefing</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
+          {user ? (
+            <button
+              onClick={onAccessPlatform}
+              className="bg-emerald-600 text-white px-8 py-4 rounded-lg font-light text-lg hover:bg-emerald-700 transition-colors inline-flex items-center space-x-2"
+            >
+              <span>Access Your Platform</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          ) : (
+            <button
+              onClick={() => document.getElementById('demo-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-zinc-900 text-white px-8 py-4 rounded-lg font-light text-lg hover:bg-zinc-800 transition-colors inline-flex items-center space-x-2"
+            >
+              <span>Request Strategic Briefing</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </section>
 
@@ -124,7 +198,10 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
                   <span className="text-zinc-600 font-light">Standard reports</span>
                 </li>
               </ul>
-              <button className="w-full border border-zinc-300 text-zinc-700 py-3 rounded-lg font-light hover:bg-zinc-50 transition-colors">
+              <button
+                onClick={handleContactSales}
+                className="w-full border border-zinc-300 text-zinc-700 py-3 rounded-lg font-light hover:bg-zinc-50 transition-colors"
+              >
                 Contact Sales
               </button>
             </div>
@@ -154,7 +231,10 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
                   <span className="text-zinc-600 font-light">Priority support</span>
                 </li>
               </ul>
-              <button className="w-full bg-emerald-600 text-white py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors">
+              <button
+                onClick={handleStartTrial}
+                className="w-full bg-emerald-600 text-white py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors"
+              >
                 Start Free Trial
               </button>
             </div>
@@ -181,7 +261,10 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
                   <span className="text-zinc-600 font-light">Dedicated account manager</span>
                 </li>
               </ul>
-              <button className="w-full border border-zinc-300 text-zinc-700 py-3 rounded-lg font-light hover:bg-zinc-50 transition-colors">
+              <button
+                onClick={handleContactSales}
+                className="w-full border border-zinc-300 text-zinc-700 py-3 rounded-lg font-light hover:bg-zinc-50 transition-colors"
+              >
                 Contact Sales
               </button>
             </div>
@@ -332,10 +415,24 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-emerald-600 text-white py-4 rounded-lg font-light text-lg hover:bg-emerald-700 transition-colors inline-flex items-center justify-center space-x-2"
+                  disabled={isSubmitting}
+                  className={`w-full py-4 rounded-lg font-light text-lg transition-colors inline-flex items-center justify-center space-x-2 ${
+                    isSubmitting
+                      ? 'bg-zinc-400 cursor-not-allowed'
+                      : 'bg-emerald-600 hover:bg-emerald-700'
+                  } text-white`}
                 >
-                  <span>Schedule Strategic Briefing</span>
-                  <Calendar className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Sending Request...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Schedule Strategic Briefing</span>
+                      <Calendar className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -360,32 +457,32 @@ export default function ProfessionalLandingPage({ onGetStarted }: ProfessionalLa
             <div>
               <h4 className="text-lg font-light mb-4">Platform</h4>
               <ul className="space-y-2 text-zinc-400 font-light">
-                <li>Network Analysis</li>
-                <li>Real-time Intelligence</li>
-                <li>Strategic Advisory</li>
-                <li>API Access</li>
+                <li><button onClick={() => handleFooterLink('Network Analysis')} className="hover:text-white transition-colors">Network Analysis</button></li>
+                <li><button onClick={() => handleFooterLink('Real-time Intelligence')} className="hover:text-white transition-colors">Real-time Intelligence</button></li>
+                <li><button onClick={() => handleFooterLink('Strategic Advisory')} className="hover:text-white transition-colors">Strategic Advisory</button></li>
+                <li><button onClick={() => handleFooterLink('API Access')} className="hover:text-white transition-colors">API Access</button></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-light mb-4">Company</h4>
               <ul className="space-y-2 text-zinc-400 font-light">
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Partners</li>
-                <li>News</li>
+                <li><button onClick={() => handleFooterLink('About Us')} className="hover:text-white transition-colors">About Us</button></li>
+                <li><button onClick={() => handleFooterLink('Careers')} className="hover:text-white transition-colors">Careers</button></li>
+                <li><button onClick={() => handleFooterLink('Partners')} className="hover:text-white transition-colors">Partners</button></li>
+                <li><button onClick={() => handleFooterLink('News')} className="hover:text-white transition-colors">News</button></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-light mb-4">Contact</h4>
               <div className="space-y-2 text-zinc-400 font-light">
-                <div className="flex items-center space-x-2">
+                <button onClick={handleEmailClick} className="flex items-center space-x-2 hover:text-white transition-colors">
                   <Mail className="w-4 h-4" />
                   <span>hello@miar.ai</span>
-                </div>
-                <div className="flex items-center space-x-2">
+                </button>
+                <button onClick={handlePhoneClick} className="flex items-center space-x-2 hover:text-white transition-colors">
                   <Phone className="w-4 h-4" />
                   <span>+1 (555) 123-4567</span>
-                </div>
+                </button>
               </div>
             </div>
           </div>

@@ -184,7 +184,8 @@ export class RealMarketDataService {
         commodityData.usd_eur = {
           current: parseFloat(latestFx['4. close']),
           timestamp: new Date().toISOString(),
-          source: 'alpha_vantage'
+          source: 'alpha_vantage',
+          interval: 'daily'
         };
       }
 

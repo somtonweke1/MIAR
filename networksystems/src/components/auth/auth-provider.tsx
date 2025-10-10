@@ -100,7 +100,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('miar_user');
     }
-    router.push('/login');
+    // Don't automatically redirect to login - allow landing page access
+    router.push('/');
   };
 
   const hasPermission = (permission: string): boolean => {
