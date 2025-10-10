@@ -118,8 +118,8 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-extralight text-zinc-900 mb-6 tracking-tight">
-            We Help Mining Executives Make
-            <span className="block text-emerald-600 font-light">$100M+ Decisions with Confidence</span>
+            Strategic Mining Intelligence for
+            <span className="block text-emerald-600 font-light">$100M+ Investment Decisions</span>
           </h1>
           <p className="text-xl text-zinc-600 mb-8 font-light max-w-3xl mx-auto leading-relaxed">
             MIAR is the first comprehensive mining intelligence platform that transforms complex African mining data

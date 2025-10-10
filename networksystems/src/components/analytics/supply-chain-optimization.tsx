@@ -432,8 +432,8 @@ const SupplyChainOptimization: React.FC = () => {
         <div className="border-b border-zinc-200/50 px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Supply Chain Optimization</h2>
-              <p className="text-sm text-zinc-500 mt-2 font-light">Enhanced SC-GEP Model: Multi-region supply chain analysis</p>
+              <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Supply Chain-Constrained Analysis</h2>
+              <p className="text-sm text-zinc-500 mt-2 font-light">Strategic mining supply chain intelligence and optimization</p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-full p-1 border border-zinc-200/50">
@@ -565,31 +565,31 @@ const SupplyChainOptimization: React.FC = () => {
           <div className="px-8 py-4 bg-zinc-50/50">
             <div className="grid grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-2xl font-light text-zinc-900">
+                <div className="text-2xl font-extralight text-zinc-900">
                   ${(solution.objectiveValue / 1000000000).toFixed(1)}B
                 </div>
-                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Total Cost</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Total Cost</div>
               </div>
               <div className="text-center">
-                <div className={`text-2xl font-light ${
+                <div className={`text-2xl font-extralight ${
                   solution.convergence === 'optimal' ? 'text-emerald-600' :
                   solution.convergence === 'feasible' ? 'text-amber-600' : 'text-rose-600'
                 }`}>
                   {solution.convergence.toUpperCase()}
                 </div>
-                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Solution Status</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Solution Status</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-light text-blue-600">
+                <div className="text-2xl font-extralight text-blue-600">
                   {solution.solveTime.toFixed(2)}s
                 </div>
-                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Solve Time</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Solve Time</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-light text-purple-600">
+                <div className="text-2xl font-extralight text-emerald-600">
                   {solution.iterations}
                 </div>
-                <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Iterations</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Iterations</div>
               </div>
             </div>
           </div>

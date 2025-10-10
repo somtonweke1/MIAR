@@ -76,7 +76,7 @@ function HomeContent() {
 
   // Show the main platform
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
       {/* Premium Swiss-Style Header */}
       <nav className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50 sticky top-0 z-50">
         <div className="mx-auto max-w-[1800px] px-12">

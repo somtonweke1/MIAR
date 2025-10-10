@@ -150,20 +150,20 @@ export default function GeopoliticalRiskDashboard({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 p-6">
-      <div className="mb-8">
+    <div className="space-y-6">
+      <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-light text-zinc-900 mb-2">
-              Geopolitical Risk Dashboard
+            <h1 className="text-3xl font-extralight text-zinc-900 mb-2 tracking-tight">
+              Geopolitical Risk Analysis
             </h1>
-            <p className="text-zinc-600">
-              Real-time supply chain risk monitoring and alerts
+            <p className="text-zinc-600 font-light">
+              Strategic mining supply chain risk monitoring and intelligence
             </p>
           </div>
           <button
             onClick={loadRiskData}
-            className="px-4 py-2 bg-white/95 backdrop-blur-md border border-zinc-200 rounded-lg hover:bg-white transition-colors"
+            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-light"
           >
             <Clock className="w-4 h-4 inline mr-2" />
             Refresh Data
@@ -171,65 +171,65 @@ export default function GeopoliticalRiskDashboard({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-red-50 rounded-lg">
               <AlertTriangle className="w-6 h-6 text-red-600" />
             </div>
           </div>
-          <div className="text-3xl font-light text-zinc-900 mb-1">
+          <div className="text-3xl font-extralight text-zinc-900 mb-1">
             {criticalEvents.length}
           </div>
-          <div className="text-sm text-zinc-600">Critical Alerts</div>
+          <div className="text-sm text-zinc-600 font-light">Critical Alerts</div>
         </div>
 
-        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+        <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-orange-50 rounded-lg">
+            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
               <Globe className="w-6 h-6 text-orange-600" />
             </div>
           </div>
-          <div className="text-3xl font-light text-zinc-900 mb-1">
+          <div className="text-3xl font-extralight text-zinc-900 mb-1">
             {Object.keys(risks).length}
           </div>
-          <div className="text-sm text-zinc-600">Countries Monitored</div>
+          <div className="text-sm text-zinc-600 font-light">Countries Monitored</div>
         </div>
 
-        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+        <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
               <Shield className="w-6 h-6 text-blue-600" />
             </div>
           </div>
-          <div className="text-3xl font-light text-zinc-900 mb-1">
+          <div className="text-3xl font-extralight text-zinc-900 mb-1">
             {avgRiskScore.toFixed(0)}
           </div>
-          <div className="text-sm text-zinc-600">Average Risk Score</div>
+          <div className="text-sm text-zinc-600 font-light">Average Risk Score</div>
         </div>
 
-        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+        <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-red-50 rounded-lg">
+            <div className="p-3 bg-red-50 rounded-lg border border-red-200">
               <TrendingUp className="w-6 h-6 text-red-600" />
             </div>
           </div>
-          <div className="text-3xl font-light text-zinc-900 mb-1">
+          <div className="text-3xl font-extralight text-zinc-900 mb-1">
             {deterioratingCountries}
           </div>
-          <div className="text-sm text-zinc-600">Deteriorating Trends</div>
+          <div className="text-sm text-zinc-600 font-light">Deteriorating Trends</div>
         </div>
       </div>
 
-      <div className="flex space-x-2 mb-6">
+      <div className="flex space-x-2 bg-white/60 backdrop-blur-sm rounded-full p-1 border border-zinc-200/50 inline-flex">
         {(['overview', 'country_detail', 'events', 'heatmap'] as const).map((v) => (
           <button
             key={v}
             onClick={() => setView(v)}
-            className={`px-4 py-2 rounded-lg transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm font-light transition-all ${
               view === v
-                ? 'bg-emerald-600 text-white'
-                : 'bg-white/95 text-zinc-700 border border-zinc-200 hover:bg-white'
+                ? 'bg-emerald-500 text-white shadow-sm'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
             }`}
           >
             {v.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -239,7 +239,7 @@ export default function GeopoliticalRiskDashboard({
 
       {view === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
             <h2 className="text-xl font-light text-zinc-900 mb-6">Country Risk Rankings</h2>
             <div className="space-y-4">
               {Object.entries(risks)
@@ -276,7 +276,7 @@ export default function GeopoliticalRiskDashboard({
             </div>
           </div>
 
-          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+          <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
             <h2 className="text-xl font-light text-zinc-900 mb-6">Recent Supply Chain Events</h2>
             <div className="space-y-4">
               {events.slice(0, 5).map((event) => (
@@ -315,7 +315,7 @@ export default function GeopoliticalRiskDashboard({
       )}
 
       {view === 'events' && (
-        <div className="bg-white/95 backdrop-blur-md border border-zinc-200 rounded-xl p-6">
+        <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <h2 className="text-xl font-light text-zinc-900 mb-6">All Supply Chain Events</h2>
           <div className="space-y-4">
             {events.map((event) => (

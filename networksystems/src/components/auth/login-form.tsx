@@ -103,9 +103,16 @@ export default function LoginForm() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-zinc-900 hover:bg-zinc-800 text-white py-3 rounded-lg font-light text-lg transition-colors disabled:opacity-50"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-lg font-light text-lg transition-colors disabled:opacity-50 disabled:bg-zinc-400"
               >
-                {isLoading ? 'Authenticating...' : 'Access Platform'}
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Authenticating...</span>
+                  </div>
+                ) : (
+                  'Access Platform'
+                )}
               </Button>
             </div>
           </form>

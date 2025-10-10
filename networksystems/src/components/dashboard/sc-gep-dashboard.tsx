@@ -295,12 +295,12 @@ function MetricCard({ icon, title, value, subtitle, color }: MetricCardProps) {
   };
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-zinc-200/50 p-6">
-      <div className={`inline-flex p-3 rounded-lg mb-4 ${colorClasses[color]}`}>
+    <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-6">
+      <div className={`inline-flex p-3 rounded-lg mb-4 border ${colorClasses[color]}`}>
         {icon}
       </div>
       <h3 className="text-sm font-light text-zinc-600 mb-1">{title}</h3>
-      <p className="text-3xl font-light text-zinc-900 mb-1">{value}</p>
+      <p className="text-3xl font-extralight text-zinc-900 mb-1">{value}</p>
       <p className="text-xs font-light text-zinc-500">{subtitle}</p>
     </Card>
   );
@@ -310,7 +310,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Technology Mix */}
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-6">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-6 rounded-2xl">
         <h3 className="text-xl font-light text-zinc-900 mb-4 flex items-center space-x-2">
           <Zap className="w-5 h-5 text-emerald-600" />
           <span>2053 Technology Mix</span>
@@ -342,7 +342,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
       </Card>
 
       {/* Critical Bottlenecks */}
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-6">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-6 rounded-2xl">
         <h3 className="text-xl font-light text-zinc-900 mb-4 flex items-center space-x-2">
           <AlertTriangle className="w-5 h-5 text-amber-600" />
           <span>Critical Material Bottlenecks</span>
@@ -366,7 +366,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
       </Card>
 
       {/* Cost Breakdown */}
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-6">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-6 rounded-2xl">
         <h3 className="text-xl font-light text-zinc-900 mb-4 flex items-center space-x-2">
           <DollarSign className="w-5 h-5 text-emerald-600" />
           <span>Cost Breakdown</span>
@@ -394,7 +394,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
       </Card>
 
       {/* Key Insights */}
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-6">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-6 rounded-2xl">
         <h3 className="text-xl font-light text-zinc-900 mb-4">Key Insights</h3>
         <div className="space-y-3">
           <InsightItem
@@ -425,7 +425,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
 
 function CapacityExpansionView({ solutionData, scenario }: any) {
   return (
-    <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-8">
+    <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-8 rounded-2xl">
       <h3 className="text-2xl font-extralight text-zinc-900 mb-6">Capacity Expansion Timeline</h3>
       <div className="h-96 bg-zinc-50 rounded-lg border border-zinc-200/50 flex items-center justify-center">
         <p className="text-zinc-500 font-light">
@@ -435,19 +435,19 @@ function CapacityExpansionView({ solutionData, scenario }: any) {
       <div className="mt-6 grid grid-cols-4 gap-4">
         <div className="text-center p-4 bg-amber-50 rounded-lg border border-amber-200">
           <p className="text-xs font-light text-amber-700 mb-1">Solar PV</p>
-          <p className="text-2xl font-light text-amber-900">8.5 GW</p>
+          <p className="text-2xl font-extralight text-amber-900">8.5 GW</p>
         </div>
         <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
           <p className="text-xs font-light text-blue-700 mb-1">Land-based Wind</p>
-          <p className="text-2xl font-light text-blue-900">1.5 GW</p>
+          <p className="text-2xl font-extralight text-blue-900">1.5 GW</p>
         </div>
         <div className="text-center p-4 bg-cyan-50 rounded-lg border border-cyan-200">
           <p className="text-xs font-light text-cyan-700 mb-1">Offshore Wind</p>
-          <p className="text-2xl font-light text-cyan-900">1.4 GW</p>
+          <p className="text-2xl font-extralight text-cyan-900">1.4 GW</p>
         </div>
         <div className="text-center p-4 bg-emerald-50 rounded-lg border border-emerald-200">
           <p className="text-xs font-light text-emerald-700 mb-1">Battery Storage</p>
-          <p className="text-2xl font-light text-emerald-900">4.1 GW</p>
+          <p className="text-2xl font-extralight text-emerald-900">4.1 GW</p>
         </div>
       </div>
     </Card>
@@ -457,7 +457,7 @@ function CapacityExpansionView({ solutionData, scenario }: any) {
 function MaterialFlowView({ solutionData, bottleneckData }: any) {
   return (
     <div className="space-y-6">
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-8">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-8 rounded-2xl">
         <h3 className="text-2xl font-extralight text-zinc-900 mb-6">Material Utilization Over Time</h3>
         <div className="h-96 bg-zinc-50 rounded-lg border border-zinc-200/50 flex items-center justify-center">
           <p className="text-zinc-500 font-light">
@@ -475,7 +475,7 @@ function MaterialFlowView({ solutionData, bottleneckData }: any) {
           { material: 'Lithium', utilization: 68, status: 'medium' },
           { material: 'Copper', utilization: 45, status: 'low' }
         ].map((item) => (
-          <Card key={item.material} className="p-4 bg-white/80 backdrop-blur-sm border-zinc-200/50">
+          <Card key={item.material} className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50 rounded-2xl">
             <div className="flex items-center justify-between mb-2">
               <span className="font-light text-zinc-900">{item.material}</span>
               <span className={`text-xs px-2 py-1 rounded ${item.status === 'critical' ? 'bg-red-100 text-red-700' :
@@ -506,7 +506,7 @@ function MaterialFlowView({ solutionData, bottleneckData }: any) {
 
 function CostAnalysisView({ solutionData }: any) {
   return (
-    <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-8">
+    <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-8 rounded-2xl">
       <h3 className="text-2xl font-extralight text-zinc-900 mb-6">Cost Analysis Over Time</h3>
       <div className="h-96 bg-zinc-50 rounded-lg border border-zinc-200/50 flex items-center justify-center mb-6">
         <p className="text-zinc-500 font-light">
@@ -516,15 +516,15 @@ function CostAnalysisView({ solutionData }: any) {
       <div className="grid grid-cols-3 gap-6">
         <div className="text-center p-6 bg-emerald-50 rounded-lg border border-emerald-200">
           <p className="text-sm font-light text-emerald-700 mb-2">Total Investment</p>
-          <p className="text-3xl font-light text-emerald-900">$22.5B</p>
+          <p className="text-3xl font-extralight text-emerald-900">$22.5B</p>
         </div>
         <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
           <p className="text-sm font-light text-blue-700 mb-2">Operating Costs</p>
-          <p className="text-3xl font-light text-blue-900">$8.3B</p>
+          <p className="text-3xl font-extralight text-blue-900">$8.3B</p>
         </div>
         <div className="text-center p-6 bg-red-50 rounded-lg border border-red-200">
           <p className="text-sm font-light text-red-700 mb-2">Penalty Costs</p>
-          <p className="text-3xl font-light text-red-900">$1.2B</p>
+          <p className="text-3xl font-extralight text-red-900">$1.2B</p>
         </div>
       </div>
     </Card>
@@ -534,7 +534,7 @@ function CostAnalysisView({ solutionData }: any) {
 function ReliabilityView({ solutionData, bottleneckData }: any) {
   return (
     <div className="space-y-6">
-      <Card className="bg-white/95 backdrop-blur-md border-zinc-200/50 p-8">
+      <Card className="bg-white/60 backdrop-blur-sm border-zinc-200/50 p-8 rounded-2xl">
         <h3 className="text-2xl font-extralight text-zinc-900 mb-6">Reserve Margin & Load Shedding</h3>
         <div className="h-96 bg-zinc-50 rounded-lg border border-zinc-200/50 flex items-center justify-center">
           <p className="text-zinc-500 font-light">
@@ -544,7 +544,7 @@ function ReliabilityView({ solutionData, bottleneckData }: any) {
       </Card>
 
       <div className="grid grid-cols-2 gap-6">
-        <Card className="p-6 bg-white/95 backdrop-blur-md border-zinc-200/50">
+        <Card className="p-6 bg-white/60 backdrop-blur-sm border-zinc-200/50 rounded-2xl">
           <h4 className="text-lg font-light text-zinc-900 mb-4">Reserve Margin Status</h4>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -562,7 +562,7 @@ function ReliabilityView({ solutionData, bottleneckData }: any) {
           </div>
         </Card>
 
-        <Card className="p-6 bg-white/95 backdrop-blur-md border-zinc-200/50">
+        <Card className="p-6 bg-white/60 backdrop-blur-sm border-zinc-200/50 rounded-2xl">
           <h4 className="text-lg font-light text-zinc-900 mb-4">Load Shedding Events</h4>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -595,7 +595,7 @@ function ScenarioComparisonView({ comparisonData }: any) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {['baseline', 'low_demand', 'high_demand', 'w/o_SC', 'lim_SC'].map((scenario) => (
-          <Card key={scenario} className="p-4 bg-white/80 backdrop-blur-sm border-zinc-200/50">
+          <Card key={scenario} className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50 rounded-2xl">
             <h4 className="font-medium text-zinc-900 mb-3 capitalize">{scenario.replace('_', ' ')}</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
