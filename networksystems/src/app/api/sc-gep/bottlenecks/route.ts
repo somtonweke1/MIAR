@@ -84,7 +84,11 @@ export async function POST(request: NextRequest) {
 }
 
 async function performSensitivityAnalysis(config: any, baseModel: SCGEPModel) {
-  const sensitivityResults = {
+  const sensitivityResults: {
+    material_supply: Record<string, any>;
+    lead_times: Record<string, any>;
+    land_availability: Record<string, any>;
+  } = {
     material_supply: {},
     lead_times: {},
     land_availability: {}
@@ -105,8 +109,9 @@ async function performSensitivityAnalysis(config: any, baseModel: SCGEPModel) {
       
       if (solution.feasibility) {
         const analysis = testModel.analyzeSupplyChain();
+        const baseSolution = baseModel.getSolution();
         sensitivityResults.material_supply[`${material.id}_${variation > 0 ? 'increase' : 'decrease'}_${Math.abs(variation * 100)}%`] = {
-          objective_change: solution.objectiveValue - baseModel.getSolution()?.objectiveValue,
+          objective_change: baseSolution ? solution.objectiveValue - baseSolution.objectiveValue : 0,
           bottleneck_impact: analysis.materialBottlenecks.find(b => b.material === material.name)?.utilization
         };
       }

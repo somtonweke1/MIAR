@@ -133,13 +133,13 @@ export async function GET(request: NextRequest) {
     };
 
     // Filter materials based on type
-    let filteredMaterials = materialFlows;
+    let filteredMaterials: typeof materialFlows = materialFlows;
     if (materialType !== 'all') {
       filteredMaterials = Object.fromEntries(
-        Object.entries(materialFlows).filter(([_, material]: [string, any]) => 
+        Object.entries(materialFlows).filter(([_, material]: [string, any]) =>
           material.type === materialType
         )
-      );
+      ) as typeof materialFlows;
     }
 
     // Calculate aggregate metrics
