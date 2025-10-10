@@ -327,7 +327,7 @@ export class SolutionCacheService {
       technologiesCount: config.technologies.length,
       zonesCount: config.zones.length,
       reserveMargin: config.reserveMargin,
-      discountRate: config.costParameters.discountRate
+      voll: config.costParameters.voll
     };
   }
 
