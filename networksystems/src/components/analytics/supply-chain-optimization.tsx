@@ -101,7 +101,7 @@ const SupplyChainOptimization: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState('africa');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['materials', 'technologies']));
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'market_intelligence' | 'ml_predictions' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
+  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
 
   // Mock data for visualization
   const [nodes, setNodes] = useState<SupplyChainNode[]>([
@@ -213,24 +213,6 @@ const SupplyChainOptimization: React.FC = () => {
         return <MaterialFlowTracking />;
       case 'scenarios':
         return <ScenarioModeling />;
-      case 'market_intelligence':
-        return (
-          <div className="space-y-6">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 p-6">
-              <h3 className="text-lg font-light text-zinc-900 mb-4">Real-Time Market Intelligence</h3>
-              <p className="text-sm text-zinc-500">Live commodity prices, supply chain alerts, and market data integration coming soon...</p>
-            </div>
-          </div>
-        );
-      case 'ml_predictions':
-        return (
-          <div className="space-y-6">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 p-6">
-              <h3 className="text-lg font-light text-zinc-900 mb-4">ML-Powered Bottleneck Predictions</h3>
-              <p className="text-sm text-zinc-500">Advanced machine learning algorithms for predicting supply chain disruptions and material shortages...</p>
-            </div>
-          </div>
-        );
       case 'geopolitical_risk':
         return <GeopoliticalRiskDashboard />;
       case 'scenario_comparison':
@@ -469,28 +451,6 @@ const SupplyChainOptimization: React.FC = () => {
                 >
                   <Calculator className="h-4 w-4" />
                   <span>Scenarios</span>
-                </button>
-                <button
-                  onClick={() => setActiveView('market_intelligence')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
-                    activeView === 'market_intelligence'
-                      ? 'bg-purple-500 text-white shadow-sm'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
-                  }`}
-                >
-                  <Activity className="h-4 w-4" />
-                  <span>Market Intel</span>
-                </button>
-                <button
-                  onClick={() => setActiveView('ml_predictions')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
-                    activeView === 'ml_predictions'
-                      ? 'bg-purple-500 text-white shadow-sm'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
-                  }`}
-                >
-                  <Brain className="h-4 w-4" />
-                  <span>ML Predictions</span>
                 </button>
                 <button
                   onClick={() => setActiveView('geopolitical_risk')}
