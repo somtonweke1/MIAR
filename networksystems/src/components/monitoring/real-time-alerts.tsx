@@ -146,8 +146,8 @@ export default function RealTimeAlerts() {
     if (acknowledged) return 'border-gray-300 bg-gray-50';
 
     switch (type) {
-      case 'critical': return 'border-red-500 bg-red-50';
-      case 'warning': return 'border-yellow-500 bg-yellow-50';
+      case 'critical': return 'border-rose-500 bg-rose-50';
+      case 'warning': return 'border-amber-500 bg-amber-50';
       case 'info': return 'border-blue-500 bg-blue-50';
       case 'success': return 'border-green-500 bg-green-50';
       default: return 'border-gray-300 bg-white';
@@ -156,8 +156,8 @@ export default function RealTimeAlerts() {
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'critical': return <AlertCircle className="h-4 w-4 text-red-500" />;
-      case 'warning': return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case 'critical': return <AlertCircle className="h-4 w-4 text-rose-500" />;
+      case 'warning': return <AlertTriangle className="h-4 w-4 text-amber-500" />;
       case 'info': return <Info className="h-4 w-4 text-blue-500" />;
       case 'success': return <CheckCircle className="h-4 w-4 text-green-500" />;
       default: return <Info className="h-4 w-4 text-gray-500" />;
@@ -183,21 +183,21 @@ export default function RealTimeAlerts() {
     <div className="space-y-4">
       {/* Alert Summary */}
       <div className="grid grid-cols-4 gap-4 mb-6">
-        <Card className="p-4 bg-red-50 border-red-200">
+        <Card className="p-4 bg-rose-50 border-rose-200">
           <div className="flex items-center">
             <div className="text-2xl mr-2">🚨</div>
             <div>
-              <div className="text-lg font-semibold text-red-700">{criticalCount}</div>
-              <div className="text-sm text-red-600">Critical</div>
+              <div className="text-lg font-semibold text-rose-700">{criticalCount}</div>
+              <div className="text-sm text-rose-600">Critical</div>
             </div>
           </div>
         </Card>
-        <Card className="p-4 bg-yellow-50 border-yellow-200">
+        <Card className="p-4 bg-amber-50 border-amber-200">
           <div className="flex items-center">
-            <AlertTriangle className="h-6 w-6 mr-2 text-yellow-600" />
+            <AlertTriangle className="h-6 w-6 mr-2 text-amber-600" />
             <div>
-              <div className="text-lg font-semibold text-yellow-700">{warningCount}</div>
-              <div className="text-sm text-yellow-600">Warnings</div>
+              <div className="text-lg font-semibold text-amber-700">{warningCount}</div>
+              <div className="text-sm text-amber-600">Warnings</div>
             </div>
           </div>
         </Card>
@@ -253,7 +253,7 @@ export default function RealTimeAlerts() {
                     </h4>
                     <span className="text-xs bg-gray-200 px-2 py-1 rounded">{alert.source}</span>
                     {!alert.acknowledged && (
-                      <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">ACTIVE</span>
+                      <span className="text-xs bg-rose-100 text-rose-800 px-2 py-1 rounded">ACTIVE</span>
                     )}
                   </div>
                   <p className={`text-sm mt-1 ${alert.acknowledged ? 'text-gray-500' : 'text-gray-700'}`}>

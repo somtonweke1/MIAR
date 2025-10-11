@@ -123,7 +123,7 @@ const MaterialFlowTracking: React.FC = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'text-red-700 bg-red-50 border-red-200';
+      case 'critical': return 'text-rose-700 bg-rose-50 border-rose-200';
       case 'high': return 'text-rose-600 bg-rose-50 border-rose-200';
       case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'low': return 'text-emerald-600 bg-emerald-50 border-emerald-200';

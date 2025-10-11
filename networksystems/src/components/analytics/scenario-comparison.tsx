@@ -395,9 +395,9 @@ const ScenarioComparison: React.FC = () => {
   const getSeverityColor = (severity: string): string => {
     switch (severity) {
       case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'critical': return 'text-red-600 bg-red-50 border-red-200';
+      case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
+      case 'high': return 'text-amber-600 bg-amber-50 border-amber-200';
+      case 'critical': return 'text-rose-600 bg-rose-50 border-rose-200';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
@@ -509,10 +509,10 @@ const ScenarioComparison: React.FC = () => {
                       {scenario.feasibility ? (
                         <CheckCircle className="h-5 w-5 text-green-500" />
                       ) : (
-                        <XCircle className="h-5 w-5 text-red-500" />
+                        <XCircle className="h-5 w-5 text-rose-500" />
                       )}
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        scenario.feasibility ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        scenario.feasibility ? 'bg-green-100 text-green-700' : 'bg-rose-100 text-rose-700'
                       }`}>
                         {scenario.feasibility ? 'Feasible' : 'Infeasible'}
                       </span>
@@ -605,12 +605,12 @@ const ScenarioComparison: React.FC = () => {
                         {variation.feasibility ? (
                           <CheckCircle className="h-4 w-4 text-green-500" />
                         ) : (
-                          <XCircle className="h-4 w-4 text-red-500" />
+                          <XCircle className="h-4 w-4 text-rose-500" />
                         )}
                       </div>
                       
                       <div className={`text-sm font-medium ${
-                        variation.impact > 0 ? 'text-red-600' : 'text-green-600'
+                        variation.impact > 0 ? 'text-rose-600' : 'text-green-600'
                       }`}>
                         {variation.impact > 0 ? '+' : ''}{(variation.impact * 100).toFixed(1)}%
                       </div>

@@ -1189,7 +1189,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-900">27</div>
                   <div className="text-sm text-gray-600">Years Remaining</div>
-                  <div className="text-xs text-red-500">At current rates</div>
+                  <div className="text-xs text-rose-500">At current rates</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-emerald-600">8-12%</div>
@@ -1282,11 +1282,11 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   </div>
 
                   <div>
-                    <div className="text-yellow-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">NETWORK ANALYSIS</div>
+                    <div className="text-amber-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">NETWORK ANALYSIS</div>
                     <div className="space-y-1 text-xs">
                       <div className="flex justify-between py-1">
                         <span className="text-gray-400">CENTRALITY</span>
-                        <span className={`${centrality > 2 ? 'text-red-400' : centrality > 1 ? 'text-yellow-400' : 'text-green-400'}`}>
+                        <span className={`${centrality > 2 ? 'text-rose-400' : centrality > 1 ? 'text-amber-400' : 'text-green-400'}`}>
                           {centrality.toFixed(1)}
                         </span>
                       </div>
@@ -1296,7 +1296,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                       </div>
                       <div className="flex justify-between py-1">
                         <span className="text-gray-400">RISK</span>
-                        <span className={`${centrality > 2 ? 'text-red-400' : 'text-green-400'}`}>
+                        <span className={`${centrality > 2 ? 'text-rose-400' : 'text-green-400'}`}>
                           {centrality > 2 ? 'HIGH' : 'LOW'}
                         </span>
                       </div>
@@ -1310,7 +1310,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   </div>
 
                   <div>
-                    <div className="text-yellow-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">{isJohannesburg ? 'ECONOMIC IMPACT' : 'GLOBAL IMPACT'}</div>
+                    <div className="text-amber-500 text-xs font-bold mb-2 border-b border-gray-700 pb-1">{isJohannesburg ? 'ECONOMIC IMPACT' : 'GLOBAL IMPACT'}</div>
                     <div className="space-y-1 text-xs">
                       {isJohannesburg ? (
                         <>
@@ -1328,7 +1328,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                           </div>
                           <div className="flex justify-between py-1 bg-gray-800">
                             <span className="text-gray-400">LIFE</span>
-                            <span className="text-yellow-400">{(operation as RealMineData).production.life_years} YRS</span>
+                            <span className="text-amber-400">{(operation as RealMineData).production.life_years} YRS</span>
                           </div>
                         </>
                       ) : (
@@ -1343,7 +1343,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                           </div>
                           <div className="flex justify-between py-1">
                             <span className="text-gray-400">GDP</span>
-                            <span className="text-yellow-400">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
+                            <span className="text-amber-400">{(operation as AfricanMiningOperation).economic_impact.gdp_contribution_percent.toFixed(1)}%</span>
                           </div>
                         </>
                       )}

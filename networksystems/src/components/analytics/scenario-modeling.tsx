@@ -319,7 +319,7 @@ const ScenarioModeling: React.FC = () => {
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200';
+      case 'high': return 'text-rose-600 bg-rose-50 border-rose-200';
       case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'low': return 'text-emerald-600 bg-emerald-50 border-emerald-200';
       default: return 'text-zinc-600 bg-zinc-50 border-zinc-200';

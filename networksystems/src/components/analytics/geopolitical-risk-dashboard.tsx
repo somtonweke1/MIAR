@@ -92,20 +92,20 @@ export default function GeopoliticalRiskDashboard({
   };
 
   const getRiskColor = (score: number): string => {
-    if (score >= 70) return 'text-red-600 bg-red-50 border-red-200';
-    if (score >= 50) return 'text-orange-600 bg-orange-50 border-orange-200';
-    if (score >= 30) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    if (score >= 70) return 'text-rose-600 bg-rose-50 border-rose-200';
+    if (score >= 50) return 'text-amber-600 bg-amber-50 border-amber-200';
+    if (score >= 30) return 'text-amber-500 bg-amber-50 border-amber-200';
     return 'text-emerald-600 bg-emerald-50 border-emerald-200';
   };
 
   const getSeverityColor = (severity: string): string => {
     switch (severity) {
       case 'critical':
-        return 'bg-red-100 text-red-800 border-red-300';
+        return 'bg-rose-100 text-rose-800 border-rose-300';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
+        return 'bg-amber-100 text-amber-800 border-amber-300';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+        return 'bg-amber-50 text-amber-700 border-amber-300';
       default:
         return 'bg-emerald-100 text-emerald-800 border-emerald-300';
     }
@@ -113,22 +113,22 @@ export default function GeopoliticalRiskDashboard({
 
   const getTrendIcon = (trend: string) => {
     if (trend === 'improving') return <TrendingDown className="w-4 h-4 text-emerald-600" />;
-    if (trend === 'deteriorating') return <TrendingUp className="w-4 h-4 text-red-600" />;
+    if (trend === 'deteriorating') return <TrendingUp className="w-4 h-4 text-rose-600" />;
     return <Activity className="w-4 h-4 text-zinc-600" />;
   };
 
   const getEventTypeIcon = (type: string) => {
     switch (type) {
       case 'disruption':
-        return <AlertTriangle className="w-5 h-5 text-red-600" />;
+        return <AlertTriangle className="w-5 h-5 text-rose-600" />;
       case 'policy_change':
-        return <Shield className="w-5 h-5 text-orange-600" />;
+        return <Shield className="w-5 h-5 text-amber-600" />;
       case 'new_source':
         return <Globe className="w-5 h-5 text-emerald-600" />;
       case 'capacity_expansion':
         return <TrendingUp className="w-5 h-5 text-blue-600" />;
       case 'mine_closure':
-        return <AlertTriangle className="w-5 h-5 text-red-600" />;
+        return <AlertTriangle className="w-5 h-5 text-rose-600" />;
       default:
         return <Activity className="w-5 h-5 text-zinc-600" />;
     }
@@ -174,8 +174,8 @@ export default function GeopoliticalRiskDashboard({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-red-50 rounded-lg">
-              <AlertTriangle className="w-6 h-6 text-red-600" />
+            <div className="p-3 bg-rose-50 rounded-lg border border-rose-200">
+              <AlertTriangle className="w-6 h-6 text-rose-600" />
             </div>
           </div>
           <div className="text-3xl font-extralight text-zinc-900 mb-1">
@@ -186,8 +186,8 @@ export default function GeopoliticalRiskDashboard({
 
         <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-              <Globe className="w-6 h-6 text-orange-600" />
+            <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
+              <Globe className="w-6 h-6 text-amber-600" />
             </div>
           </div>
           <div className="text-3xl font-extralight text-zinc-900 mb-1">
@@ -210,8 +210,8 @@ export default function GeopoliticalRiskDashboard({
 
         <div className="bg-white/60 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-              <TrendingUp className="w-6 h-6 text-red-600" />
+            <div className="p-3 bg-rose-50 rounded-lg border border-rose-200">
+              <TrendingUp className="w-6 h-6 text-rose-600" />
             </div>
           </div>
           <div className="text-3xl font-extralight text-zinc-900 mb-1">

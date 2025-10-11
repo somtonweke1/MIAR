@@ -190,8 +190,8 @@ const MiningInsights: React.FC = () => {
 
   const getPriorityIcon = (priority: string) => {
     switch (priority) {
-      case 'high': return <AlertCircle className="h-4 w-4 text-red-500" />;
-      case 'medium': return <AlertCircle className="h-4 w-4 text-yellow-500" />;
+      case 'high': return <AlertCircle className="h-4 w-4 text-rose-500" />;
+      case 'medium': return <AlertCircle className="h-4 w-4 text-amber-500" />;
       case 'low': return <CheckCircle className="h-4 w-4 text-green-500" />;
       default: return <AlertCircle className="h-4 w-4 text-gray-500" />;
     }

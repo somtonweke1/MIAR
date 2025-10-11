@@ -557,11 +557,11 @@ const ThreeDSupplyChainNetwork: React.FC<ThreeDSupplyChainProps> = ({
                 <span>Operational</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
                 <span>Constrained</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-rose-500 rounded-full"></div>
                 <span>Bottleneck</span>
               </div>
             </div>

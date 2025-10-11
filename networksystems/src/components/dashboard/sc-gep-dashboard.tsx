@@ -290,7 +290,7 @@ function MetricCard({ icon, title, value, subtitle, color }: MetricCardProps) {
     emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     blue: 'bg-blue-50 text-blue-700 border-blue-200',
     amber: 'bg-amber-50 text-amber-700 border-amber-200',
-    red: 'bg-red-50 text-red-700 border-red-200',
+    red: 'bg-rose-50 text-rose-700 border-rose-200',
     cyan: 'bg-cyan-50 text-cyan-700 border-cyan-200'
   };
 
@@ -375,7 +375,7 @@ function OverviewView({ solutionData, bottleneckData, scenario }: any) {
           {[
             { label: 'Investment', value: 22.5, color: 'bg-emerald-500' },
             { label: 'Operations', value: 8.3, color: 'bg-blue-500' },
-            { label: 'Penalties', value: 1.2, color: 'bg-red-500' }
+            { label: 'Penalties', value: 1.2, color: 'bg-rose-500' }
           ].map((item) => (
             <div key={item.label} className="space-y-1">
               <div className="flex items-center justify-between text-sm">
@@ -478,7 +478,7 @@ function MaterialFlowView({ solutionData, bottleneckData }: any) {
           <Card key={item.material} className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50 rounded-2xl">
             <div className="flex items-center justify-between mb-2">
               <span className="font-light text-zinc-900">{item.material}</span>
-              <span className={`text-xs px-2 py-1 rounded ${item.status === 'critical' ? 'bg-red-100 text-red-700' :
+              <span className={`text-xs px-2 py-1 rounded ${item.status === 'critical' ? 'bg-rose-100 text-rose-700' :
                   item.status === 'high' ? 'bg-amber-100 text-amber-700' :
                     item.status === 'medium' ? 'bg-blue-100 text-blue-700' :
                       'bg-emerald-100 text-emerald-700'
@@ -488,7 +488,7 @@ function MaterialFlowView({ solutionData, bottleneckData }: any) {
             </div>
             <div className="w-full bg-zinc-100 rounded-full h-2">
               <div
-                className={`h-2 rounded-full ${item.status === 'critical' ? 'bg-red-500' :
+                className={`h-2 rounded-full ${item.status === 'critical' ? 'bg-rose-500' :
                     item.status === 'high' ? 'bg-amber-500' :
                       item.status === 'medium' ? 'bg-blue-500' :
                         'bg-emerald-500'
@@ -522,9 +522,9 @@ function CostAnalysisView({ solutionData }: any) {
           <p className="text-sm font-light text-blue-700 mb-2">Operating Costs</p>
           <p className="text-3xl font-extralight text-blue-900">$8.3B</p>
         </div>
-        <div className="text-center p-6 bg-red-50 rounded-lg border border-red-200">
-          <p className="text-sm font-light text-red-700 mb-2">Penalty Costs</p>
-          <p className="text-3xl font-extralight text-red-900">$1.2B</p>
+        <div className="text-center p-6 bg-rose-50 rounded-lg border border-rose-200">
+          <p className="text-sm font-light text-rose-700 mb-2">Penalty Costs</p>
+          <p className="text-3xl font-extralight text-rose-900">$1.2B</p>
         </div>
       </div>
     </Card>
@@ -571,7 +571,7 @@ function ReliabilityView({ solutionData, bottleneckData }: any) {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-light text-zinc-600">Peak Unserved Energy</span>
-              <span className="text-lg font-medium text-red-600">145 MWh</span>
+              <span className="text-lg font-medium text-rose-600">145 MWh</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-light text-zinc-600">Most Affected Zone</span>
@@ -623,21 +623,21 @@ function InsightItem({ icon, text, type }: { icon: string; text: string; type: '
     success: 'bg-emerald-50',
     warning: 'bg-amber-50',
     info: 'bg-blue-50',
-    error: 'bg-red-50'
+    error: 'bg-rose-50'
   };
 
   const textColors = {
     success: 'text-emerald-700',
     warning: 'text-amber-700',
     info: 'text-blue-700',
-    error: 'text-red-700'
+    error: 'text-rose-700'
   };
 
   const borderColors = {
     success: 'border-emerald-200',
     warning: 'border-amber-200',
     info: 'border-blue-200',
-    error: 'border-red-200'
+    error: 'border-rose-200'
   };
 
   return (

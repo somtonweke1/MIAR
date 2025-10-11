@@ -295,25 +295,25 @@ const ESGComplianceTracker: React.FC = () => {
 
   const getScoreColor = (score: number): string => {
     if (score >= 80) return 'text-green-600 bg-green-50 border-green-200';
-    if (score >= 60) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-    if (score >= 40) return 'text-orange-600 bg-orange-50 border-orange-200';
-    return 'text-red-600 bg-red-50 border-red-200';
+    if (score >= 60) return 'text-amber-600 bg-amber-50 border-amber-200';
+    if (score >= 40) return 'text-amber-600 bg-amber-50 border-amber-200';
+    return 'text-rose-600 bg-rose-50 border-rose-200';
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'passed': return 'text-green-600 bg-green-50 border-green-200';
-      case 'conditional': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'failed': return 'text-red-600 bg-red-50 border-red-200';
+      case 'conditional': return 'text-amber-600 bg-amber-50 border-amber-200';
+      case 'failed': return 'text-rose-600 bg-rose-50 border-rose-200';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
 
   const getPriorityColor = (priority: string): string => {
     switch (priority) {
-      case 'critical': return 'text-red-600 bg-red-50 border-red-200';
-      case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+      case 'critical': return 'text-rose-600 bg-rose-50 border-rose-200';
+      case 'high': return 'text-amber-600 bg-amber-50 border-amber-200';
+      case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'low': return 'text-green-600 bg-green-50 border-green-200';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
@@ -432,7 +432,7 @@ const ESGComplianceTracker: React.FC = () => {
                       {report.metrics.overallScore}/100
                     </span>
                     {report.metrics.trend === 'improving' && <TrendingUp className="h-4 w-4 text-green-500" />}
-                    {report.metrics.trend === 'deteriorating' && <TrendingDown className="h-4 w-4 text-red-500" />}
+                    {report.metrics.trend === 'deteriorating' && <TrendingDown className="h-4 w-4 text-rose-500" />}
                     {report.metrics.trend === 'stable' && <Activity className="h-4 w-4 text-gray-500" />}
                   </div>
                 </div>
@@ -466,10 +466,10 @@ const ESGComplianceTracker: React.FC = () => {
 
                 {/* Critical Issues */}
                 {report.metrics.criticalIssues > 0 && (
-                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg">
                     <div className="flex items-center space-x-2">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
-                      <span className="text-sm font-medium text-red-800">
+                      <AlertTriangle className="h-4 w-4 text-rose-600" />
+                      <span className="text-sm font-medium text-rose-800">
                         {report.metrics.criticalIssues} critical issue(s) identified
                       </span>
                     </div>

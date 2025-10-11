@@ -96,9 +96,9 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
   const getStructureColor = (type: string) => {
     switch (type) {
       case 'monopolistic':
-        return 'text-red-600 bg-red-100 border-red-300';
+        return 'text-rose-600 bg-rose-100 border-rose-300';
       case 'consolidating':
-        return 'text-orange-600 bg-orange-100 border-orange-300';
+        return 'text-amber-600 bg-amber-100 border-amber-300';
       case 'balanced':
         return 'text-green-600 bg-green-100 border-green-300';
       case 'highly_fragmented':
@@ -111,11 +111,11 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
   const getRiskColor = (level: string) => {
     switch (level) {
       case 'critical':
-        return 'text-red-700 bg-red-50 border-red-400';
+        return 'text-rose-700 bg-rose-50 border-rose-400';
       case 'high':
-        return 'text-orange-700 bg-orange-50 border-orange-400';
+        return 'text-amber-700 bg-amber-50 border-amber-400';
       case 'medium':
-        return 'text-yellow-700 bg-yellow-50 border-yellow-400';
+        return 'text-amber-700 bg-amber-50 border-amber-400';
       case 'low':
         return 'text-green-700 bg-green-50 border-green-400';
       default:
@@ -198,21 +198,21 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
         </Card>
 
         {/* HHI */}
-        <Card className={`p-4 border-2 ${results.herfindahl_index > 2500 ? 'border-red-300 bg-red-50' : 'border-blue-300 bg-blue-50'}`}>
+        <Card className={`p-4 border-2 ${results.herfindahl_index > 2500 ? 'border-rose-300 bg-rose-50' : 'border-blue-300 bg-blue-50'}`}>
           <div className="flex items-start justify-between">
             <div>
-              <p className={`text-sm font-medium ${results.herfindahl_index > 2500 ? 'text-red-700' : 'text-blue-700'}`}>
+              <p className={`text-sm font-medium ${results.herfindahl_index > 2500 ? 'text-rose-700' : 'text-blue-700'}`}>
                 Herfindahl Index
               </p>
-              <p className={`text-2xl font-bold mt-1 ${results.herfindahl_index > 2500 ? 'text-red-900' : 'text-blue-900'}`}>
+              <p className={`text-2xl font-bold mt-1 ${results.herfindahl_index > 2500 ? 'text-rose-900' : 'text-blue-900'}`}>
                 {results.herfindahl_index.toFixed(0)}
               </p>
-              <p className={`text-xs mt-1 ${results.herfindahl_index > 2500 ? 'text-red-600' : 'text-blue-600'}`}>
+              <p className={`text-xs mt-1 ${results.herfindahl_index > 2500 ? 'text-rose-600' : 'text-blue-600'}`}>
                 {results.herfindahl_index > 2500 ? 'High concentration' : 'Competitive'}
               </p>
             </div>
             {results.herfindahl_index > 2500 ? (
-              <AlertTriangle className="w-8 h-8 text-red-600" />
+              <AlertTriangle className="w-8 h-8 text-rose-600" />
             ) : (
               <CheckCircle className="w-8 h-8 text-blue-600" />
             )}
