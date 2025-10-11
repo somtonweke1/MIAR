@@ -439,7 +439,7 @@ export class CommunityDetection {
         .filter(([_, c]) => c === comm)
         .map(([nodeId, _]) => nodeId);
 
-      const dominant Node = nodesInCommunity.reduce((max, nodeId) => {
+      const dominantNode = nodesInCommunity.reduce((max, nodeId) => {
         const degree = degrees.get(nodeId) || 0;
         const maxDegree = degrees.get(max) || 0;
         return degree > maxDegree ? nodeId : max;
