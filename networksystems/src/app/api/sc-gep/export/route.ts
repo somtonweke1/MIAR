@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ExportReportingService from '@/services/export-reporting-service';
 import SCGEPSolver from '@/services/sc-gep-solver';
-import { createMarylandSCGEPConfig, createAfricanMiningSCGEPConfig, ScenarioType } from '@/services/sc-gep-enhanced';
+import { createAfricanMiningSCGEPConfig, ScenarioType } from '@/services/sc-gep-enhanced';
 
 export async function POST(request: NextRequest) {
   try {

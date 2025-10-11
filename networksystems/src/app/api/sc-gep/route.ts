@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SCGEPModel, createAfricanMiningSCGEPConfig as createLegacyAfricanConfig, SupplyChainConstraints } from '@/services/sc-gep-model';
-import { createMarylandSCGEPConfig, createAfricanMiningSCGEPConfig, ScenarioType, EnhancedSCGEPConfig } from '@/services/sc-gep-enhanced';
+import { createAfricanMiningSCGEPConfig, ScenarioType, EnhancedSCGEPConfig } from '@/services/sc-gep-enhanced';
 import SCGEPSolver from '@/services/sc-gep-solver';
 import { AdvancedSCGEPSolver } from '@/services/sc-gep-advanced-solver';
 import { getSolutionCacheService } from '@/services/solution-cache-service';
@@ -27,15 +27,7 @@ export async function POST(request: NextRequest) {
     if (use_enhanced) {
       // Use enhanced SC-GEP model with African mining configuration
       const scenarioType = scenario as ScenarioType;
-      let config: EnhancedSCGEPConfig;
-      if (region === 'maryland') {
-        config = createMarylandSCGEPConfig(scenarioType);
-      } else if (region === 'africa') {
-        config = createAfricanMiningSCGEPConfig(scenarioType);
-      } else {
-        // Default to African mining configuration
-        config = createAfricanMiningSCGEPConfig(scenarioType);
-      }
+      const config: EnhancedSCGEPConfig = createAfricanMiningSCGEPConfig(scenarioType);
 
       // Apply any custom constraints
       if (Object.keys(constraints).length > 0) {

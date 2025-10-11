@@ -121,7 +121,7 @@ const SupplyChainOptimization: React.FC = () => {
     { id: 'battery_storage', name: 'Battery Storage', type: 'technology', status: 'constrained', capacity: 2000, utilization: 91, cost: 350000, position: { x: 500, y: 300 } },
     { id: 'wind_onshore', name: 'Onshore Wind', type: 'technology', status: 'constrained', capacity: 1500, utilization: 88, cost: 1500000, position: { x: 500, y: 400 } },
     
-    // Zones (Maryland)
+    // Zones
     { id: 'bge', name: 'BGE', type: 'zone', status: 'operational', capacity: 6428, utilization: 78, cost: 0, position: { x: 700, y: 200 } },
     { id: 'aps', name: 'APS', type: 'zone', status: 'constrained', capacity: 1554, utilization: 92, cost: 0, position: { x: 700, y: 300 } },
     { id: 'dpl', name: 'DPL', type: 'zone', status: 'operational', capacity: 961, utilization: 69, cost: 0, position: { x: 700, y: 400 } }
@@ -488,14 +488,6 @@ const SupplyChainOptimization: React.FC = () => {
               </div>
               {activeView === 'network' && (
                 <>
-                  <select
-                    value={selectedRegion}
-                    onChange={(e) => setSelectedRegion(e.target.value)}
-                    className="px-4 py-2 border border-zinc-200 rounded-lg bg-white/60 backdrop-blur-sm text-sm font-light"
-                  >
-                    <option value="africa">African Mining Supply Chain</option>
-                    <option value="maryland">Maryland/PJM Region</option>
-                  </select>
                   <select
                     value={selectedScenario}
                     onChange={(e) => setSelectedScenario(e.target.value)}

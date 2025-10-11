@@ -41,7 +41,7 @@ interface SupplyChainEvent {
 }
 
 interface GeopoliticalRiskDashboardProps {
-  region?: 'maryland' | 'africa' | 'global';
+  region?: 'africa' | 'global';
   autoRefresh?: boolean;
   refreshInterval?: number;
 }

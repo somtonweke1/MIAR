@@ -214,7 +214,7 @@ const ScenarioModeling: React.FC = () => {
               { id: 'wind_onshore', leadTime: parameterValues.wind_lead_time / 12 }
             ],
             zones: [
-              { id: 'maryland', availableLand: parameterValues.available_land }
+              { id: 'africa', availableLand: parameterValues.available_land }
             ],
             planningHorizon: parameterValues.planning_horizon
           },
