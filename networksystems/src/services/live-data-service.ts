@@ -230,18 +230,39 @@ export class LiveDataService {
     }
   }
 
+  // Customizable refresh intervals based on data criticality
+  private static REFRESH_INTERVALS = {
+    // Critical real-time data (high frequency)
+    commodities: 15000,      // 15 seconds - fast-moving markets
+    portfolio: 10000,        // 10 seconds - portfolio valuations
+
+    // Important operational data (medium frequency)
+    mining_ops: 30000,       // 30 seconds - operational metrics
+    financial: 20000,        // 20 seconds - financial markets
+
+    // Strategic data (lower frequency)
+    shipping: 60000,         // 1 minute - shipping/logistics
+    market_intel: 120000,    // 2 minutes - intelligence feed
+    economic: 300000,        // 5 minutes - economic indicators
+    geopolitical: 600000     // 10 minutes - geopolitical risk
+  };
+
+  // Allow dynamic interval adjustment
+  setRefreshInterval(dataType: string, intervalMs: number): void {
+    LiveDataService.REFRESH_INTERVALS[dataType as keyof typeof LiveDataService.REFRESH_INTERVALS] = intervalMs;
+    // Reconnect with new interval
+    this.disconnectRealTimeUpdates(dataType);
+    // Auto-reconnect will use new interval
+  }
+
+  getRefreshInterval(dataType: string): number {
+    return LiveDataService.REFRESH_INTERVALS[dataType as keyof typeof LiveDataService.REFRESH_INTERVALS] || 60000;
+  }
+
   // WebSocket connection for real-time updates
   connectRealTimeUpdates(dataType: string, callback: Function): void {
     // Simulate WebSocket with intervals for different data types
-    const intervals = {
-      commodities: 30000, // 30 seconds
-      mining_ops: 60000,  // 1 minute
-      shipping: 45000,    // 45 seconds
-      market_intel: 120000, // 2 minutes
-      portfolio: 15000    // 15 seconds
-    };
-
-    const interval = intervals[dataType as keyof typeof intervals] || 60000;
+    const interval = this.getRefreshInterval(dataType);
 
     const updateInterval = setInterval(async () => {
       let data;
