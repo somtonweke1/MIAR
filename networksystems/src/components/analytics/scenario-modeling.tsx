@@ -357,7 +357,6 @@ const ScenarioModeling: React.FC = () => {
                 variant="outline"
                 className="border-zinc-300 text-zinc-600 hover:text-zinc-900"
               >
-                <BarChart3 className="h-4 w-4 mr-2" />
                 Sensitivity Analysis
               </Button>
             </div>
