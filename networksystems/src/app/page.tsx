@@ -7,12 +7,13 @@ import AfricanMiningNetworkMap from '@/components/live-map/african-mining-networ
 import InvestmentPortfolioOptimization from '@/components/analytics/investment-portfolio-optimization';
 import GlobalTradeNetworkModeling from '@/components/analytics/global-trade-network-modeling';
 import SupplyChainOptimization from '@/components/analytics/supply-chain-optimization';
+import LiveMarketFeed from '@/components/dashboard/live-market-feed';
 import { AuthProvider, useAuth } from '@/components/auth/auth-provider';
 import PlatformGuide from '@/components/guide/platform-guide';
 import { Button } from '@/components/ui/button';
-import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle } from 'lucide-react';
+import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity } from 'lucide-react';
 
-type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain';
+type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain' | 'live-markets';
 
 function HomeContent() {
   const { user, logout, isLoading } = useAuth();
@@ -69,6 +70,8 @@ function HomeContent() {
         return <GlobalTradeNetworkModeling />;
       case 'supply-chain':
         return <SupplyChainOptimization />;
+      case 'live-markets':
+        return <LiveMarketFeed />;
       default:
         return <AfricanMiningNetworkMap />;
     }
@@ -131,6 +134,17 @@ function HomeContent() {
                 >
                   <Package className="h-4 w-4" />
                   <span>SC-GEP Model</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('live-markets')}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-light transition-all ${
+                    activeTab === 'live-markets'
+                      ? 'bg-amber-500 text-white shadow-sm'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
+                  }`}
+                >
+                  <Activity className="h-4 w-4" />
+                  <span>Live Markets</span>
                 </button>
               </div>
             </div>
