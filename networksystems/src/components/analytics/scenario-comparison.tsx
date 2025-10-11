@@ -409,8 +409,7 @@ const ScenarioComparison: React.FC = () => {
         <div className="border-b border-zinc-200/50 px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight flex items-center">
-                <BarChart3 className="h-6 w-6 mr-3 text-purple-600" />
+              <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">
                 Scenario Comparison & Sensitivity Analysis
               </h2>
               <p className="text-sm text-zinc-500 mt-2 font-light">
