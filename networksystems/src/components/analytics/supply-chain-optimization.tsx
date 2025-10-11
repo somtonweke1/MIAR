@@ -361,7 +361,6 @@ const SupplyChainOptimization: React.FC = () => {
               size="sm"
               className="h-8 px-3 text-xs"
             >
-              <BarChart3 className="h-3 w-3 mr-1" />
               Analyze
             </Button>
           </div>
@@ -503,7 +502,7 @@ const SupplyChainOptimization: React.FC = () => {
                     disabled={isLoading}
                     className="bg-emerald-600 text-white hover:bg-emerald-700"
                   >
-                    {isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
+                    {isLoading && <RefreshCw className="h-4 w-4 animate-spin mr-2" />}
                     Optimize
                   </Button>
                 </>
