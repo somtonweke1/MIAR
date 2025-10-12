@@ -253,13 +253,22 @@ export class RealMarketDataService {
     if (cached) return cached;
 
     try {
-      // Major mining stocks
+      // Major mining stocks INCLUDING African mining companies
       const miningStocks = {
+        // Global majors
         'BHP': 'bhp_billiton',
         'RIO': 'rio_tinto',
         'VALE': 'vale',
         'FCX': 'freeport_mcmoran',
-        'SCCO': 'southern_copper'
+        'SCCO': 'southern_copper',
+        // African mining stocks
+        'ANG.JO': 'anglogold_ashanti',      // JSE: AngloGold Ashanti
+        'HAR.JO': 'harmony_gold',            // JSE: Harmony Gold
+        'SSW.JO': 'sibanye_stillwater',      // JSE: Sibanye-Stillwater
+        'AGL.JO': 'anglo_american_platinum', // JSE: Anglo American Platinum
+        'IMP.JO': 'impala_platinum',         // JSE: Impala Platinum
+        'GFI.JO': 'gold_fields',             // JSE: Gold Fields
+        'ARI.JO': 'african_rainbow_minerals' // JSE: African Rainbow Minerals
       };
 
       const promises = Object.entries(miningStocks).map(async ([symbol, company]) => {
