@@ -175,6 +175,57 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
         </div>
       </section>
 
+      {/* NEW: Platform Features - Highlight What Was Just Built */}
+      <section className="py-16 px-6 bg-zinc-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-full text-sm font-light mb-4">
+              ✨ NEW FEATURES
+            </div>
+            <h2 className="text-3xl font-extralight text-white mb-4">Complete Intelligence Platform</h2>
+            <p className="text-xl text-zinc-400 font-light">
+              More than monitoring - actionable intelligence with PDF reports, alerts, and predictions
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+              <div className="bg-emerald-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-light text-white mb-3">Executive PDF Reports</h3>
+              <p className="text-zinc-400 font-light mb-4">
+                Generate professional supply chain reports for stakeholders. One-click export of commodity prices, risk alerts, and trends.
+              </p>
+              <div className="text-sm text-emerald-400">Weekly & On-Demand</div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+              <div className="bg-amber-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-light text-white mb-3">Intelligent Alerts</h3>
+              <p className="text-zinc-400 font-light mb-4">
+                Automated email & browser alerts for price changes {'>'} 5%, supply chain bottlenecks, and geopolitical events.
+              </p>
+              <div className="text-sm text-amber-400">Real-Time Monitoring</div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+              <div className="bg-blue-500/20 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                <TrendingUp className="w-6 h-6 text-blue-400" />
+              </div>
+              <h3 className="text-xl font-light text-white mb-3">Historical Trends & Predictions</h3>
+              <p className="text-zinc-400 font-light mb-4">
+                Track price history, analyze trends (upward/downward/volatile), and get predictive forecasts with confidence scores.
+              </p>
+              <div className="text-sm text-blue-400">30-90 Day Analysis</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Tiers */}
       <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
@@ -183,26 +234,34 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
             {/* Starter Tier */}
             <div className="border border-zinc-200/50 rounded-2xl p-8 bg-white/60 backdrop-blur-sm">
               <h3 className="text-2xl font-light text-zinc-900 mb-2">Starter</h3>
-              <div className="text-3xl font-extralight text-zinc-900 mb-6">$2,500<span className="text-lg text-zinc-500">/month</span></div>
-              <ul className="space-y-4 mb-8">
+              <div className="text-3xl font-extralight text-zinc-900 mb-6">$500<span className="text-lg text-zinc-500">/month</span></div>
+              <ul className="space-y-3 mb-8">
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Basic network analysis</span>
+                  <span className="text-zinc-600 font-light text-sm">Real-time commodity tracking (5 materials)</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Limited mine coverage</span>
+                  <span className="text-zinc-600 font-light text-sm">Weekly PDF reports</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Standard reports</span>
+                  <span className="text-zinc-600 font-light text-sm">Email alerts (price {'>'} 5%)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">30-day historical trends</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">CSV exports</span>
                 </li>
               </ul>
               <button
                 onClick={handleContactSales}
                 className="w-full border border-zinc-300 text-zinc-700 py-3 rounded-lg font-light hover:bg-zinc-50 transition-colors"
               >
-                Contact Sales
+                Start 14-Day Trial
               </button>
             </div>
 
@@ -212,53 +271,77 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
                 Most Popular
               </div>
               <h3 className="text-2xl font-light text-zinc-900 mb-2">Professional</h3>
-              <div className="text-3xl font-extralight text-zinc-900 mb-6">$15,000<span className="text-lg text-zinc-500">/month</span></div>
-              <ul className="space-y-4 mb-8">
+              <div className="text-3xl font-extralight text-zinc-900 mb-6">$1,500<span className="text-lg text-zinc-500">/month</span></div>
+              <ul className="space-y-3 mb-8">
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Full African network access</span>
+                  <span className="text-zinc-600 font-light text-sm">Everything in Starter</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Real-time intelligence feeds</span>
+                  <span className="text-zinc-600 font-light text-sm">Daily PDF reports with full analysis</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Custom analysis requests</span>
+                  <span className="text-zinc-600 font-light text-sm">Custom alert thresholds</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Priority support</span>
+                  <span className="text-zinc-600 font-light text-sm">90-day trends with predictions</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">Custom scenario modeling</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">API access (100K calls/month)</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">Priority support</span>
                 </li>
               </ul>
               <button
                 onClick={handleStartTrial}
                 className="w-full bg-emerald-600 text-white py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors"
               >
-                Start Free Trial
+                Start 14-Day Trial
               </button>
             </div>
 
             {/* Enterprise Tier */}
             <div className="border border-zinc-200/50 rounded-2xl p-8 bg-white/60 backdrop-blur-sm">
               <h3 className="text-2xl font-light text-zinc-900 mb-2">Enterprise</h3>
-              <div className="text-3xl font-extralight text-zinc-900 mb-6">$50,000+<span className="text-lg text-zinc-500">/month</span></div>
-              <ul className="space-y-4 mb-8">
+              <div className="text-3xl font-extralight text-zinc-900 mb-6">Custom<span className="text-lg text-zinc-500"></span></div>
+              <ul className="space-y-3 mb-8">
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">White-glove service</span>
+                  <span className="text-zinc-600 font-light text-sm">Everything in Professional</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Custom integrations</span>
+                  <span className="text-zinc-600 font-light text-sm">White-label reporting</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Strategic advisory calls</span>
+                  <span className="text-zinc-600 font-light text-sm">Custom integrations</span>
                 </li>
                 <li className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-emerald-500" />
-                  <span className="text-zinc-600 font-light">Dedicated account manager</span>
+                  <span className="text-zinc-600 font-light text-sm">Unlimited API calls</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">Strategic advisory calls</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">Dedicated account manager</span>
+                </li>
+                <li className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                  <span className="text-zinc-600 font-light text-sm">SLA guarantees</span>
                 </li>
               </ul>
               <button

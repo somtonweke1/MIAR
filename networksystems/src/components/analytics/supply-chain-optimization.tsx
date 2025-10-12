@@ -8,6 +8,7 @@ import ScenarioModeling from './scenario-modeling';
 import GeopoliticalRiskDashboard from './geopolitical-risk-dashboard';
 import ScenarioComparison from './scenario-comparison';
 import ESGComplianceTracker from './esg-compliance-tracker';
+import CustomScenarioBuilder from './custom-scenario-builder';
 import ThreeDSupplyChainNetwork from '../visualization/3d-supply-chain-network';
 import {
   Package,
@@ -101,7 +102,7 @@ const SupplyChainOptimization: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState('africa');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['materials', 'technologies']));
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
+  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'custom_scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
 
   // Mock data for visualization
   const [nodes, setNodes] = useState<SupplyChainNode[]>([
@@ -213,6 +214,8 @@ const SupplyChainOptimization: React.FC = () => {
         return <MaterialFlowTracking />;
       case 'scenarios':
         return <ScenarioModeling />;
+      case 'custom_scenarios':
+        return <CustomScenarioBuilder />;
       case 'geopolitical_risk':
         return <GeopoliticalRiskDashboard />;
       case 'scenario_comparison':
@@ -450,6 +453,17 @@ const SupplyChainOptimization: React.FC = () => {
                 >
                   <Calculator className="h-4 w-4" />
                   <span>Scenarios</span>
+                </button>
+                <button
+                  onClick={() => setActiveView('custom_scenarios')}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
+                    activeView === 'custom_scenarios'
+                      ? 'bg-purple-500 text-white shadow-sm'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
+                  }`}
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Custom</span>
                 </button>
                 <button
                   onClick={() => setActiveView('geopolitical_risk')}
