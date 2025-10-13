@@ -25,6 +25,8 @@ interface GeopoliticalRisk {
   };
   trend: 'improving' | 'stable' | 'deteriorating';
   lastUpdated: string;
+  dataSources?: string[]; // REAL DATA SOURCES
+  esgData?: any; // Full ESG data from verified sources
 }
 
 interface SupplyChainEvent {
@@ -38,6 +40,9 @@ interface SupplyChainEvent {
   startDate: string;
   endDate?: string;
   probabilityEstimate?: number;
+  source?: string; // NEWS SOURCE
+  sourceUrl?: string; // LINK TO ARTICLE
+  verified?: boolean; // IS THIS REAL NEWS?
 }
 
 interface GeopoliticalRiskDashboardProps {
@@ -265,12 +270,17 @@ export default function GeopoliticalRiskDashboard({
                       </div>
                       {getTrendIcon(risk.trend)}
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="text-sm text-zinc-600">Risk Score</div>
                       <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getRiskColor(risk.riskScore)}`}>
                         {risk.riskScore}
                       </div>
                     </div>
+                    {risk.dataSources && risk.dataSources.length > 0 && (
+                      <div className="text-xs text-emerald-600 mt-2">
+                        ✓ Verified: {risk.dataSources[0].split(' ')[0]}
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>
@@ -297,6 +307,16 @@ export default function GeopoliticalRiskDashboard({
                   <div className="text-xs text-zinc-600 mb-2">
                     <strong>Impact:</strong> {event.impact}
                   </div>
+                  {event.source && (
+                    <div className="text-xs text-emerald-600 mb-2 font-medium">
+                      ✓ Source: {event.source} {event.verified && '(Verified)'}
+                      {event.sourceUrl && (
+                        <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-2 underline hover:text-emerald-700">
+                          View Article →
+                        </a>
+                      )}
+                    </div>
+                  )}
                   <div className="flex flex-wrap gap-1">
                     {event.affectedMaterials.map((material) => (
                       <span

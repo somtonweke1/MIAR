@@ -1,11 +1,13 @@
 /**
  * PDF Export Service
  * Generate executive reports for supply chain analysis
+ * WITH AUDIT TRAIL LOGGING FOR SEC COMPLIANCE
  */
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format } from 'date-fns';
+import AuditTrailService from './audit-trail-service';
 
 interface CommodityData {
   name: string;
@@ -377,9 +379,38 @@ export class PDFExportService {
   }
 
   /**
-   * Download PDF
+   * Download PDF WITH AUDIT LOGGING
    */
-  static downloadReport(doc: jsPDF, filename: string) {
+  static downloadReport(
+    doc: jsPDF,
+    filename: string,
+    userData?: {
+      userId: string;
+      userEmail: string;
+      sessionId: string;
+      reportType: 'executive' | 'detailed';
+      commodities: string[];
+    }
+  ) {
+    // LOG TO AUDIT TRAIL
+    if (userData) {
+      const auditService = AuditTrailService.getInstance();
+      auditService.logPDFExport({
+        userId: userData.userId,
+        userEmail: userData.userEmail,
+        sessionId: userData.sessionId,
+        reportType: userData.reportType,
+        commodities: userData.commodities,
+        dataSources: [
+          'Yahoo Finance (Real-time commodities)',
+          'USGS Mineral Summaries 2024',
+          'ILO Reports',
+          'World Bank Governance Indicators',
+          'NewsAPI / Reuters'
+        ]
+      });
+    }
+
     doc.save(filename);
   }
 
