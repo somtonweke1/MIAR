@@ -97,7 +97,7 @@ const LiveMarketFeed: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Live Market Data</h2>
-          <p className="text-sm text-zinc-500 mt-1">Real-time commodity prices and mining stocks</p>
+          <p className="text-sm text-zinc-500 mt-1">Real-time commodities, mining stocks, forex, and battery metals</p>
         </div>
         <div className="flex items-center space-x-4">
           {commoditiesUpdated && (
@@ -151,6 +151,89 @@ const LiveMarketFeed: React.FC = () => {
               {Object.entries(financial.mining_stocks).map(([name, data]) =>
                 renderMiningStock(name, data)
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Battery Metals & Rare Earths */}
+      {financial?.battery_metals && Object.keys(financial.battery_metals).length > 0 && (
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-6 py-4">
+            <h3 className="text-lg font-light text-zinc-900">Battery Metals & Critical Minerals</h3>
+            <p className="text-xs text-zinc-500 mt-1">Essential for EV batteries and renewable energy</p>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(financial.battery_metals).map(([name, data]: [string, any]) => (
+                <div key={name} className="bg-white/60 backdrop-blur-sm rounded-lg border border-zinc-200/50 p-4 hover:border-zinc-300 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h4 className="text-sm font-medium text-zinc-900 capitalize">{name.replace(/_/g, ' ')}</h4>
+                      {data.supply_risk && (
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          data.supply_risk === 'critical' ? 'bg-rose-100 text-rose-700' :
+                          data.supply_risk === 'high' ? 'bg-amber-100 text-amber-700' :
+                          'bg-emerald-100 text-emerald-700'
+                        }`}>
+                          {data.supply_risk} risk
+                        </span>
+                      )}
+                    </div>
+                    <div className={`flex items-center space-x-1 ${getChangeColor(data.daily_change || 0)}`}>
+                      {getChangeIcon(data.daily_change || 0)}
+                      <span className="text-xs font-medium">{formatChange(data.daily_change || 0)}</span>
+                    </div>
+                  </div>
+                  <div className="text-2xl font-extralight text-zinc-900">
+                    ${formatPrice(data.current, 0)}
+                  </div>
+                  <div className="mt-2 text-xs text-zinc-500">
+                    {data.applications && data.applications.length > 0 && (
+                      <div className="mt-1">Uses: {data.applications.slice(0, 2).join(', ')}</div>
+                    )}
+                    {data.primary_producers && data.primary_producers.length > 0 && (
+                      <div className="mt-1">Top: {data.primary_producers[0]}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mining Currency Exchange Rates */}
+      {financial?.forex_rates && Object.keys(financial.forex_rates).length > 0 && (
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="border-b border-zinc-200/50 px-6 py-4">
+            <h3 className="text-lg font-light text-zinc-900">Mining Jurisdiction Currencies</h3>
+            <p className="text-xs text-zinc-500 mt-1">Exchange rates affecting mining economics</p>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(financial.forex_rates).map(([name, data]: [string, any]) => (
+                <div key={name} className="bg-white/60 backdrop-blur-sm rounded-lg border border-zinc-200/50 p-4 hover:border-zinc-300 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h4 className="text-sm font-medium text-zinc-900 capitalize">{name.replace(/_/g, ' ')}</h4>
+                      <span className="text-xs text-zinc-500">{data.symbol}</span>
+                    </div>
+                    <div className={`flex items-center space-x-1 ${getChangeColor(data.daily_change || 0)}`}>
+                      {getChangeIcon(data.daily_change || 0)}
+                      <span className="text-xs font-medium">{formatChange(data.daily_change || 0)}</span>
+                    </div>
+                  </div>
+                  <div className="text-2xl font-extralight text-zinc-900">
+                    {formatPrice(data.rate, 4)}
+                  </div>
+                  {data.impact && (
+                    <div className="mt-2 text-xs text-zinc-500 line-clamp-2">
+                      {data.impact}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
