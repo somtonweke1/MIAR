@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import PDFExportService from '@/services/pdf-export-service';
 import {
   BarChart3,
   TrendingUp,
@@ -403,67 +402,75 @@ const ScenarioComparison: React.FC = () => {
     }
   };
 
-  const handleExportToPDF = () => {
+  const handleExportToPDF = async () => {
     if (scenarios.length === 0) {
       alert('No scenarios available to export');
       return;
     }
 
-    // Prepare risk alerts from all scenarios' bottlenecks
-    const allRiskAlerts = scenarios.flatMap(scenario =>
-      scenario.bottlenecks.map(bottleneck => ({
-        severity: bottleneck.severity,
-        category: 'Supply Chain Bottleneck',
-        description: `${bottleneck.material}: ${bottleneck.impact}% impact - ${bottleneck.timeframe}`,
-        date: scenario.lastUpdated
-      }))
-    );
+    try {
+      // Dynamically import PDF service for client-side use
+      const PDFExportService = (await import('@/services/pdf-export-service')).default;
 
-    // Prepare commodity data from selected scenarios or all scenarios
-    const scenariosToExport = selectedScenarios.length > 0
-      ? scenarios.filter(s => selectedScenarios.includes(s.id))
-      : scenarios;
+      // Prepare risk alerts from all scenarios' bottlenecks
+      const allRiskAlerts = scenarios.flatMap(scenario =>
+        scenario.bottlenecks.map(bottleneck => ({
+          severity: bottleneck.severity,
+          category: 'Supply Chain Bottleneck',
+          description: `${bottleneck.material}: ${bottleneck.impact}% impact - ${bottleneck.timeframe}`,
+          date: scenario.lastUpdated
+        }))
+      );
 
-    const commodities: Record<string, any> = {};
-    scenariosToExport.forEach(scenario => {
-      Object.entries(scenario.metrics.materialUtilization).forEach(([material, utilization]) => {
-        if (!commodities[material]) {
-          commodities[material] = {
-            name: material.charAt(0).toUpperCase() + material.slice(1),
-            current: 0,
-            daily_change: 0,
-            volume: 0,
-            source: 'Scenario Analysis'
-          };
-        }
-        commodities[material].current += utilization;
+      // Prepare commodity data from selected scenarios or all scenarios
+      const scenariosToExport = selectedScenarios.length > 0
+        ? scenarios.filter(s => selectedScenarios.includes(s.id))
+        : scenarios;
+
+      const commodities: Record<string, any> = {};
+      scenariosToExport.forEach(scenario => {
+        Object.entries(scenario.metrics.materialUtilization).forEach(([material, utilization]) => {
+          if (!commodities[material]) {
+            commodities[material] = {
+              name: material.charAt(0).toUpperCase() + material.slice(1),
+              current: 0,
+              daily_change: 0,
+              volume: 0,
+              source: 'Scenario Analysis'
+            };
+          }
+          commodities[material].current += utilization;
+        });
       });
-    });
 
-    // Average the utilization values
-    Object.keys(commodities).forEach(key => {
-      commodities[key].current = commodities[key].current / scenariosToExport.length;
-      commodities[key].daily_change = Math.random() * 10 - 5; // Mock change
-    });
+      // Average the utilization values
+      Object.keys(commodities).forEach(key => {
+        commodities[key].current = commodities[key].current / scenariosToExport.length;
+        commodities[key].daily_change = Math.random() * 10 - 5; // Mock change
+      });
 
-    const reportData = {
-      title: 'Scenario Comparison Report',
-      reportDate: new Date(),
-      userName: 'User',
-      userCompany: 'MIAR Platform',
-      commodities: commodities,
-      riskAlerts: allRiskAlerts,
-      summary: `Comparison of ${scenarios.length} supply chain scenarios. ${
-        selectedScenarios.length > 0
-          ? `Selected scenarios: ${selectedScenarios.length}`
-          : 'All scenarios included'
-      }. Analysis mode: ${comparisonMode}.`
-    };
+      const reportData = {
+        title: 'Scenario Comparison Report',
+        reportDate: new Date(),
+        userName: 'User',
+        userCompany: 'MIAR Platform',
+        commodities: commodities,
+        riskAlerts: allRiskAlerts,
+        summary: `Comparison of ${scenarios.length} supply chain scenarios. ${
+          selectedScenarios.length > 0
+            ? `Selected scenarios: ${selectedScenarios.length}`
+            : 'All scenarios included'
+        }. Analysis mode: ${comparisonMode}.`
+      };
 
-    const doc = PDFExportService.generateDetailedReport(reportData);
-    const filename = `scenario-comparison-${new Date().toISOString().split('T')[0]}.pdf`;
+      const doc = PDFExportService.generateDetailedReport(reportData);
+      const filename = `scenario-comparison-${new Date().toISOString().split('T')[0]}.pdf`;
 
-    PDFExportService.downloadReport(doc, filename);
+      PDFExportService.downloadReport(doc, filename);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+      alert('Failed to generate PDF report. Please check the console for details.');
+    }
   };
 
   return (
