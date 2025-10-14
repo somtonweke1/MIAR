@@ -199,9 +199,6 @@ const MaterialFlowTracking: React.FC = () => {
                 <div className="text-xs text-zinc-400 uppercase tracking-wider font-light">Critical Bottlenecks</div>
               </div>
             </div>
-            <div className="text-center text-xs text-emerald-600 font-medium border-t border-zinc-200 pt-3">
-              ✓ Data Sources: Yahoo Finance (Live) · Reuters · Mining.com · USGS 2024 · Real-time APIs
-            </div>
           </div>
         )}
       </div>
