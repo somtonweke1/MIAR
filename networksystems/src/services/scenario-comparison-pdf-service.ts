@@ -55,6 +55,10 @@ export class ScenarioComparisonPDFService {
     // Cover Page
     this.addCoverPage(doc, scenarios.length, selectedScenarios.length);
 
+    // === DECISION RECOMMENDATION PAGE - THE MOST IMPORTANT PAGE ===
+    doc.addPage();
+    this.addExecutiveDecisionRecommendation(doc, scenarios, selectedScenarios, comparisonMode);
+
     // Executive Summary
     doc.addPage();
     let yPos = this.addExecutiveSummary(doc, scenarios, comparisonMode);
@@ -157,6 +161,233 @@ export class ScenarioComparisonPDFService {
     doc.setFont('helvetica', 'normal');
     doc.text('CONFIDENTIAL - This report contains proprietary analysis and strategic insights.', 20, 270);
     doc.text('Distribution limited to authorized personnel only.', 20, 276);
+  }
+
+  /**
+   * EXECUTIVE DECISION RECOMMENDATION - THE CRITICAL PAGE
+   * This page tells the user EXACTLY what decision to make and why
+   */
+  private static addExecutiveDecisionRecommendation(
+    doc: jsPDF,
+    scenarios: ScenarioData[],
+    selected: string[],
+    mode: string
+  ): void {
+    // Title
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('EXECUTIVE DECISION', 20, 30);
+    doc.text('RECOMMENDATION', 20, 42);
+
+    // === THE RECOMMENDATION BOX - BOLD AND CLEAR ===
+    const best = this.findBestScenario(scenarios, mode);
+    const decisionAnalysis = this.generateDecisionAnalysis(scenarios, best, mode);
+
+    // Big bold recommendation box
+    doc.setFillColor(5, 150, 105); // Emerald
+    doc.roundedRect(20, 60, 170, 45, 3, 3, 'F');
+
+    // Confidence badge
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(30, 68, 45, 12, 2, 2, 'F');
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...this.BRAND_COLOR);
+    doc.text('CONFIDENCE:', 33, 75);
+    doc.setFontSize(11);
+    doc.text(`${decisionAnalysis.confidenceScore}%`, 58, 75.5);
+
+    // Main recommendation
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 255, 255);
+    doc.text('RECOMMENDED DECISION:', 30, 90);
+
+    doc.setFontSize(18);
+    doc.text(`Proceed with ${best.name}`, 30, 100);
+
+    // === WHY THIS DECISION ===
+    let yPos = 120;
+    doc.setFillColor(254, 249, 195); // Yellow-100
+    doc.roundedRect(20, yPos, 170, 50, 2, 2, 'F');
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(120, 53, 15); // Yellow-900
+    doc.text('WHY THIS DECISION:', 25, yPos + 10);
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(30, 30, 30);
+    const reasonsLines = doc.splitTextToSize(decisionAnalysis.primaryReason, 160);
+    doc.text(reasonsLines, 25, yPos + 20);
+
+    yPos += 60;
+
+    // === KEY DECISION FACTORS ===
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('Key Decision Factors:', 20, yPos);
+    yPos += 10;
+
+    const factors = decisionAnalysis.decisionFactors;
+
+    factors.forEach((factor, index) => {
+      // Factor box
+      const boxColor: [number, number, number] = factor.impact === 'positive' ? [220, 252, 231] : // Green-100
+                      factor.impact === 'negative' ? [254, 226, 226] : // Red-100
+                      [254, 243, 199]; // Yellow-100
+
+      doc.setFillColor(...boxColor);
+      doc.roundedRect(20, yPos, 170, 22, 2, 2, 'F');
+
+      // Impact icon
+      const icon = factor.impact === 'positive' ? '✓' : factor.impact === 'negative' ? '⚠' : '→';
+      const iconColor: [number, number, number] = factor.impact === 'positive' ? [22, 101, 52] : // Green-800
+                       factor.impact === 'negative' ? [153, 27, 27] : // Red-800
+                       [146, 64, 14]; // Yellow-800
+
+      doc.setTextColor(...iconColor);
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text(icon, 25, yPos + 12);
+
+      // Factor text
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text(factor.title, 35, yPos + 8);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(60, 60, 60);
+      doc.text(factor.value, 35, yPos + 15);
+
+      yPos += 26;
+    });
+
+    // === IMMEDIATE ACTIONS REQUIRED ===
+    yPos += 5;
+    doc.setFillColor(239, 246, 255); // Blue-50
+    doc.roundedRect(20, yPos, 170, 60, 2, 2, 'F');
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 58, 138); // Blue-900
+    doc.text('IMMEDIATE ACTIONS REQUIRED:', 25, yPos + 10);
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(30, 30, 30);
+
+    let actionY = yPos + 20;
+    decisionAnalysis.immediateActions.forEach((action, index) => {
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${index + 1}.`, 28, actionY);
+      doc.setFont('helvetica', 'normal');
+      doc.text(action, 35, actionY);
+      actionY += 6;
+    });
+
+    // === DECISION TIMELINE ===
+    yPos += 70;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('Decision Timeline:', 20, yPos);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 80);
+    doc.text('This recommendation is time-sensitive. The analysis is based on current market conditions.', 20, yPos + 8);
+    doc.text(`Recommended decision date: Within ${decisionAnalysis.urgency} of this report.`, 20, yPos + 14);
+  }
+
+  /**
+   * Generate Decision Analysis with Confidence Scoring
+   */
+  private static generateDecisionAnalysis(scenarios: ScenarioData[], best: ScenarioData, mode: string) {
+    // Calculate confidence score based on multiple factors
+    const avgCost = scenarios.reduce((s, sc) => s + sc.costs.totalCost, 0) / scenarios.length;
+    const costAdvantage = ((avgCost - best.costs.totalCost) / avgCost) * 100;
+    const reliabilityScore = best.metrics.reliabilityScore;
+    const criticalBottlenecks = best.bottlenecks.filter(b => b.severity === 'critical').length;
+
+    // Confidence calculation
+    let confidence = 70; // Base confidence
+    if (costAdvantage > 15) confidence += 15; // Significant cost advantage
+    else if (costAdvantage > 10) confidence += 10;
+    else if (costAdvantage > 5) confidence += 5;
+
+    if (reliabilityScore > 90) confidence += 10;
+    else if (reliabilityScore > 85) confidence += 5;
+
+    if (criticalBottlenecks === 0) confidence += 5;
+    else if (criticalBottlenecks > 2) confidence -= 10;
+
+    if (best.feasibility && best.convergence === 'optimal') confidence += 5;
+
+    confidence = Math.min(Math.max(confidence, 60), 98); // Cap between 60-98%
+
+    // Primary reason for recommendation
+    const savingsAmount = (avgCost - best.costs.totalCost) / 1e9;
+    const primaryReason = `${best.name} delivers optimal value with $${(best.costs.totalCost / 1e9).toFixed(2)}B total investment—achieving ${costAdvantage.toFixed(1)}% cost savings ($${savingsAmount.toFixed(2)}B) compared to the average scenario while maintaining ${reliabilityScore}% operational reliability. This scenario balances cost efficiency with supply chain resilience, positioning your organization for sustainable growth with manageable risk exposure.`;
+
+    // Decision factors
+    const decisionFactors = [];
+
+    // Cost factor
+    decisionFactors.push({
+      title: 'Cost Optimization',
+      value: `$${savingsAmount.toFixed(2)}B potential savings (${costAdvantage.toFixed(1)}% reduction)`,
+      impact: costAdvantage > 10 ? 'positive' : 'neutral'
+    });
+
+    // Reliability factor
+    decisionFactors.push({
+      title: 'Operational Reliability',
+      value: `${reliabilityScore.toFixed(1)}% reliability score - ${reliabilityScore > 85 ? 'Strong' : 'Moderate'} performance`,
+      impact: reliabilityScore > 85 ? 'positive' : 'neutral'
+    });
+
+    // Risk factor
+    const riskLevel = criticalBottlenecks === 0 ? 'Low' : criticalBottlenecks === 1 ? 'Moderate' : 'Elevated';
+    decisionFactors.push({
+      title: 'Supply Chain Risk',
+      value: `${criticalBottlenecks} critical bottleneck${criticalBottlenecks !== 1 ? 's' : ''} identified - ${riskLevel} risk profile`,
+      impact: criticalBottlenecks === 0 ? 'positive' : criticalBottlenecks > 1 ? 'negative' : 'neutral'
+    });
+
+    // Emissions factor
+    const avgEmissions = scenarios.reduce((s, sc) => s + sc.metrics.carbonEmissions, 0) / scenarios.length;
+    const emissionsVsAvg = ((best.metrics.carbonEmissions - avgEmissions) / avgEmissions) * 100;
+    decisionFactors.push({
+      title: 'Environmental Impact',
+      value: `${(best.metrics.carbonEmissions / 1e6).toFixed(1)}M tonnes CO2 (${emissionsVsAvg.toFixed(0)}% vs average)`,
+      impact: emissionsVsAvg < -5 ? 'positive' : emissionsVsAvg > 10 ? 'negative' : 'neutral'
+    });
+
+    // Immediate actions
+    const immediateActions = [
+      `Present this recommendation to executive leadership within 5 business days`,
+      `Secure budget approval for $${(best.costs.totalCost / 1e9).toFixed(2)}B total investment`,
+      `Begin supplier engagement for ${best.bottlenecks.length > 0 ? best.bottlenecks[0].material : 'critical materials'}`,
+      `Establish project governance structure and KPI framework`,
+      `Initiate detailed implementation planning (see roadmap section)`
+    ];
+
+    // Urgency
+    const urgency = criticalBottlenecks > 1 ? '7 days' : criticalBottlenecks === 1 ? '14 days' : '30 days';
+
+    return {
+      confidenceScore: confidence,
+      primaryReason,
+      decisionFactors,
+      immediateActions,
+      urgency
+    };
   }
 
   /**
