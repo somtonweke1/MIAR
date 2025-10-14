@@ -243,16 +243,18 @@ export class ScenarioComparisonPDFService {
       doc.setFillColor(...boxColor);
       doc.roundedRect(20, yPos, 170, 22, 2, 2, 'F');
 
-      // Impact icon
-      const icon = factor.impact === 'positive' ? '✓' : factor.impact === 'negative' ? '⚠' : '→';
+      // Impact indicator - use symbols that work in PDFs
+      const icon = factor.impact === 'positive' ? '+' : factor.impact === 'negative' ? '!' : '-';
       const iconColor: [number, number, number] = factor.impact === 'positive' ? [22, 101, 52] : // Green-800
                        factor.impact === 'negative' ? [153, 27, 27] : // Red-800
                        [146, 64, 14]; // Yellow-800
 
-      doc.setTextColor(...iconColor);
-      doc.setFontSize(16);
+      doc.setFillColor(...iconColor);
+      doc.circle(28, yPos + 11, 3.5, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.text(icon, 25, yPos + 12);
+      doc.text(icon, 28, yPos + 12.5, { align: 'center' });
 
       // Factor text
       doc.setFontSize(10);
@@ -437,10 +439,10 @@ export class ScenarioComparisonPDFService {
     const metricsData = [
       ['Average Total Cost', `$${(metrics.avgCost / 1e9).toFixed(2)}B`, this.getMetricTrend(metrics.costVariance)],
       ['Avg Reliability Score', `${metrics.avgReliability.toFixed(1)}%`, this.getMetricTrend(metrics.reliabilityVariance)],
-      ['Total Bottlenecks', `${metrics.totalBottlenecks}`, metrics.criticalBottlenecks > 0 ? '⚠️  CRITICAL' : '✓  MANAGEABLE'],
+      ['Total Bottlenecks', `${metrics.totalBottlenecks}`, metrics.criticalBottlenecks > 0 ? 'CRITICAL' : 'MANAGEABLE'],
       ['Carbon Footprint', `${(metrics.avgEmissions / 1e6).toFixed(1)}M tonnes`, this.getEmissionsTrend(metrics.avgEmissions)],
       ['Cost Spread', `$${(metrics.costSpread / 1e9).toFixed(2)}B`, `Range: ${((metrics.costSpread / metrics.avgCost) * 100).toFixed(1)}%`],
-      ['Feasibility Rate', `${metrics.feasibilityRate.toFixed(0)}%`, metrics.feasibilityRate === 100 ? '✓  ALL VIABLE' : '⚠️  REVIEW NEEDED']
+      ['Feasibility Rate', `${metrics.feasibilityRate.toFixed(0)}%`, metrics.feasibilityRate === 100 ? 'ALL VIABLE' : 'REVIEW NEEDED']
     ];
 
     autoTable(doc, {
@@ -518,7 +520,7 @@ export class ScenarioComparisonPDFService {
         doc.setFontSize(9);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(157, 23, 77); // Pink-900
-        doc.text(`💡 ${finding.impact}`, 33, impactY + 6);
+        doc.text(`IMPACT: ${finding.impact}`, 33, impactY + 6);
         yPos = impactY + 15;
       } else {
         yPos += 12 + (contentLines.length * 5) + 5;
@@ -755,18 +757,18 @@ export class ScenarioComparisonPDFService {
 
       const color = insight.level === 'critical' ? this.CRITICAL_COLOR : this.WARNING_COLOR;
       doc.setFillColor(...color);
-      doc.circle(22, yPos + 2, 2, 'F');
+      doc.circle(23, yPos + 3, 2.5, 'F');
 
       doc.setFontSize(10);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 0, 0);
-      doc.text(insight.title, 27, yPos + 3);
+      doc.text(insight.title, 30, yPos + 5);
 
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(60, 60, 60);
       doc.setFontSize(9);
       const lines = doc.splitTextToSize(insight.description, 160);
-      doc.text(lines, 27, yPos + 10);
+      doc.text(lines, 30, yPos + 12);
 
       yPos += 10 + (lines.length * 4) + 5;
     });
@@ -1030,15 +1032,15 @@ export class ScenarioComparisonPDFService {
   }
 
   private static getMetricTrend(variance: number): string {
-    if (variance < 5) return '✓  STABLE';
-    if (variance < 15) return '⚠  MODERATE VARIANCE';
-    return '⚠️  HIGH VARIANCE';
+    if (variance < 5) return 'STABLE';
+    if (variance < 15) return 'MODERATE VARIANCE';
+    return 'HIGH VARIANCE';
   }
 
   private static getEmissionsTrend(emissions: number): string {
-    if (emissions < 10000000) return '✓  LOW IMPACT';
-    if (emissions < 15000000) return '⚠  MODERATE IMPACT';
-    return '⚠️  HIGH IMPACT';
+    if (emissions < 10000000) return 'LOW IMPACT';
+    if (emissions < 15000000) return 'MODERATE IMPACT';
+    return 'HIGH IMPACT';
   }
 
   private static generateStrategicFindings(scenarios: ScenarioData[], selected: string[]) {
@@ -1099,19 +1101,19 @@ export class ScenarioComparisonPDFService {
       .findIndex(s => s.id === scenario.id) + 1;
 
     return [
-      ['Total Cost', `$${(scenario.costs.totalCost / 1e9).toFixed(2)}B`, `${costRank}/${allScenarios.length}`, costRank === 1 ? '⭐ BEST' : costRank <= 2 ? '✓ GOOD' : '→ MODERATE'],
-      ['Reliability', `${scenario.metrics.reliabilityScore}%`, `${reliabilityRank}/${allScenarios.length}`, reliabilityRank === 1 ? '⭐ BEST' : reliabilityRank <= 2 ? '✓ GOOD' : '→ MODERATE'],
-      ['Supply Chain Risk', `${scenario.metrics.bottleneckCount} bottlenecks`, `${bottleneckRank}/${allScenarios.length}`, bottleneckRank === 1 ? '⭐ BEST' : bottleneckRank <= 2 ? '✓ GOOD' : '⚠ ELEVATED'],
-      ['Carbon Footprint', `${(scenario.metrics.carbonEmissions / 1e6).toFixed(1)}M`, `${emissionsRank}/${allScenarios.length}`, emissionsRank === 1 ? '⭐ BEST' : emissionsRank <= 2 ? '✓ GOOD' : '→ MODERATE']
+      ['Total Cost', `$${(scenario.costs.totalCost / 1e9).toFixed(2)}B`, `${costRank}/${allScenarios.length}`, costRank === 1 ? 'BEST' : costRank <= 2 ? 'GOOD' : 'MODERATE'],
+      ['Reliability', `${scenario.metrics.reliabilityScore}%`, `${reliabilityRank}/${allScenarios.length}`, reliabilityRank === 1 ? 'BEST' : reliabilityRank <= 2 ? 'GOOD' : 'MODERATE'],
+      ['Supply Chain Risk', `${scenario.metrics.bottleneckCount} bottlenecks`, `${bottleneckRank}/${allScenarios.length}`, bottleneckRank === 1 ? 'BEST' : bottleneckRank <= 2 ? 'GOOD' : 'ELEVATED'],
+      ['Carbon Footprint', `${(scenario.metrics.carbonEmissions / 1e6).toFixed(1)}M`, `${emissionsRank}/${allScenarios.length}`, emissionsRank === 1 ? 'BEST' : emissionsRank <= 2 ? 'GOOD' : 'MODERATE']
     ];
   }
 
   private static getSeverityBadge(severity: string): string {
     switch (severity) {
-      case 'critical': return '🔴 CRITICAL';
-      case 'high': return '🟠 HIGH';
-      case 'medium': return '🟡 MEDIUM';
-      case 'low': return '🟢 LOW';
+      case 'critical': return '[CRITICAL]';
+      case 'high': return '[HIGH]';
+      case 'medium': return '[MEDIUM]';
+      case 'low': return '[LOW]';
       default: return severity.toUpperCase();
     }
   }
@@ -1126,19 +1128,19 @@ export class ScenarioComparisonPDFService {
 
   private static calculateCostEfficiency(scenario: ScenarioData): string {
     const efficiency = (scenario.metrics.reliabilityScore / (scenario.costs.totalCost / 1e9));
-    if (efficiency > 40) return '⭐ EXCELLENT';
-    if (efficiency > 30) return '✓ GOOD';
-    if (efficiency > 20) return '→ FAIR';
-    return '⚠ POOR';
+    if (efficiency > 40) return 'EXCELLENT';
+    if (efficiency > 30) return 'GOOD';
+    if (efficiency > 20) return 'FAIR';
+    return 'POOR';
   }
 
   private static calculateRiskProfile(scenario: ScenarioData) {
     const criticalCount = scenario.bottlenecks.filter(b => b.severity === 'critical').length;
     const highCount = scenario.bottlenecks.filter(b => b.severity === 'high').length;
 
-    const materialRisk = criticalCount > 0 ? '🔴 HIGH' : highCount > 1 ? '🟡 MEDIUM' : '🟢 LOW';
-    const costRisk = scenario.costs.penaltyCost > scenario.costs.totalCost * 0.05 ? '🟡 MEDIUM' : '🟢 LOW';
-    const timelineRisk = scenario.bottlenecks.some(b => b.timeframe.includes('immediate')) ? '🔴 HIGH' : '🟢 LOW';
+    const materialRisk = criticalCount > 0 ? '[HIGH]' : highCount > 1 ? '[MEDIUM]' : '[LOW]';
+    const costRisk = scenario.costs.penaltyCost > scenario.costs.totalCost * 0.05 ? '[MEDIUM]' : '[LOW]';
+    const timelineRisk = scenario.bottlenecks.some(b => b.timeframe.includes('immediate')) ? '[HIGH]' : '[LOW]';
     const overallRisk = criticalCount > 0 || highCount > 2 ? 'HIGH' : highCount > 0 ? 'MEDIUM' : 'LOW';
 
     return {
@@ -1152,9 +1154,9 @@ export class ScenarioComparisonPDFService {
 
   private static getRiskLevel(level: string): string {
     switch (level) {
-      case 'HIGH': return '🔴 HIGH';
-      case 'MEDIUM': return '🟡 MEDIUM';
-      case 'LOW': return '🟢 LOW';
+      case 'HIGH': return '[HIGH]';
+      case 'MEDIUM': return '[MEDIUM]';
+      case 'LOW': return '[LOW]';
       default: return level;
     }
   }
