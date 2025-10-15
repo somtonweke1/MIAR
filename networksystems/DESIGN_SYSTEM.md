@@ -40,6 +40,7 @@ Create a sophisticated, enterprise-grade platform for Mining Intelligence & Afri
 /* Primary gradient for full-page backgrounds */
 background: linear-gradient(to bottom right, #fafafa, #f4f4f5) /* from-zinc-50 to-zinc-100 */
 
+
 /* Glassmorphism overlays */
 background: rgba(255, 255, 255, 0.95) /* bg-white/95 */
 backdrop-filter: blur(12px) /* backdrop-blur-md */

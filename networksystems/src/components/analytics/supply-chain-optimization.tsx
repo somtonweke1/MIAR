@@ -31,7 +31,10 @@ import {
   Square,
   Triangle,
   Layers,
-  Calculator
+  Calculator,
+  ZoomIn,
+  ZoomOut,
+  Maximize2
 } from 'lucide-react';
 
 interface SupplyChainNode {
@@ -103,6 +106,12 @@ const SupplyChainOptimization: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['materials', 'technologies']));
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'custom_scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
+
+  // Zoom and pan state
+  const [zoom, setZoom] = useState(1);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
 
   // Mock data for visualization
   const [nodes, setNodes] = useState<SupplyChainNode[]>([
@@ -208,6 +217,50 @@ const SupplyChainOptimization: React.FC = () => {
     runOptimization();
   }, [runOptimization]);
 
+  // Zoom and pan functions
+  const handleZoomIn = () => {
+    setZoom(prev => Math.min(prev + 0.2, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoom(prev => Math.max(prev - 0.2, 0.5));
+  };
+
+  const handleResetZoom = () => {
+    setZoom(1);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    setZoom(prev => Math.max(0.5, Math.min(3, prev + delta)));
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (e.button === 0) { // Left mouse button
+      setIsPanning(true);
+      setPanStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (isPanning) {
+      setPanOffset({
+        x: e.clientX - panStart.x,
+        y: e.clientY - panStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsPanning(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPanning(false);
+  };
+
   const renderActiveView = () => {
     switch (activeView) {
       case 'materials':
@@ -236,8 +289,48 @@ const SupplyChainOptimization: React.FC = () => {
         </div>
         <div className="p-6">
           <div className="relative h-96 bg-gradient-to-br from-zinc-50 to-zinc-100 rounded-lg overflow-hidden">
+            {/* Zoom Controls */}
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg border border-zinc-200 shadow-sm z-10">
+              <div className="flex flex-col">
+                <button
+                  onClick={handleZoomIn}
+                  className="p-2 hover:bg-zinc-100 transition-colors border-b border-zinc-200"
+                  title="Zoom In"
+                >
+                  <ZoomIn className="h-4 w-4 text-zinc-700" />
+                </button>
+                <button
+                  onClick={handleResetZoom}
+                  className="p-2 hover:bg-zinc-100 transition-colors border-b border-zinc-200"
+                  title="Reset Zoom"
+                >
+                  <Maximize2 className="h-4 w-4 text-zinc-700" />
+                </button>
+                <button
+                  onClick={handleZoomOut}
+                  className="p-2 hover:bg-zinc-100 transition-colors"
+                  title="Zoom Out"
+                >
+                  <ZoomOut className="h-4 w-4 text-zinc-700" />
+                </button>
+              </div>
+            </div>
+
+            {/* Zoom Level Indicator */}
+            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1 border border-zinc-200 shadow-sm z-10">
+              <span className="text-xs text-zinc-600 font-medium">{(zoom * 100).toFixed(0)}%</span>
+            </div>
+
             {/* SVG Network Visualization */}
-            <svg className="w-full h-full">
+            <svg
+              className="w-full h-full cursor-grab active:cursor-grabbing"
+              onWheel={handleWheel}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+            >
+              <g transform={`translate(${panOffset.x}, ${panOffset.y}) scale(${zoom})`}>
               {/* Flows */}
               {flows.map((flow, idx) => {
                 const fromNode = nodes.find(n => n.id === flow.from);
@@ -328,6 +421,7 @@ const SupplyChainOptimization: React.FC = () => {
                   <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
                 </marker>
               </defs>
+              </g>
             </svg>
 
             {/* Legend */}
