@@ -6,8 +6,8 @@ import { Providers } from '@/components/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'NetworkOracle Pro',
-  description: 'Advanced Network Intelligence Platform',
+  title: 'MIAR - Mining Intelligence & Analytics',
+  description: 'Advanced Mining Intelligence & Analytics Platform',
 }
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-# NetworkOracle Pro - Value Proposition & Use Cases
+# MIAR - Value Proposition & Use Cases
 
 ##  **Core Value Proposition**
 
@@ -11,7 +11,7 @@
 - **Integration Challenges**: Disconnected tools that don't work with existing business systems
 
 ### **Our Solution**
-NetworkOracle Pro is the **world's first no-code network intelligence platform** that democratizes advanced graph theory for business users.
+MIAR is the **world's first no-code network intelligence platform** that democratizes advanced graph theory for business users.
 
 ---
 
@@ -33,7 +33,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 ### **1. No-Code Graph Analytics**
 - **Traditional**: Requires data scientists, 6+ months setup, $500K+ implementation
-- **NetworkOracle**: Business users, 5-minute setup, $50K annually
+- **MIAR**: Business users, 5-minute setup, $50K annually
 - **ROI**: 10x faster deployment, 90% cost reduction
 
 ### **2. Real-Time Network Intelligence**
@@ -59,7 +59,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 **Problem**: Banks lose $32B annually to fraud, with traditional rule-based systems missing 40% of sophisticated attacks.
 
-**Solution**: NetworkOracle identifies fraud networks by analyzing transaction patterns, identifying suspicious clusters, and predicting risk propagation.
+**Solution**: MIAR identifies fraud networks by analyzing transaction patterns, identifying suspicious clusters, and predicting risk propagation.
 
 **Value**: 
 - **40% reduction** in false positives
@@ -72,7 +72,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 **Problem**: E-commerce companies struggle to understand customer behavior and optimize recommendations, leading to 67% cart abandonment rates.
 
-**Solution**: NetworkOracle analyzes customer networks, purchase patterns, and social connections to create hyper-personalized experiences.
+**Solution**: MIAR analyzes customer networks, purchase patterns, and social connections to create hyper-personalized experiences.
 
 **Value**:
 - **25% increase** in conversion rates
@@ -85,7 +85,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 **Problem**: Healthcare systems struggle to track disease spread and optimize treatment protocols, costing $3.5T annually in inefficiencies.
 
-**Solution**: NetworkOracle models patient networks, treatment outcomes, and resource allocation to predict outbreaks and optimize care.
+**Solution**: MIAR models patient networks, treatment outcomes, and resource allocation to predict outbreaks and optimize care.
 
 **Value**:
 - **50% faster** outbreak detection
@@ -98,7 +98,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 **Problem**: Supply chain disruptions cost companies $184M annually, with 73% of companies experiencing significant disruptions.
 
-**Solution**: NetworkOracle maps supplier networks, identifies vulnerabilities, and predicts disruption risks in real-time.
+**Solution**: MIAR maps supplier networks, identifies vulnerabilities, and predicts disruption risks in real-time.
 
 **Value**:
 - **60% reduction** in supply chain risks
@@ -111,7 +111,7 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 **Problem**: Social platforms struggle with content moderation (costing $13B annually) and user engagement optimization.
 
-**Solution**: NetworkOracle identifies harmful content networks, detects coordinated attacks, and optimizes content distribution.
+**Solution**: MIAR identifies harmful content networks, detects coordinated attacks, and optimizes content distribution.
 
 **Value**:
 - **70% reduction** in harmful content
@@ -237,10 +237,10 @@ NetworkOracle Pro is the **world's first no-code network intelligence platform**
 
 ##  **Call to Action**
 
-**For Clients**: "Transform your data into competitive advantage. Schedule a demo to see how NetworkOracle Pro can solve your specific network intelligence challenges."
+**For Clients**: "Transform your data into competitive advantage. Schedule a demo to see how MIAR can solve your specific network intelligence challenges."
 
 **For Partners**: "Join us in democratizing graph analytics and building the infrastructure for the next generation of AI-powered businesses."
 
 ---
 
-*NetworkOracle Pro - Where Data Meets Intelligence*
+*MIAR - Where Data Meets Intelligence*

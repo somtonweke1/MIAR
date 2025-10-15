@@ -1,5 +1,5 @@
 /**
- * NetworkOracle Pro - Database API for Vercel (Node.js)
+ * MIAR - Database API for Vercel (Node.js)
  * Implements persistent data storage and retrieval
  */
 

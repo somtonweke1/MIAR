@@ -1,5 +1,5 @@
 /**
- * NetworkOracle Pro - Health Check API for Vercel (Node.js)
+ * MIAR - Health Check API for Vercel (Node.js)
  */
 
 export default function handler(req, res) {
@@ -16,7 +16,7 @@ export default function handler(req, res) {
   if (req.method === 'GET') {
     const response = {
       status: "healthy",
-      service: "NetworkOracle Pro - Vercel Backend",
+      service: "MIAR - Vercel Backend",
       version: "1.0.0",
       timestamp: new Date().toISOString(),
       environment: "production",

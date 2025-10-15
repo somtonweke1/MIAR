@@ -8,11 +8,11 @@ export function Header() {
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">NO</span>
+            <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">M</span>
             </div>
             <h1 className="text-xl font-semibold text-gray-900">
-              NetworkOracle Pro
+              MIAR
             </h1>
           </div>
           <div className="flex items-center space-x-4">

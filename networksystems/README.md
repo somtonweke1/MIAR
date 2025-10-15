@@ -321,7 +321,7 @@ npm run dev
 ##  **API Documentation**
 =======
 5. **Open your browser**
-Navigate to `http://localhost:3000` to see NetworkOracle Pro in action!
+Navigate to `http://localhost:3000` to see MIAR in action!
 >>>>>>> bfd5f82 ( Add Advanced ML & 3D Visualization Features)
 
 ##  Usage Guide
@@ -732,11 +732,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**NetworkOracle Pro - Where Data Meets Intelligence**
+**MIAR - Where Data Meets Intelligence**
 
 *Transform your complex data relationships into actionable insights with enterprise-grade network analytics.*
 =======
-**Built with ❤️ by the NetworkOracle Team**
+**Built with ❤️ by the MIAR Team**
 
 *Transforming network data into actionable intelligence, one algorithm at a time.*
 >>>>>>> bfd5f82 ( Add Advanced ML & 3D Visualization Features)

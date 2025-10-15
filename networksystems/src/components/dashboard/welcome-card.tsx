@@ -8,10 +8,10 @@ export function WelcomeCard() {
     <Card className="p-8 bg-gradient-to-br from-blue-50 to-indigo-100 border-0">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to NetworkOracle Pro
+          Welcome to MIAR
         </h1>
         <p className="text-xl text-gray-700 mb-6">
-          Advanced Network Intelligence Platform
+          Mining Intelligence & Analytics Platform
         </p>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Transform complex network data into actionable business insights with our 
