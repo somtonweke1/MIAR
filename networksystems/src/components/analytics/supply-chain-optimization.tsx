@@ -191,27 +191,44 @@ const SupplyChainOptimization: React.FC = () => {
       });
 
       const data = await response.json();
-      if (data.success) {
-        // Update nodes and flows based on bottleneck analysis
+      if (data.success && data.bottlenecks) {
+        // Update analysis state with bottleneck data
+        setAnalysis({
+          materialBottlenecks: data.bottlenecks.material || [],
+          technologyDelays: [],
+          spatialConstraints: data.bottlenecks.spatial || [],
+          costImpact: {
+            scenario: selectedScenario,
+            totalCost: 0,
+            costIncrease: 0,
+            costIncreasePercent: 0
+          }
+        });
+
+        // Update nodes visualization based on bottleneck analysis
         const updatedNodes = nodes.map(node => {
           const bottleneck = data.bottlenecks.material.find((b: any) => b.material === node.name);
           if (bottleneck) {
             return {
               ...node,
-              status: bottleneck.constraint ? 'bottleneck' : node.status,
+              status: (bottleneck.constraint ? 'bottleneck' : 'constrained') as 'operational' | 'constrained' | 'bottleneck' | 'critical',
               utilization: bottleneck.utilization
             };
           }
           return node;
         });
         setNodes(updatedNodes);
+      } else {
+        console.error('Bottleneck analysis failed:', data.error || 'Unknown error');
+        alert(`Bottleneck analysis failed: ${data.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Bottleneck Analysis Error:', error);
+      alert('Failed to run bottleneck analysis. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  }, [nodes, selectedRegion]);
+  }, [nodes, selectedRegion, selectedScenario]);
 
   useEffect(() => {
     runOptimization();
