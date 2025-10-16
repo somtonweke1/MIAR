@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    logger.error('Health check endpoint failed', { error });
+    logger.error({ error }, 'Health check endpoint failed');
 
     return NextResponse.json(
       {
