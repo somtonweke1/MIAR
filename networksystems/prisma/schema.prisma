@@ -1,0 +1,300 @@
+// MIAR Platform Database Schema
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String
+  hashedPassword String
+  role           String   @default("user") // user, manager, admin
+  company        String?
+  phone          String?
+  subscription   String   @default("free") // free, starter, professional, enterprise
+
+  // Permissions
+  permissions    String   @default("[]") // JSON array of permission strings
+
+  // Metadata
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lastLoginAt    DateTime?
+  isActive       Boolean  @default(true)
+
+  // Relations
+  networks       Network[]
+  analyses       Analysis[]
+  scenarios      Scenario[]
+  sessions       Session[]
+  apiKeys        ApiKey[]
+
+  @@index([email])
+  @@index([role])
+  @@index([subscription])
+  @@index([isActive, role])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionToken])
+  @@index([userId, expires])
+  @@index([expires])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  name      String
+  key       String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastUsed  DateTime?
+  expiresAt DateTime?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([key])
+  @@index([userId, isActive])
+  @@index([isActive, expiresAt])
+}
+
+// ============================================
+// NETWORK & ANALYSIS
+// ============================================
+
+model Network {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  nodes       String   // JSON
+  edges       String   // JSON
+  metadata    String?  // JSON
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  analyses    Analysis[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([userId, updatedAt])
+  @@index([userId, createdAt])
+}
+
+model Analysis {
+  id         String   @id @default(cuid())
+  networkId  String
+  network    Network  @relation(fields: [networkId], references: [id], onDelete: Cascade)
+
+  type       String   // centrality, community_detection, path_analysis, etc.
+  algorithm  String   // pagerank, betweenness, louvain, etc.
+  parameters String   // JSON
+  results    String?  // JSON
+  status     String   @default("pending") // pending, running, completed, failed
+  error      String?
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  completedAt DateTime?
+
+  @@index([userId])
+  @@index([networkId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, status])
+  @@index([networkId, status])
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+// ============================================
+// SUPPLY CHAIN & SCENARIOS
+// ============================================
+
+model Scenario {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        String   // baseline, high_demand, constrained_supply, rapid_expansion
+
+  parameters  String   // JSON: materials, technologies, timeHorizon, etc.
+  results     String?  // JSON: objectiveValue, feasibility, costs, metrics
+  status      String   @default("pending") // pending, running, completed, failed
+  error       String?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  completedAt DateTime?
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@index([type, status])
+  @@index([status, createdAt])
+}
+
+// ============================================
+// MARKET DATA
+// ============================================
+
+model CommodityPrice {
+  id        String   @id @default(cuid())
+  symbol    String   // LIT, COB, NIC, etc.
+  name      String   // Lithium, Cobalt, Nickel
+  price     Float
+  change    Float    // Percentage change
+  volume    Float?
+  high      Float?
+  low       Float?
+  open      Float?
+  source    String   // yahoo_finance, alpha_vantage, etc.
+  timestamp DateTime @default(now())
+
+  @@index([symbol, timestamp])
+  @@index([timestamp])
+}
+
+model RiskAlert {
+  id          String   @id @default(cuid())
+  severity    String   // low, medium, high, critical
+  category    String   // supply_chain, geopolitical, price_volatility, etc.
+  title       String
+  description String
+  region      String?
+  commodity   String?
+  impact      String?  // JSON: affected commodities, estimated impact
+
+  resolved    Boolean  @default(false)
+  resolvedAt  DateTime?
+  resolvedBy  String?  // userId
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([severity, resolved])
+  @@index([category])
+  @@index([createdAt])
+  @@index([category, createdAt])
+  @@index([resolved, createdAt])
+  @@index([severity, createdAt])
+}
+
+model GeopoliticalEvent {
+  id          String   @id @default(cuid())
+  country     String
+  region      String
+  eventType   String   // policy_change, conflict, trade_restriction, etc.
+  title       String
+  description String
+  severity    String   // low, medium, high, critical
+
+  affectedCommodities String? // JSON array
+  riskScore   Float?
+
+  source      String
+  sourceUrl   String?
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([country])
+  @@index([region])
+  @@index([severity])
+  @@index([publishedAt])
+  @@index([country, publishedAt])
+  @@index([region, publishedAt])
+  @@index([severity, publishedAt])
+  @@index([eventType, publishedAt])
+}
+
+// ============================================
+// AUDIT & COMPLIANCE
+// ============================================
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String   // login, export, create_scenario, etc.
+  resource    String   // user, scenario, network, etc.
+  resourceId  String?
+  details     String?  // JSON
+  ipAddress   String?
+  userAgent   String?
+  timestamp   DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+  @@index([userId, timestamp])
+  @@index([action, timestamp])
+  @@index([resource, timestamp])
+}
+
+model ExportLog {
+  id          String   @id @default(cuid())
+  userId      String
+  exportType  String   // pdf, excel, csv
+  resource    String   // scenario_comparison, commodity_report, etc.
+  resourceId  String?
+  fileSize    Int?
+  timestamp   DateTime @default(now())
+
+  @@index([userId])
+  @@index([exportType])
+  @@index([timestamp])
+  @@index([userId, timestamp])
+  @@index([exportType, timestamp])
+}
+
+// ============================================
+// SYSTEM CONFIGURATION
+// ============================================
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  dataType  String   @default("string") // string, number, boolean, json
+  category  String   // api, feature_flags, limits, etc.
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  enabled     Boolean  @default(false)
+  description String?
+  rollout     Float    @default(100) // Percentage rollout 0-100
+  updatedAt   DateTime @updatedAt
+}

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { prisma } from '@/lib/prisma';
 
 // Server-side only - API keys never exposed to client
 const ALPHA_VANTAGE_KEY = process.env.ALPHA_VANTAGE_API_KEY;
@@ -21,10 +24,27 @@ interface CommodityData {
  */
 export async function GET(request: NextRequest) {
   try {
+    // Authenticate user
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Yahoo Finance (no key required) - Primary source
     const commodityData = await getYahooFinancePrices();
 
     if (Object.keys(commodityData).length > 0) {
+      // Log API usage
+      await prisma.auditLog.create({
+        data: {
+          userId: session.user.id,
+          action: 'api_call',
+          resource: 'market_data_commodities',
+          details: JSON.stringify({ source: 'yahoo_finance' }),
+          timestamp: new Date(),
+        },
+      });
+
       return NextResponse.json({
         success: true,
         data: commodityData,
