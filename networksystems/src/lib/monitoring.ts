@@ -154,7 +154,7 @@ class MonitoringSystem {
         await prisma.$disconnect();
       }
     } catch (error) {
-      logger.error('Database health check failed', { error });
+      logger.error({ error }, 'Database health check failed');
       return {
         status: 'down',
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -523,7 +523,7 @@ class MonitoringSystem {
         });
       }
     } catch (error) {
-      logger.error('Failed to send alert notification', { error, alert });
+      logger.error({ error, alert }, 'Failed to send alert notification');
     }
   }
 
