@@ -114,7 +114,7 @@ export function getAnimation(
     return options?.reducedMotionFallback || 'transition-opacity duration-150';
   }
 
-  const classes = [ANIMATIONS[animation]];
+  const classes: string[] = [ANIMATIONS[animation]];
 
   if (options?.duration) {
     classes.push(DURATION_CLASSES[options.duration]);
