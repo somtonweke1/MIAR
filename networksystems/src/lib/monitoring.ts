@@ -281,7 +281,7 @@ class MonitoringSystem {
 
     // Log critical metrics
     if (metric.name.includes('error') || metric.value > 1000) {
-      logger.info('Performance metric recorded', { metric: fullMetric });
+      logger.info({ metric: fullMetric }, 'Performance metric recorded');
     }
   }
 
