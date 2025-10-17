@@ -288,9 +288,13 @@ function generateMitigationOptions(bottleneck: any): any[] {
     id: `${materialName}_increase_supply`,
     name: `Increase ${bottleneck.material} Supply`,
     description: `Expand primary supply sources and production capacity`,
+    type: 'preventive' as const,
     cost: 25000000 + bottleneck.utilization * 300000,
-    npvImpact: estimateExpectedImpact(bottleneck) * 0.6,
+    timeToImplement: 180 * 24,
     implementationTime: 180,
+    effectiveness: 0.6,
+    npvImpact: estimateExpectedImpact(bottleneck) * 0.6,
+    riskReduction: 0.45,
     feasibility: 0.75,
     dependencies: []
   });
@@ -301,9 +305,13 @@ function generateMitigationOptions(bottleneck: any): any[] {
       id: `${materialName}_recycling`,
       name: `${bottleneck.material} Recycling Program`,
       description: `Implement closed-loop recycling to reduce primary supply dependency`,
+      type: 'preventive' as const,
       cost: 50000000,
-      npvImpact: estimateExpectedImpact(bottleneck) * 0.4,
+      timeToImplement: 365 * 24,
       implementationTime: 365,
+      effectiveness: 0.5,
+      npvImpact: estimateExpectedImpact(bottleneck) * 0.4,
+      riskReduction: 0.35,
       feasibility: 0.8,
       dependencies: []
     });
@@ -312,9 +320,13 @@ function generateMitigationOptions(bottleneck: any): any[] {
       id: `${materialName}_substitution`,
       name: `Material Substitution Research`,
       description: `Invest in alternative materials and battery chemistries`,
+      type: 'preventive' as const,
       cost: 100000000,
-      npvImpact: estimateExpectedImpact(bottleneck) * 0.7,
+      timeToImplement: 730 * 24,
       implementationTime: 730,
+      effectiveness: 0.7,
+      npvImpact: estimateExpectedImpact(bottleneck) * 0.7,
+      riskReduction: 0.6,
       feasibility: 0.6,
       dependencies: []
     });
@@ -325,9 +337,13 @@ function generateMitigationOptions(bottleneck: any): any[] {
     id: `${materialName}_diversification`,
     name: `Geographic Diversification`,
     description: `Establish supply agreements with multiple regions`,
+    type: 'corrective' as const,
     cost: 15000000,
-    npvImpact: estimateExpectedImpact(bottleneck) * 0.35,
+    timeToImplement: 120 * 24,
     implementationTime: 120,
+    effectiveness: 0.5,
+    npvImpact: estimateExpectedImpact(bottleneck) * 0.35,
+    riskReduction: 0.3,
     feasibility: 0.85,
     dependencies: []
   });

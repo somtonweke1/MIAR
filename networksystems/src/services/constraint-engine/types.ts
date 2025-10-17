@@ -7,11 +7,17 @@ export type ConstraintType =
   | 'geological'
   | 'metallurgical'
   | 'logistical'
+  | 'logistics'
   | 'regulatory'
   | 'financial'
   | 'equipment'
   | 'labor'
-  | 'environmental';
+  | 'environmental'
+  | 'resource'
+  | 'capacity'
+  | 'demand'
+  | 'systemic'
+  | 'opportunity';
 
 export type ConstraintSeverity = 'critical' | 'major' | 'moderate' | 'minor';
 
@@ -40,10 +46,12 @@ export interface QuantifiedImpact {
 
 export interface MitigationAction {
   id: string;
+  name: string;
   description: string;
   type: 'preventive' | 'corrective' | 'contingency';
   cost: number;
   timeToImplement: number; // hours
+  implementationTime?: number; // days (alias for timeToImplement in different unit)
   effectiveness: number; // 0-1 (percentage reduction in impact)
   npvImpact: number;
   riskReduction: number; // 0-1
@@ -62,7 +70,7 @@ export interface ConstraintModel {
 
   // Impact areas
   impactArea: string[]; // e.g., ['mining', 'processing', 'logistics']
-  affectedAssets: string[]; // e.g., ['crusher-1', 'mill-2', 'conveyor-A']
+  affectedAssets?: string[]; // e.g., ['crusher-1', 'mill-2', 'conveyor-A']
 
   // Quantified impact
   impact: QuantifiedImpact;
@@ -72,23 +80,28 @@ export interface ConstraintModel {
   downstreamImpacts: string[]; // IDs of constraints this triggers
 
   // Timing
-  detectedAt: Date;
+  detectedAt?: Date;
   expectedDuration?: number; // hours
   projectedResolution?: Date;
+  timeframe?: {
+    start: Date;
+    end: Date;
+  };
 
   // Mitigation
   mitigationOptions: MitigationAction[];
-  appliedMitigations: string[]; // IDs of applied mitigations
+  appliedMitigations?: string[]; // IDs of applied mitigations
 
   // Data sources
-  dataSource: string; // e.g., 'iot-sensor', 'manual-input', 'ml-prediction'
-  confidence: number; // 0-1
+  dataSource?: string; // e.g., 'iot-sensor', 'manual-input', 'ml-prediction'
+  confidence?: number; // 0-1
 
   // Metadata
-  tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  tags?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
   createdBy?: string;
+  metadata?: Record<string, any>;
 }
 
 export interface ConstraintDependencyGraph {

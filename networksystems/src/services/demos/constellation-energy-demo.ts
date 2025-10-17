@@ -182,6 +182,7 @@ export function createConstellationDemo(): ConstellationEnergyDemo {
   const mitigationOptions: MitigationAction[] = [
     {
       id: 'mitigation_spot_market',
+      name: 'Spot Market Purchase',
       description: 'Purchase gas on spot market at premium price',
       type: 'corrective',
       cost: 1850000,
@@ -194,6 +195,7 @@ export function createConstellationDemo(): ConstellationEnergyDemo {
     },
     {
       id: 'mitigation_alt_pipeline',
+      name: 'Alternative Pipeline Route',
       description:
         'Reroute gas via alternative pipeline (Tennessee Gas Pipeline)',
       type: 'corrective',
@@ -208,6 +210,7 @@ export function createConstellationDemo(): ConstellationEnergyDemo {
     },
     {
       id: 'mitigation_dual_fuel',
+      name: 'Dual-Fuel Switching',
       description:
         'Switch to oil firing for dual-fuel capable units (Plants 1 & 2)',
       type: 'corrective',
@@ -222,6 +225,7 @@ export function createConstellationDemo(): ConstellationEnergyDemo {
     },
     {
       id: 'mitigation_futures_hedge',
+      name: 'Futures Hedging',
       description:
         'Purchase natural gas futures contracts to hedge physical exposure',
       type: 'preventive',
@@ -235,6 +239,7 @@ export function createConstellationDemo(): ConstellationEnergyDemo {
     },
     {
       id: 'mitigation_demand_response',
+      name: 'Demand Response Activation',
       description: 'Activate demand response programs to reduce load',
       type: 'corrective',
       cost: 380000, // Customer incentives
@@ -366,7 +371,7 @@ ${scenario.description}
 
 **Probability:** ${(scenario.probability * 100).toFixed(0)}%
 **Expected Duration:** ${scenario.constraints[0].expectedDuration! / 24} days
-**Affected Assets:** ${scenario.constraints[0].affectedAssets.join(', ')}
+**Affected Assets:** ${scenario.constraints[0].affectedAssets?.join(', ') || 'N/A'}
 
 ---
 
