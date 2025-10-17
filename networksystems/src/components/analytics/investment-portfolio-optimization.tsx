@@ -35,6 +35,25 @@ interface RiskMetrics {
   overallScore: number;
 }
 
+interface Recommendation {
+  id: string;
+  type: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  title: string;
+  description: string;
+  action: {
+    title: string;
+    description: string;
+    cost: number;
+    benefit: number;
+    roi: number;
+  };
+  impact: {
+    financial: number;
+    riskReduction: number;
+  };
+}
+
 const InvestmentPortfolioOptimization: React.FC = () => {
   const [portfolio, setPortfolio] = useState<PortfolioAsset[]>([]);
   const [riskMetrics, setRiskMetrics] = useState<RiskMetrics>({
@@ -45,6 +64,7 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     overallScore: 0
   });
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
   // Live data hooks
   const { data: portfolioLiveData, lastUpdated: portfolioUpdated } = usePortfolioData();
@@ -85,9 +105,31 @@ const InvestmentPortfolioOptimization: React.FC = () => {
     setPortfolio(mockPortfolio);
     calculateRiskMetrics(mockPortfolio);
 
+    // Fetch real portfolio recommendations from constraint engine
+    fetchRecommendations();
+
     // Live data is now handled by the usePortfolioData hook
     // No need for manual intervals
   }, []);
+
+  const fetchRecommendations = async () => {
+    try {
+      const response = await fetch('/api/v1/portfolio/recommendations');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch recommendations');
+      }
+
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        setRecommendations(result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching portfolio recommendations:', error);
+      // Keep empty recommendations on error
+    }
+  };
 
   const calculateRiskMetrics = (portfolioData: PortfolioAsset[]) => {
     const systemicRisk = portfolioData.reduce((acc, asset) => {
@@ -263,47 +305,60 @@ const InvestmentPortfolioOptimization: React.FC = () => {
       <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
         <div className="border-b border-zinc-200/50 px-8 py-6">
           <h3 className="text-xl font-extralight text-zinc-900 tracking-tight">Actionable Intelligence</h3>
+          <p className="text-sm text-zinc-500 mt-1">AI-powered recommendations from constraint engine analysis</p>
         </div>
         <div className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-rose-50/50 to-rose-100/30 rounded-xl p-6 border border-rose-200/30">
-              <div className="flex items-center justify-between mb-4">
-                <AlertTriangle className="h-5 w-5 text-rose-500" />
-                <span className="bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-light">HIGH PRIORITY</span>
-              </div>
-              <h4 className="font-light text-zinc-900 mb-2">Reduce DRC Exposure</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">Portfolio has 73% exposure to high-centrality nodes</p>
-              <div className="text-sm">
-                <span className="text-zinc-500">Recommended Action:</span>
-                <span className="font-light text-zinc-900 ml-2">Rebalance to West African gold</span>
-              </div>
-            </div>
+            {recommendations.length > 0 ? (
+              recommendations.slice(0, 3).map((rec) => {
+                const isRiskReduction = rec.type === 'risk_reduction' || rec.priority === 'critical';
+                const isOpportunity = rec.type === 'opportunity';
+                const theme = isRiskReduction ? 'rose' : isOpportunity ? 'emerald' : 'amber';
 
-            <div className="bg-gradient-to-br from-amber-50/50 to-amber-100/30 rounded-xl p-6 border border-amber-200/30">
-              <div className="flex items-center justify-between mb-4">
-                <DollarSign className="h-5 w-5 text-amber-500" />
-                <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-light">OPPORTUNITY</span>
-              </div>
-              <h4 className="font-light text-zinc-900 mb-2">Correlation Alert</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">DRC disruption would affect 5 of 8 holdings simultaneously</p>
-              <div className="text-sm">
-                <span className="text-zinc-500">Expected Impact:</span>
-                <span className="font-light text-amber-600 ml-2">$145M portfolio protection</span>
-              </div>
-            </div>
+                const Icon = isRiskReduction ? AlertTriangle : isOpportunity ? TrendingUp : DollarSign;
 
-            <div className="bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl p-6 border border-emerald-200/30">
-              <div className="flex items-center justify-between mb-4">
-                <TrendingUp className="h-5 w-5 text-emerald-500" />
-                <span className="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-light">REBALANCE</span>
+                const badgeText = isRiskReduction ? 'HIGH PRIORITY' : isOpportunity ? 'OPPORTUNITY' : rec.priority.toUpperCase();
+
+                return (
+                  <div
+                    key={rec.id}
+                    className={`bg-gradient-to-br from-${theme}-50/50 to-${theme}-100/30 rounded-xl p-6 border border-${theme}-200/30`}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <Icon className={`h-5 w-5 text-${theme}-500`} />
+                      <span className={`bg-${theme}-500 text-white px-3 py-1 rounded-full text-xs font-light`}>
+                        {badgeText}
+                      </span>
+                    </div>
+                    <h4 className="font-light text-zinc-900 mb-2">{rec.title}</h4>
+                    <p className="text-sm text-zinc-600 mb-4 font-light">{rec.description}</p>
+                    <div className="text-sm">
+                      <span className="text-zinc-500">Recommended Action:</span>
+                      <span className="font-light text-zinc-900 ml-2">{rec.action.title}</span>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-zinc-200">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-zinc-500">Expected Benefit:</span>
+                        <span className={`font-medium text-${theme}-600`}>
+                          ${(rec.action.benefit / 1000000).toFixed(0)}M
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs mt-1">
+                        <span className="text-zinc-500">ROI:</span>
+                        <span className={`font-medium text-${theme}-600`}>
+                          {rec.action.roi.toFixed(1)}x
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-span-3 text-center py-8 text-zinc-500">
+                <Zap className="h-8 w-8 mx-auto mb-2 text-zinc-300" />
+                <p>Loading AI-powered recommendations...</p>
               </div>
-              <h4 className="font-light text-zinc-900 mb-2">Optimization Opportunity</h4>
-              <p className="text-sm text-zinc-600 mb-4 font-light">Network analysis suggests increasing Morocco phosphate exposure</p>
-              <div className="text-sm">
-                <span className="text-zinc-500">Risk Reduction:</span>
-                <span className="font-light text-emerald-600 ml-2">12% overall portfolio risk</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
