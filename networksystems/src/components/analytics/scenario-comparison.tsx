@@ -76,164 +76,30 @@ const ScenarioComparison: React.FC = () => {
 
   const fetchScenarios = async () => {
     setIsLoading(true);
-    
+
     try {
-      // Simulate fetching scenario results
-      const mockScenarios: ScenarioResult[] = [
-        {
-          id: 'baseline',
-          name: 'Baseline Scenario',
-          description: 'Current market conditions with existing constraints',
-          objectiveValue: 24400000000,
-          feasibility: true,
-          solveTime: 0.002,
-          convergence: 'optimal',
-          costs: {
-            totalCost: 24400000000,
-            investmentCost: 18000000000,
-            operationalCost: 5800000000,
-            penaltyCost: 600000000
-          },
-          metrics: {
-            reliabilityScore: 85,
-            carbonEmissions: 12000000,
-            materialUtilization: {
-              lithium: 65,
-              cobalt: 78,
-              nickel: 45,
-              copper: 55
-            },
-            technologyDeployment: {
-              solar_pv: 2500,
-              battery_storage: 800,
-              wind_onshore: 200,
-              mining_power: 5000
-            },
-            bottleneckCount: 2
-          },
-          bottlenecks: [
-            { material: 'cobalt', severity: 'high', impact: 85, timeframe: '6-12 months' },
-            { material: 'lithium', severity: 'medium', impact: 65, timeframe: '12-18 months' }
-          ],
-          lastUpdated: new Date()
-        },
-        {
-          id: 'high_demand',
-          name: 'High Demand Scenario',
-          description: 'Mining boom with 40% demand increase',
-          objectiveValue: 31200000000,
-          feasibility: true,
-          solveTime: 0.003,
-          convergence: 'optimal',
-          costs: {
-            totalCost: 31200000000,
-            investmentCost: 24000000000,
-            operationalCost: 6500000000,
-            penaltyCost: 700000000
-          },
-          metrics: {
-            reliabilityScore: 78,
-            carbonEmissions: 15000000,
-            materialUtilization: {
-              lithium: 85,
-              cobalt: 95,
-              nickel: 70,
-              copper: 80
-            },
-            technologyDeployment: {
-              solar_pv: 3500,
-              battery_storage: 1200,
-              wind_onshore: 300,
-              mining_power: 6500
-            },
-            bottleneckCount: 4
-          },
-          bottlenecks: [
-            { material: 'cobalt', severity: 'critical', impact: 95, timeframe: '3-6 months' },
-            { material: 'lithium', severity: 'high', impact: 85, timeframe: '6-9 months' },
-            { material: 'nickel', severity: 'medium', impact: 70, timeframe: '9-12 months' },
-            { material: 'copper', severity: 'medium', impact: 60, timeframe: '12-15 months' }
-          ],
-          lastUpdated: new Date()
-        },
-        {
-          id: 'constrained_supply',
-          name: 'Constrained Supply Scenario',
-          description: 'Supply chain disruptions with 50% material reduction',
-          objectiveValue: 29800000000,
-          feasibility: true,
-          solveTime: 0.004,
-          convergence: 'suboptimal',
-          costs: {
-            totalCost: 29800000000,
-            investmentCost: 22000000000,
-            operationalCost: 6800000000,
-            penaltyCost: 1000000000
-          },
-          metrics: {
-            reliabilityScore: 72,
-            carbonEmissions: 11000000,
-            materialUtilization: {
-              lithium: 90,
-              cobalt: 98,
-              nickel: 85,
-              copper: 75
-            },
-            technologyDeployment: {
-              solar_pv: 2000,
-              battery_storage: 600,
-              wind_onshore: 150,
-              mining_power: 4500
-            },
-            bottleneckCount: 6
-          },
-          bottlenecks: [
-            { material: 'cobalt', severity: 'critical', impact: 98, timeframe: 'immediate' },
-            { material: 'lithium', severity: 'critical', impact: 90, timeframe: '1-3 months' },
-            { material: 'nickel', severity: 'high', impact: 85, timeframe: '3-6 months' },
-            { material: 'copper', severity: 'high', impact: 75, timeframe: '6-9 months' }
-          ],
-          lastUpdated: new Date()
-        },
-        {
-          id: 'rapid_expansion',
-          name: 'Rapid Expansion Scenario',
-          description: 'Accelerated deployment with reduced lead times',
-          objectiveValue: 22800000000,
-          feasibility: true,
-          solveTime: 0.001,
-          convergence: 'optimal',
-          costs: {
-            totalCost: 22800000000,
-            investmentCost: 16500000000,
-            operationalCost: 5800000000,
-            penaltyCost: 500000000
-          },
-          metrics: {
-            reliabilityScore: 92,
-            carbonEmissions: 9500000,
-            materialUtilization: {
-              lithium: 55,
-              cobalt: 65,
-              nickel: 40,
-              copper: 50
-            },
-            technologyDeployment: {
-              solar_pv: 4000,
-              battery_storage: 1000,
-              wind_onshore: 400,
-              mining_power: 5500
-            },
-            bottleneckCount: 1
-          },
-          bottlenecks: [
-            { material: 'cobalt', severity: 'medium', impact: 65, timeframe: '6-12 months' }
-          ],
-          lastUpdated: new Date()
-        }
-      ];
-      
-      setScenarios(mockScenarios);
+      // Fetch real scenarios from constraint engine API
+      const response = await fetch('/api/v1/constraint-scenarios');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch scenarios');
+      }
+
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        // Convert date strings to Date objects
+        const scenariosWithDates = result.data.map((scenario: any) => ({
+          ...scenario,
+          lastUpdated: new Date(scenario.lastUpdated)
+        }));
+
+        setScenarios(scenariosWithDates);
+      } else {
+        throw new Error(result.error || 'Invalid response format');
+      }
+
+      // Note: Removed mock scenarios - now using real constraint engine data
       
       // Generate sensitivity analysis
       const sensitivity: SensitivityAnalysis[] = [
