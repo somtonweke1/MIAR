@@ -28,3 +28,5 @@ export function CentralityMetrics() {
     </Card>
   );
 }
+
+export default CentralityMetrics;

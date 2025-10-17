@@ -17,3 +17,5 @@ export function NetworkVisualization() {
     </Card>
   );
 }
+
+export default NetworkVisualization;
