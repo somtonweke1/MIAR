@@ -554,7 +554,7 @@ class MonitoringSystem {
     if (alert && !alert.resolved) {
       alert.resolved = true;
       alert.resolvedAt = new Date().toISOString();
-      logger.info('Alert resolved', { alert });
+      logger.info({ alert }, 'Alert resolved');
     }
   }
 
