@@ -132,46 +132,91 @@ export class LiveDataService {
     }
   }
 
-  // Market Intelligence Feed
+  // Market Intelligence Feed - Using Real Intelligence API
   async getMarketIntelligence(): Promise<any> {
     try {
-      const intelligence = [
-        {
-          id: `intel_${Date.now()}_1`,
-          type: 'market_movement',
-          priority: Math.random() > 0.7 ? 'high' : 'medium',
-          title: 'Gold futures surge on central bank buying',
-          description: `Spot gold up ${(Math.random() * 2 + 0.5).toFixed(1)}% following increased central bank reserves allocation`,
-          impact: `$${(Math.random() * 50 + 10).toFixed(1)}M portfolio impact estimated`,
-          timestamp: new Date().toISOString(),
-          relevance: ['gold', 'johannesburg', 'investment']
-        },
-        {
-          id: `intel_${Date.now()}_2`,
+      // Fetch different types of intelligence from our API
+      const [summary, supplyChain, alerts] = await Promise.all([
+        fetch('/api/intelligence/news?type=summary').then(r => r.ok ? r.json() : null),
+        fetch('/api/intelligence/news?type=supply_chain').then(r => r.ok ? r.json() : null),
+        fetch('/api/intelligence/news?type=alerts').then(r => r.ok ? r.json() : null)
+      ]);
+
+      const intelligence = [];
+
+      // Process summary intelligence
+      if (summary?.content) {
+        intelligence.push({
+          id: `intel_summary_${Date.now()}`,
+          type: 'market_summary',
+          priority: 'high',
+          title: 'Mining Industry Overview',
+          description: summary.content,
+          impact: 'Strategic market insights',
+          timestamp: summary.timestamp || new Date().toISOString(),
+          relevance: ['market', 'industry', 'trends'],
+          citations: summary.citations || [],
+          source: summary.source
+        });
+      }
+
+      // Process supply chain intelligence
+      if (supplyChain?.content) {
+        intelligence.push({
+          id: `intel_supply_${Date.now()}`,
           type: 'supply_chain',
-          priority: Math.random() > 0.8 ? 'urgent' : 'medium',
-          title: 'DRC cobalt production disruption reported',
-          description: `Mining operations at major DRC facility reduced by ${Math.floor(Math.random() * 30 + 10)}% due to infrastructure maintenance`,
-          impact: `Supply chain delays of ${Math.floor(Math.random() * 7 + 3)} days expected`,
-          timestamp: new Date().toISOString(),
-          relevance: ['cobalt', 'drc', 'supply_chain']
-        },
+          priority: 'urgent',
+          title: 'Supply Chain Disruptions',
+          description: supplyChain.content,
+          impact: 'Potential delays and cost impacts',
+          timestamp: supplyChain.timestamp || new Date().toISOString(),
+          relevance: ['supply_chain', 'logistics', 'operations'],
+          citations: supplyChain.citations || [],
+          source: supplyChain.source
+        });
+      }
+
+      // Process alerts
+      if (alerts?.content) {
+        intelligence.push({
+          id: `intel_alerts_${Date.now()}`,
+          type: 'critical_alert',
+          priority: 'urgent',
+          title: 'Critical Industry Developments',
+          description: alerts.content,
+          impact: 'Immediate action may be required',
+          timestamp: alerts.timestamp || new Date().toISOString(),
+          relevance: ['alerts', 'urgent', 'breaking'],
+          citations: alerts.citations || [],
+          source: alerts.source
+        });
+      }
+
+      // Cache the intelligence data
+      this.dataCache.set('market_intel', intelligence);
+
+      return intelligence;
+    } catch (error) {
+      console.error('Error fetching market intelligence from API:', error);
+
+      // Return cached data if available
+      const cached = this.dataCache.get('market_intel');
+      if (cached) return cached;
+
+      // Fallback to basic intelligence
+      return [
         {
-          id: `intel_${Date.now()}_3`,
-          type: 'trade_route',
-          priority: 'medium',
-          title: 'Alternative shipping route efficiency gains',
-          description: `Cape of Good Hope route showing ${(Math.random() * 10 + 5).toFixed(1)}% efficiency improvement vs Suez Canal`,
-          impact: `Cost savings of $${(Math.random() * 5 + 2).toFixed(1)}M annually achievable`,
+          id: `intel_fallback_${Date.now()}`,
+          type: 'system',
+          priority: 'low',
+          title: 'Intelligence Service Temporarily Unavailable',
+          description: 'Real-time intelligence feed is currently offline. Please check back shortly.',
+          impact: 'No immediate action required',
           timestamp: new Date().toISOString(),
-          relevance: ['shipping', 'logistics', 'cost_optimization']
+          relevance: ['system'],
+          source: 'fallback'
         }
       ];
-
-      return intelligence.filter(() => Math.random() > 0.3); // Randomly show different intelligence
-    } catch (error) {
-      console.error('Error generating market intelligence:', error);
-      return [];
     }
   }
 
