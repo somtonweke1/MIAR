@@ -246,7 +246,7 @@ export function preloadImage(src: string, options?: {
   link.href = src;
 
   if (options?.type) link.type = options.type;
-  if (options?.imageSrcSet) link.imageSrcSet = options.imageSrcSet;
+  if (options?.imageSrcSet) link.imageSrcset = options.imageSrcSet;
   if (options?.imageSizes) link.imageSizes = options.imageSizes;
 
   document.head.appendChild(link);
