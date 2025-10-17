@@ -11,6 +11,7 @@
  */
 
 import RealMarketDataService from './real-market-data-service';
+import RealESGDataService from './real-esg-data-service';
 
 export interface MarketDataPoint {
   timestamp: Date;
@@ -62,14 +63,16 @@ class MarketIntelligenceService {
   private geopoliticalRisks: GeopoliticalRisk[] = [];
   private esgData: ESGCompliance[] = [];
   private realMarketService: RealMarketDataService;
+  private realESGService: RealESGDataService;
 
   constructor() {
     this.realMarketService = RealMarketDataService.getInstance();
+    this.realESGService = RealESGDataService.getInstance();
     this.initializeData();
     this.startRealTimeUpdates();
   }
 
-  private initializeData() {
+  private async initializeData() {
     // Initialize with realistic African mining market data
     const materials = [
       { id: 'lithium', name: 'Lithium Carbonate', basePrice: 18500 },
@@ -144,64 +147,93 @@ class MarketIntelligenceService {
       }
     ];
 
-    // Initialize geopolitical risks
-    this.geopoliticalRisks = [
-      {
-        region: 'drc',
-        riskLevel: 'high',
-        factors: ['political_instability', 'corruption', 'environmental_regulations'],
-        impactOnMaterials: { cobalt: 90, copper: 70, lithium: 60 },
-        trend: 'stable',
-        lastUpdated: new Date()
-      },
-      {
-        region: 'south_africa',
-        riskLevel: 'medium',
-        factors: ['energy_crisis', 'labor_unrest'],
-        impactOnMaterials: { platinum: 75, manganese: 50, nickel: 40 },
-        trend: 'deteriorating',
-        lastUpdated: new Date()
-      },
-      {
-        region: 'zambia',
-        riskLevel: 'low',
-        factors: ['mining_tax_reforms'],
-        impactOnMaterials: { copper: 30, cobalt: 20 },
-        trend: 'improving',
-        lastUpdated: new Date()
-      }
-    ];
+    // Initialize ESG compliance data with REAL data from RealESGDataService
+    try {
+      const allESGData = await this.realESGService.getAllESGData();
 
-    // Initialize ESG compliance data
-    this.esgData = [
-      {
+      // Convert ESGDataPoint format to ESGCompliance format
+      this.esgData = [];
+      Object.entries(allESGData.countryProfiles).forEach(([countryCode, profiles]) => {
+        profiles.forEach(profile => {
+          const regionMapping: Record<string, string> = {
+            'CD': 'drc',
+            'ZA': 'south_africa',
+            'ZM': 'zambia',
+            'GH': 'ghana'
+          };
+
+          const communityImpact = profile.childLaborRisk === 'critical' || profile.childLaborRisk === 'high' ? 'negative' :
+                                 profile.environmentalImpact === 'severe' || profile.environmentalImpact === 'high' ? 'neutral' : 'positive';
+
+          this.esgData.push({
+            region: regionMapping[countryCode] || countryCode.toLowerCase(),
+            material: profile.material,
+            childLaborRisk: profile.childLaborRisk === 'critical' ? 'high' : profile.childLaborRisk,
+            environmentalImpact: profile.environmentalImpact === 'severe' ? 'high' : profile.environmentalImpact,
+            communityImpact: communityImpact as 'positive' | 'neutral' | 'negative',
+            certificationStatus: profile.certificationStatus === 'unknown' ? 'non_compliant' : profile.certificationStatus,
+            lastAudit: profile.lastAudit || new Date()
+          });
+        });
+      });
+
+      // Also initialize geopolitical risks from ESG data
+      this.geopoliticalRisks = [];
+      const uniqueCountries = new Set(this.esgData.map(e => e.region));
+
+      for (const region of uniqueCountries) {
+        const regionData = this.esgData.filter(e => e.region === region);
+        const avgRisk = regionData.reduce((sum, e) => {
+          const childLaborScore = { low: 1, medium: 2, high: 3 }[e.childLaborRisk];
+          const envScore = { low: 1, medium: 2, high: 3 }[e.environmentalImpact];
+          return sum + childLaborScore + envScore;
+        }, 0) / (regionData.length * 2);
+
+        const riskLevel = avgRisk >= 2.5 ? 'high' : avgRisk >= 1.5 ? 'medium' : 'low';
+
+        const factors: string[] = [];
+        if (regionData.some(e => e.childLaborRisk === 'high')) factors.push('child_labor');
+        if (regionData.some(e => e.environmentalImpact === 'high')) factors.push('environmental_impact');
+        if (regionData.some(e => e.certificationStatus === 'non_compliant')) factors.push('compliance_issues');
+
+        const impactOnMaterials: Record<string, number> = {};
+        regionData.forEach(e => {
+          const riskScore = { low: 30, medium: 60, high: 90 }[e.childLaborRisk];
+          impactOnMaterials[e.material] = riskScore;
+        });
+
+        this.geopoliticalRisks.push({
+          region,
+          riskLevel: riskLevel as 'low' | 'medium' | 'high' | 'critical',
+          factors,
+          impactOnMaterials,
+          trend: 'stable',
+          lastUpdated: new Date()
+        });
+      }
+
+      console.log(`✅ Initialized with REAL ESG data: ${this.esgData.length} entries from verified sources`);
+    } catch (error) {
+      console.error('Error loading real ESG data, using fallback:', error);
+      // Fallback to minimal data if real data fails
+      this.esgData = [{
         region: 'drc',
         material: 'cobalt',
         childLaborRisk: 'high',
         environmentalImpact: 'high',
         communityImpact: 'negative',
         certificationStatus: 'non_compliant',
-        lastAudit: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      },
-      {
-        region: 'south_africa',
-        material: 'platinum',
-        childLaborRisk: 'low',
-        environmentalImpact: 'medium',
-        communityImpact: 'positive',
-        certificationStatus: 'certified',
-        lastAudit: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-      },
-      {
-        region: 'zambia',
-        material: 'copper',
-        childLaborRisk: 'low',
-        environmentalImpact: 'medium',
-        communityImpact: 'positive',
-        certificationStatus: 'certified',
-        lastAudit: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
-      }
-    ];
+        lastAudit: new Date()
+      }];
+      this.geopoliticalRisks = [{
+        region: 'drc',
+        riskLevel: 'high',
+        factors: ['child_labor', 'environmental_impact'],
+        impactOnMaterials: { cobalt: 90 },
+        trend: 'stable',
+        lastUpdated: new Date()
+      }];
+    }
   }
 
   private startRealTimeUpdates() {
