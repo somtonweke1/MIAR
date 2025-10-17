@@ -471,9 +471,11 @@ class MonitoringSystem {
     this.alerts.push(alert);
 
     // Log alert
-    logger[alert.severity === 'critical' ? 'error' : 'warn']('Alert triggered', {
-      alert,
-    });
+    if (alert.severity === 'critical') {
+      logger.error({ alert }, 'Alert triggered');
+    } else {
+      logger.warn({ alert }, 'Alert triggered');
+    }
 
     // Send notifications
     this.sendAlertNotification(alert);
