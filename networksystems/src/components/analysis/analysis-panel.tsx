@@ -24,3 +24,4 @@ export function AnalysisPanel() {
     </Card>
   );
 }
+export default AnalysisPanel;

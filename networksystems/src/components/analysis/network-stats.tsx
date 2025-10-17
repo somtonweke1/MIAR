@@ -32,3 +32,4 @@ export function NetworkStats() {
     </Card>
   );
 }
+export default NetworkStats;
