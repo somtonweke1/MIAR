@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SCGEPModel, createAfricanMiningSCGEPConfig } from '@/services/sc-gep-model';
+import { constraintModeler } from '@/services/constraint-engine/constraint-modeler';
+import { ConstraintModel } from '@/services/constraint-engine/types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,6 +58,9 @@ export async function POST(request: NextRequest) {
     const criticalBottlenecks = analysis.materialBottlenecks.filter(b => b.constraint);
     const spatialBottlenecks = analysis.spatialConstraints.filter(s => s.constraint);
 
+    // Enhance with constraint engine analysis
+    const constraintInsights = await enhanceWithConstraintEngine(analysis, criticalBottlenecks);
+
     return NextResponse.json({
       success: true,
       bottlenecks: {
@@ -66,6 +71,7 @@ export async function POST(request: NextRequest) {
       },
       sensitivity: sensitivityResults,
       recommendations: generateBottleneckRecommendations(analysis),
+      constraintInsights, // New: Advanced constraint-based insights
       metadata: {
         analysis_timestamp: new Date().toISOString(),
         model_convergence: solution.convergence,
@@ -119,6 +125,214 @@ async function performSensitivityAnalysis(config: any, baseModel: SCGEPModel) {
   }
 
   return sensitivityResults;
+}
+
+/**
+ * Enhance bottleneck analysis with constraint engine insights
+ */
+async function enhanceWithConstraintEngine(analysis: any, criticalBottlenecks: any[]) {
+  try {
+    // Initialize constraint modeler if needed
+    initializeBottleneckConstraints(criticalBottlenecks);
+
+    const insights = {
+      dependencyGraph: null as any,
+      cascadingImpacts: [] as any[],
+      optimalMitigations: [] as any[],
+      riskAssessment: {} as any
+    };
+
+    // Build dependency graph for bottlenecks
+    const activeConstraints = constraintModeler.getActiveConstraints();
+    if (activeConstraints.length > 0) {
+      insights.dependencyGraph = constraintModeler.buildDependencyGraph(
+        activeConstraints.map(c => c.id)
+      );
+
+      // Analyze cascading impacts
+      for (const constraint of activeConstraints) {
+        const totalImpact = constraintModeler.quantifyTotalImpact(constraint.id);
+
+        insights.cascadingImpacts.push({
+          material: constraint.name,
+          severity: constraint.severity,
+          directImpact: constraint.impact.financial.expected,
+          cascadingImpact: totalImpact.financial.expected,
+          impactMultiplier: totalImpact.financial.expected / constraint.impact.financial.expected,
+          affectedDownstream: constraint.downstreamImpacts.length,
+          riskScore: totalImpact.risk.riskScore
+        });
+
+        // Find optimal mitigations
+        const mitigations = constraintModeler.findOptimalMitigation(constraint.id);
+        if (mitigations.length > 0) {
+          insights.optimalMitigations.push({
+            material: constraint.name,
+            topMitigation: {
+              name: mitigations[0].name,
+              description: mitigations[0].description,
+              cost: mitigations[0].cost,
+              benefit: mitigations[0].npvImpact,
+              roi: mitigations[0].npvImpact / mitigations[0].cost,
+              feasibility: mitigations[0].feasibility,
+              implementationTime: mitigations[0].implementationTime
+            },
+            alternatives: mitigations.slice(1, 3).map(m => ({
+              name: m.name,
+              cost: m.cost,
+              benefit: m.npvImpact,
+              roi: m.npvImpact / m.cost
+            }))
+          });
+        }
+      }
+
+      // Overall risk assessment
+      const totalFinancialRisk = insights.cascadingImpacts.reduce(
+        (sum, impact) => sum + impact.cascadingImpact,
+        0
+      );
+      const averageRiskScore = insights.cascadingImpacts.reduce(
+        (sum, impact) => sum + impact.riskScore,
+        0
+      ) / insights.cascadingImpacts.length;
+
+      insights.riskAssessment = {
+        totalFinancialExposure: totalFinancialRisk,
+        averageRiskScore,
+        criticalPathLength: insights.dependencyGraph.nodes.reduce(
+          (max: number, node: any) => Math.max(max, node.level),
+          0
+        ) + 1,
+        systemicRiskLevel: averageRiskScore > 0.6 ? 'critical' : averageRiskScore > 0.4 ? 'high' : 'medium'
+      };
+    }
+
+    return insights;
+  } catch (error) {
+    console.error('Constraint engine enhancement error:', error);
+    return null;
+  }
+}
+
+/**
+ * Initialize bottleneck constraints in constraint modeler
+ */
+function initializeBottleneckConstraints(criticalBottlenecks: any[]) {
+  // Clear existing constraints if any
+  const existing = constraintModeler.getActiveConstraints();
+  if (existing.length > 0) return; // Already initialized
+
+  // Create constraints for critical bottlenecks
+  for (const bottleneck of criticalBottlenecks) {
+    const severity = bottleneck.utilization > 95 ? 'critical' : bottleneck.utilization > 85 ? 'major' : 'moderate';
+    const materialName = bottleneck.material.toLowerCase();
+
+    const constraint: ConstraintModel = {
+      id: `bottleneck_${materialName}`,
+      type: 'resource',
+      name: `${bottleneck.material} Supply Constraint`,
+      description: `Critical supply bottleneck in ${bottleneck.material} with ${bottleneck.utilization.toFixed(0)}% utilization`,
+      status: 'active',
+      severity: severity as 'critical' | 'major' | 'moderate' | 'minor',
+      impactArea: ['supply_chain', 'production', 'costs'],
+      dependencies: [],
+      downstreamImpacts: materialName === 'cobalt' ? ['battery_production'] : materialName === 'lithium' ? ['battery_production'] : [],
+      impact: {
+        financial: {
+          min: estimateMinImpact(bottleneck),
+          max: estimateMaxImpact(bottleneck),
+          expected: estimateExpectedImpact(bottleneck),
+          currency: 'USD'
+        },
+        operational: {
+          delay: Math.ceil(bottleneck.utilization / 2),
+          throughputReduction: (bottleneck.utilization - 70) / 100
+        },
+        risk: {
+          probability: bottleneck.utilization / 100,
+          consequence: 0.75,
+          riskScore: (bottleneck.utilization / 100) * 0.75
+        }
+      },
+      mitigationOptions: generateMitigationOptions(bottleneck),
+      timeframe: {
+        start: new Date(),
+        end: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000)
+      },
+      metadata: { utilization: bottleneck.utilization }
+    };
+
+    constraintModeler.addConstraint(constraint);
+  }
+}
+
+function estimateMinImpact(bottleneck: any): number {
+  return bottleneck.utilization * 5000000; // $5M per % utilization
+}
+
+function estimateMaxImpact(bottleneck: any): number {
+  return bottleneck.utilization * 12000000; // $12M per % utilization
+}
+
+function estimateExpectedImpact(bottleneck: any): number {
+  return bottleneck.utilization * 8000000; // $8M per % utilization
+}
+
+function generateMitigationOptions(bottleneck: any): any[] {
+  const materialName = bottleneck.material.toLowerCase();
+  const options = [];
+
+  // Universal mitigation: Increase supply
+  options.push({
+    id: `${materialName}_increase_supply`,
+    name: `Increase ${bottleneck.material} Supply`,
+    description: `Expand primary supply sources and production capacity`,
+    cost: 25000000 + bottleneck.utilization * 300000,
+    npvImpact: estimateExpectedImpact(bottleneck) * 0.6,
+    implementationTime: 180,
+    feasibility: 0.75,
+    dependencies: []
+  });
+
+  // Material-specific mitigations
+  if (materialName === 'cobalt' || materialName === 'lithium') {
+    options.push({
+      id: `${materialName}_recycling`,
+      name: `${bottleneck.material} Recycling Program`,
+      description: `Implement closed-loop recycling to reduce primary supply dependency`,
+      cost: 50000000,
+      npvImpact: estimateExpectedImpact(bottleneck) * 0.4,
+      implementationTime: 365,
+      feasibility: 0.8,
+      dependencies: []
+    });
+
+    options.push({
+      id: `${materialName}_substitution`,
+      name: `Material Substitution Research`,
+      description: `Invest in alternative materials and battery chemistries`,
+      cost: 100000000,
+      npvImpact: estimateExpectedImpact(bottleneck) * 0.7,
+      implementationTime: 730,
+      feasibility: 0.6,
+      dependencies: []
+    });
+  }
+
+  // Geographic diversification
+  options.push({
+    id: `${materialName}_diversification`,
+    name: `Geographic Diversification`,
+    description: `Establish supply agreements with multiple regions`,
+    cost: 15000000,
+    npvImpact: estimateExpectedImpact(bottleneck) * 0.35,
+    implementationTime: 120,
+    feasibility: 0.85,
+    dependencies: []
+  });
+
+  return options;
 }
 
 function generateBottleneckRecommendations(analysis: any) {
