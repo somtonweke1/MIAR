@@ -16,7 +16,7 @@ import {
  * Wrapper around Next.js Image with built-in optimizations and error handling
  */
 
-export interface OptimizedImageProps extends Omit<ImageProps, 'width' | 'height' | 'src'> {
+export interface OptimizedImageProps extends Omit<ImageProps, 'width' | 'height' | 'src' | 'quality'> {
   src: string;
   alt: string;
 
