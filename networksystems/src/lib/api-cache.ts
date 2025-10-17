@@ -12,8 +12,7 @@ import {
   CACHE_PREFIXES,
   CACHE_TTL,
 } from './cache';
-import logger from './logger';
-import { logPerformanceMetric } from './performance';
+import logger, { logPerformanceMetric } from './logger';
 
 /**
  * Cache configuration for API routes
