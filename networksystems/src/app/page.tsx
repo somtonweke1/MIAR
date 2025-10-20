@@ -11,7 +11,8 @@ import LiveMarketFeed from '@/components/dashboard/live-market-feed';
 import { AuthProvider, useAuth } from '@/components/auth/auth-provider';
 import PlatformGuide from '@/components/guide/platform-guide';
 import { Button } from '@/components/ui/button';
-import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity } from 'lucide-react';
+import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity, Zap, Database, Target } from 'lucide-react';
+import Link from 'next/link';
 
 type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain' | 'live-markets';
 
@@ -149,8 +150,38 @@ function HomeContent() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-6">
-              <div className="hidden md:block text-sm text-zinc-500 font-light">
+            <div className="flex items-center space-x-4">
+              {/* New Features - Quick Access Links */}
+              <div className="flex items-center space-x-2 border-l border-zinc-200 pl-4">
+                <Link
+                  href="/decision-center"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  title="Real-time constraint monitoring and decision automation"
+                >
+                  <Target className="h-4 w-4 text-blue-600" />
+                  <span className="hidden lg:inline">Decision Center</span>
+                </Link>
+
+                <Link
+                  href="/terranexus/constellation-demo-live"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  title="Interactive constraint intelligence demo"
+                >
+                  <Zap className="h-4 w-4 text-emerald-600" />
+                  <span className="hidden lg:inline">Constellation Demo</span>
+                </Link>
+
+                <Link
+                  href="/terranexus/data-integration"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  title="Connect your data sources"
+                >
+                  <Database className="h-4 w-4 text-violet-600" />
+                  <span className="hidden lg:inline">Data Integration</span>
+                </Link>
+              </div>
+
+              <div className="hidden md:block text-sm text-zinc-500 font-light border-l border-zinc-200 pl-4">
                 {user?.name}
               </div>
 

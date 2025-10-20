@@ -16,10 +16,13 @@ import {
   Bell,
   ChevronRight,
   AlertCircle,
-  ThumbsUp
+  ThumbsUp,
+  ArrowLeft,
+  Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import Link from 'next/link';
 
 interface Alert {
   id: string;
@@ -175,6 +178,15 @@ export default function DecisionCenterPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-4">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-blue-100 hover:text-white transition-colors text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Dashboard
+            </Link>
+          </div>
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3 mb-4">
