@@ -11,8 +11,12 @@ import LiveMarketFeed from '@/components/dashboard/live-market-feed';
 import { AuthProvider, useAuth } from '@/components/auth/auth-provider';
 import PlatformGuide from '@/components/guide/platform-guide';
 import { Button } from '@/components/ui/button';
-import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity, Zap, Database, Target } from 'lucide-react';
+import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity, Zap, Database, Target, Upload } from 'lucide-react';
 import Link from 'next/link';
+import { useUnifiedPlatform } from '@/stores/unified-platform-store';
+import UnifiedAlertPanel from '@/components/integrated/unified-alert-panel';
+import PlatformMetricsBar from '@/components/integrated/platform-metrics-bar';
+import QuickDataUpload from '@/components/integrated/quick-data-upload';
 
 type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain' | 'live-markets';
 
@@ -24,6 +28,10 @@ function HomeContent() {
   const [activeTab, setActiveTab] = useState<TabType>('mining');
   const [showGuide, setShowGuide] = useState(false);
   const [forceShowLanding, setForceShowLanding] = useState(false);
+  const [showQuickUpload, setShowQuickUpload] = useState(false);
+
+  // Unified platform integration
+  const { startLiveMonitoring, stopLiveMonitoring, metrics } = useUnifiedPlatform();
 
   // Check if user just logged in and should go to platform
   useEffect(() => {
@@ -37,6 +45,17 @@ function HomeContent() {
       router.replace('/');
     }
   }, [user, isLoading, searchParams, router]);
+
+  // Start live monitoring when platform is active
+  useEffect(() => {
+    if (user && !showLanding) {
+      startLiveMonitoring();
+
+      return () => {
+        stopLiveMonitoring();
+      };
+    }
+  }, [user, showLanding, startLiveMonitoring, stopLiveMonitoring]);
 
   const handleAccessPlatform = () => {
     if (user) {
@@ -155,12 +174,26 @@ function HomeContent() {
               <div className="flex items-center space-x-2 border-l border-zinc-200 pl-4">
                 <Link
                   href="/decision-center"
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200 relative"
                   title="Real-time constraint monitoring and decision automation"
                 >
                   <Target className="h-4 w-4 text-blue-600" />
                   <span className="hidden lg:inline">Decision Center</span>
+                  {metrics.pendingDecisions > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                      {metrics.pendingDecisions}
+                    </span>
+                  )}
                 </Link>
+
+                <button
+                  onClick={() => setShowQuickUpload(true)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  title="Quick upload data"
+                >
+                  <Upload className="h-4 w-4 text-violet-600" />
+                  <span className="hidden lg:inline">Quick Upload</span>
+                </button>
 
                 <Link
                   href="/terranexus/constellation-demo-live"
@@ -168,16 +201,7 @@ function HomeContent() {
                   title="Interactive constraint intelligence demo"
                 >
                   <Zap className="h-4 w-4 text-emerald-600" />
-                  <span className="hidden lg:inline">Constellation Demo</span>
-                </Link>
-
-                <Link
-                  href="/terranexus/data-integration"
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
-                  title="Connect your data sources"
-                >
-                  <Database className="h-4 w-4 text-violet-600" />
-                  <span className="hidden lg:inline">Data Integration</span>
+                  <span className="hidden lg:inline">Demo</span>
                 </Link>
               </div>
 
@@ -208,6 +232,9 @@ function HomeContent() {
         </div>
       </nav>
 
+      {/* Integrated Metrics Bar */}
+      <PlatformMetricsBar />
+
       {/* Main Content Area */}
       <main className="px-6 py-8">
         <div className="max-w-[1800px] mx-auto">
@@ -219,6 +246,16 @@ function HomeContent() {
       {showGuide && (
         <PlatformGuide onClose={() => setShowGuide(false)} />
       )}
+
+      {/* Quick Upload Modal */}
+      {showQuickUpload && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <QuickDataUpload onClose={() => setShowQuickUpload(false)} />
+        </div>
+      )}
+
+      {/* Unified Alert Panel - Always visible */}
+      <UnifiedAlertPanel />
     </div>
   );
 }
