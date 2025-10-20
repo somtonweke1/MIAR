@@ -196,6 +196,15 @@ function HomeContent() {
                 </button>
 
                 <Link
+                  href="/live-monitoring"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
+                  title="Real-time constraint monitoring with live data"
+                >
+                  <Database className="h-4 w-4 text-blue-600" />
+                  <span className="hidden lg:inline">Live Monitoring</span>
+                </Link>
+
+                <Link
                   href="/terranexus/constellation-demo-live"
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
                   title="Interactive constraint intelligence demo"
