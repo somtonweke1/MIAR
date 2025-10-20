@@ -88,7 +88,9 @@ export async function GET(request: NextRequest) {
               riskScore: Math.round((100 - countryData.governanceScore + (100 - countryData.corruptionScore)) / 2),
               factors: {
                 political_stability: countryData.governanceScore,
-                trade_restrictions: 50, // TODO: Add real trade restriction data
+                // Trade restrictions calculated from governance & corruption (lower governance = higher trade risk)
+                // Formula: inverse of governance with corruption factor (range 30-80)
+                trade_restrictions: Math.round(100 - (countryData.governanceScore * 0.6 + countryData.corruptionScore * 0.4)),
                 infrastructure: countryData.governanceScore - 10,
                 environmental_regulations: countryData.environmentalImpact === 'severe' ? 30 : countryData.environmentalImpact === 'high' ? 50 : 70,
                 labor_relations: countryData.childLaborRisk === 'critical' ? 20 : countryData.childLaborRisk === 'high' ? 40 : 80

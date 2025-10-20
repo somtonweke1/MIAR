@@ -72,45 +72,27 @@ const InvestmentPortfolioOptimization: React.FC = () => {
   const { data: marketIntel, lastUpdated: intelUpdated } = useMarketIntelligence();
 
   useEffect(() => {
-    const mockPortfolio: PortfolioAsset[] = [
-      {
-        id: 'p1',
-        name: 'Johannesburg Gold Holdings',
-        allocation: 25,
-        value: 612.5,
-        networkNode: 'jb_target_mine',
-        risk: 'medium',
-        correlation: [0.8, 0.6, 0.3, 0.4, 0.7]
-      },
-      {
-        id: 'p2',
-        name: 'DRC Cobalt Mining Corp',
-        allocation: 20,
-        value: 490,
-        networkNode: 'kamoa_kakula',
-        risk: 'high',
-        correlation: [0.8, 0.9, 0.2, 0.5, 0.6]
-      },
-      {
-        id: 'p3',
-        name: 'Ghanaian Gold Assets',
-        allocation: 18,
-        value: 441,
-        networkNode: 'ashanti_goldfields',
-        risk: 'low',
-        correlation: [0.6, 0.9, 0.1, 0.3, 0.8]
-      }
-    ];
-
-    setPortfolio(mockPortfolio);
-    calculateRiskMetrics(mockPortfolio);
-
     // Fetch real portfolio recommendations from constraint engine
     fetchRecommendations();
-
-    // Live data is now handled by the usePortfolioData hook
-    // No need for manual intervals
   }, []);
+
+  // Update portfolio from real live data when available
+  useEffect(() => {
+    if (portfolioLiveData && portfolioLiveData.holdings) {
+      const realPortfolio: PortfolioAsset[] = portfolioLiveData.holdings.map((holding: any) => ({
+        id: holding.id || `holding_${holding.name.toLowerCase().replace(/\s+/g, '_')}`,
+        name: holding.name,
+        allocation: holding.allocation || 0,
+        value: holding.value || 0,
+        networkNode: holding.networkNode || holding.id,
+        risk: holding.risk || 'medium',
+        correlation: holding.correlation || [0.5, 0.5, 0.5, 0.5, 0.5]
+      }));
+
+      setPortfolio(realPortfolio);
+      calculateRiskMetrics(realPortfolio);
+    }
+  }, [portfolioLiveData]);
 
   const fetchRecommendations = async () => {
     try {
@@ -271,32 +253,39 @@ const InvestmentPortfolioOptimization: React.FC = () => {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {portfolio.map((asset, idx) => (
-                <div
-                  key={asset.id}
-                  className={`p-4 rounded-lg border cursor-pointer transition-all ${
-                    selectedAsset === asset.id
-                      ? 'border-blue-300 bg-blue-50/50'
-                      : 'border-zinc-200 hover:border-zinc-300'
-                  }`}
-                  onClick={() => setSelectedAsset(selectedAsset === asset.id ? null : asset.id)}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-zinc-900">{asset.name}</span>
-                    <div className="flex items-center space-x-2">
-                      <span className={`w-2 h-2 rounded-full ${
-                        asset.risk === 'high' ? 'bg-rose-500' :
-                        asset.risk === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
-                      }`}></span>
-                      <span className="text-xs text-zinc-500">{asset.risk}</span>
+              {portfolio.length > 0 ? (
+                portfolio.map((asset, idx) => (
+                  <div
+                    key={asset.id}
+                    className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                      selectedAsset === asset.id
+                        ? 'border-blue-300 bg-blue-50/50'
+                        : 'border-zinc-200 hover:border-zinc-300'
+                    }`}
+                    onClick={() => setSelectedAsset(selectedAsset === asset.id ? null : asset.id)}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-zinc-900">{asset.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className={`w-2 h-2 rounded-full ${
+                          asset.risk === 'high' ? 'bg-rose-500' :
+                          asset.risk === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
+                        }`}></span>
+                        <span className="text-xs text-zinc-500">{asset.risk}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-zinc-600">{asset.allocation}% allocation</span>
+                      <span className="text-sm font-medium text-emerald-600">${asset.value}M</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-600">{asset.allocation}% allocation</span>
-                    <span className="text-sm font-medium text-emerald-600">${asset.value}M</span>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-zinc-500">
+                  <Activity className="h-8 w-8 mx-auto mb-2 text-zinc-300 animate-pulse" />
+                  <p>Loading portfolio holdings...</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

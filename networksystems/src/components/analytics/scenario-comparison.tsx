@@ -61,6 +61,61 @@ interface SensitivityAnalysis {
   }>;
 }
 
+/**
+ * Calculate sensitivity analysis from real scenario data
+ */
+function calculateSensitivityFromScenarios(scenarios: ScenarioResult[]): SensitivityAnalysis[] {
+  if (scenarios.length < 2) return [];
+
+  // Find baseline scenario
+  const baseline = scenarios.find(s => s.id === 'baseline') || scenarios[0];
+
+  // Calculate cost sensitivity across scenarios
+  const costVariations = scenarios
+    .filter(s => s.id !== baseline.id)
+    .map(s => ({
+      value: (s.costs.totalCost / baseline.costs.totalCost - 1) * 100,
+      impact: (s.costs.totalCost - baseline.costs.totalCost) / baseline.costs.totalCost,
+      feasibility: s.feasibility
+    }));
+
+  // Calculate reliability sensitivity
+  const reliabilityVariations = scenarios
+    .filter(s => s.id !== baseline.id)
+    .map(s => ({
+      value: s.metrics.reliabilityScore,
+      impact: (s.costs.totalCost - baseline.costs.totalCost) / baseline.costs.totalCost,
+      feasibility: s.feasibility
+    }));
+
+  // Calculate material utilization sensitivity (using cobalt as proxy)
+  const materialVariations = scenarios
+    .filter(s => s.id !== baseline.id && s.metrics.materialUtilization.cobalt)
+    .map(s => ({
+      value: s.metrics.materialUtilization.cobalt,
+      impact: (s.costs.totalCost - baseline.costs.totalCost) / baseline.costs.totalCost,
+      feasibility: s.feasibility
+    }));
+
+  return [
+    {
+      parameter: 'Total Cost Impact',
+      baseValue: baseline.costs.totalCost / 1000000000, // in billions
+      variations: costVariations.slice(0, 5)
+    },
+    {
+      parameter: 'Reliability Score',
+      baseValue: baseline.metrics.reliabilityScore,
+      variations: reliabilityVariations.slice(0, 5)
+    },
+    ...(materialVariations.length > 0 ? [{
+      parameter: 'Cobalt Utilization',
+      baseValue: baseline.metrics.materialUtilization.cobalt || 0,
+      variations: materialVariations.slice(0, 5)
+    }] : [])
+  ];
+}
+
 const ScenarioComparison: React.FC = () => {
   const [scenarios, setScenarios] = useState<ScenarioResult[]>([]);
   const [selectedScenarios, setSelectedScenarios] = useState<string[]>([]);
@@ -95,48 +150,17 @@ const ScenarioComparison: React.FC = () => {
         }));
 
         setScenarios(scenariosWithDates);
+
+        // Calculate sensitivity analysis from real scenario data
+        if (scenariosWithDates.length > 0) {
+          const sensitivity: SensitivityAnalysis[] = calculateSensitivityFromScenarios(scenariosWithDates);
+          setSensitivityAnalysis(sensitivity);
+        }
       } else {
         throw new Error(result.error || 'Invalid response format');
       }
 
       // Note: Removed mock scenarios - now using real constraint engine data
-      
-      // Generate sensitivity analysis
-      const sensitivity: SensitivityAnalysis[] = [
-        {
-          parameter: 'Demand Growth Rate',
-          baseValue: 2.5,
-          variations: [
-            { value: 1.5, impact: -0.12, feasibility: true },
-            { value: 2.0, impact: -0.06, feasibility: true },
-            { value: 3.0, impact: 0.08, feasibility: true },
-            { value: 4.0, impact: 0.18, feasibility: true },
-            { value: 5.0, impact: 0.28, feasibility: false }
-          ]
-        },
-        {
-          parameter: 'Cobalt Supply',
-          baseValue: 165000,
-          variations: [
-            { value: 100000, impact: 0.35, feasibility: true },
-            { value: 130000, impact: 0.15, feasibility: true },
-            { value: 200000, impact: -0.08, feasibility: true },
-            { value: 250000, impact: -0.15, feasibility: true }
-          ]
-        },
-        {
-          parameter: 'Lead Time Reduction',
-          baseValue: 0,
-          variations: [
-            { value: -1, impact: 0.12, feasibility: true },
-            { value: -0.5, impact: 0.06, feasibility: true },
-            { value: 1, impact: -0.08, feasibility: true },
-            { value: 2, impact: -0.15, feasibility: true }
-          ]
-        }
-      ];
-      
-      setSensitivityAnalysis(sensitivity);
       
     } catch (error) {
       console.error('Failed to fetch scenarios:', error);

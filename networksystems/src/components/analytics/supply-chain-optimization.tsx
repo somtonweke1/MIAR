@@ -113,41 +113,9 @@ const SupplyChainOptimization: React.FC = () => {
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
 
-  // Mock data for visualization
-  const [nodes, setNodes] = useState<SupplyChainNode[]>([
-    // Materials
-    { id: 'lithium', name: 'Lithium', type: 'material', status: 'constrained', capacity: 50000, utilization: 87, cost: 15000, position: { x: 100, y: 100 } },
-    { id: 'cobalt', name: 'Cobalt', type: 'material', status: 'bottleneck', capacity: 150000, utilization: 94, cost: 55000, position: { x: 100, y: 200 } },
-    { id: 'nickel', name: 'Nickel', type: 'material', status: 'operational', capacity: 3000000, utilization: 72, cost: 18000, position: { x: 100, y: 300 } },
-    { id: 'silicon', name: 'Silicon', type: 'material', status: 'operational', capacity: 8000000, utilization: 65, cost: 2500, position: { x: 100, y: 400 } },
-    
-    // Components
-    { id: 'battery_cells', name: 'Battery Cells', type: 'component', status: 'constrained', capacity: 100000, utilization: 82, cost: 250, leadTime: 2, position: { x: 300, y: 150 } },
-    { id: 'solar_panels', name: 'Solar Panels', type: 'component', status: 'operational', capacity: 50000, utilization: 68, cost: 180, leadTime: 1, position: { x: 300, y: 250 } },
-    { id: 'wind_turbines', name: 'Wind Turbines', type: 'component', status: 'constrained', capacity: 10000, utilization: 89, cost: 1200, leadTime: 3, position: { x: 300, y: 350 } },
-    
-    // Technologies
-    { id: 'solar_pv', name: 'Solar PV', type: 'technology', status: 'operational', capacity: 5000, utilization: 75, cost: 1200000, position: { x: 500, y: 200 } },
-    { id: 'battery_storage', name: 'Battery Storage', type: 'technology', status: 'constrained', capacity: 2000, utilization: 91, cost: 350000, position: { x: 500, y: 300 } },
-    { id: 'wind_onshore', name: 'Onshore Wind', type: 'technology', status: 'constrained', capacity: 1500, utilization: 88, cost: 1500000, position: { x: 500, y: 400 } },
-    
-    // Zones
-    { id: 'bge', name: 'BGE', type: 'zone', status: 'operational', capacity: 6428, utilization: 78, cost: 0, position: { x: 700, y: 200 } },
-    { id: 'aps', name: 'APS', type: 'zone', status: 'constrained', capacity: 1554, utilization: 92, cost: 0, position: { x: 700, y: 300 } },
-    { id: 'dpl', name: 'DPL', type: 'zone', status: 'operational', capacity: 961, utilization: 69, cost: 0, position: { x: 700, y: 400 } }
-  ]);
-
-  const [flows, setFlows] = useState<SupplyChainFlow[]>([
-    { from: 'lithium', to: 'battery_cells', volume: 45000, value: 675000000, status: 'constrained', delay: 30 },
-    { from: 'cobalt', to: 'battery_cells', volume: 141000, value: 7755000000, status: 'bottleneck', delay: 45 },
-    { from: 'nickel', to: 'battery_cells', volume: 2160000, value: 38880000000, status: 'active' },
-    { from: 'battery_cells', to: 'battery_storage', volume: 82000, value: 20500000000, status: 'constrained', delay: 20 },
-    { from: 'solar_panels', to: 'solar_pv', volume: 34000, value: 6120000000, status: 'active' },
-    { from: 'wind_turbines', to: 'wind_onshore', volume: 8900, value: 10680000000, status: 'constrained', delay: 60 },
-    { from: 'solar_pv', to: 'bge', volume: 3750, value: 4500000000, status: 'active' },
-    { from: 'battery_storage', to: 'aps', volume: 1820, value: 637000000, status: 'constrained', delay: 15 },
-    { from: 'wind_onshore', to: 'dpl', volume: 1320, value: 1980000000, status: 'constrained', delay: 90 }
-  ]);
+  // Network visualization data - populated from API
+  const [nodes, setNodes] = useState<SupplyChainNode[]>([]);
+  const [flows, setFlows] = useState<SupplyChainFlow[]>([]);
 
   const runOptimization = useCallback(async () => {
     setIsLoading(true);
@@ -205,19 +173,50 @@ const SupplyChainOptimization: React.FC = () => {
           }
         });
 
-        // Update nodes visualization based on bottleneck analysis
-        const updatedNodes = nodes.map(node => {
-          const bottleneck = data.bottlenecks.material.find((b: any) => b.material === node.name);
-          if (bottleneck) {
-            return {
-              ...node,
-              status: (bottleneck.constraint ? 'bottleneck' : 'constrained') as 'operational' | 'constrained' | 'bottleneck' | 'critical',
-              utilization: bottleneck.utilization
-            };
-          }
-          return node;
-        });
-        setNodes(updatedNodes);
+        // Build nodes from real bottleneck data
+        const materialNodes: SupplyChainNode[] = (data.bottlenecks.material || []).map((bottleneck: any, idx: number) => ({
+          id: bottleneck.material.toLowerCase().replace(/\s+/g, '_'),
+          name: bottleneck.material,
+          type: 'material' as const,
+          status: bottleneck.constraint ? 'bottleneck' : (bottleneck.utilization > 80 ? 'constrained' : 'operational'),
+          capacity: bottleneck.available || 0,
+          utilization: bottleneck.utilization,
+          cost: 0,
+          position: { x: 100, y: 100 + (idx * 100) }
+        }));
+
+        // Build nodes from spatial constraints (zones)
+        const spatialNodes: SupplyChainNode[] = (data.bottlenecks.spatial || []).map((spatial: any, idx: number) => ({
+          id: spatial.zone?.toLowerCase().replace(/\s+/g, '_') || `zone_${idx}`,
+          name: spatial.zone || `Zone ${idx}`,
+          type: 'zone' as const,
+          status: spatial.constraint ? 'constrained' : 'operational',
+          capacity: spatial.available || 0,
+          utilization: spatial.utilization || 0,
+          cost: 0,
+          position: { x: 700, y: 200 + (idx * 100) }
+        }));
+
+        const allNodes = [...materialNodes, ...spatialNodes];
+        setNodes(allNodes);
+
+        // Build flows between materials (simplified for now)
+        const materialFlows: SupplyChainFlow[] = materialNodes.slice(0, -1).map((node, idx) => {
+          const flowStatus: 'active' | 'constrained' | 'blocked' | 'bottleneck' =
+            node.status === 'bottleneck' ? 'bottleneck' :
+            node.status === 'constrained' ? 'constrained' :
+            'active';
+
+          return {
+            from: node.id,
+            to: materialNodes[idx + 1]?.id || spatialNodes[0]?.id,
+            volume: node.capacity * (node.utilization / 100),
+            value: node.capacity * (node.utilization / 100) * 1000,
+            status: flowStatus
+          };
+        }).filter(flow => flow.to);
+
+        setFlows(materialFlows);
       } else {
         console.error('Bottleneck analysis failed:', data.error || 'Unknown error');
         alert(`Bottleneck analysis failed: ${data.error || 'Unknown error'}`);
@@ -228,11 +227,12 @@ const SupplyChainOptimization: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [nodes, selectedRegion, selectedScenario]);
+  }, [selectedRegion, selectedScenario]);
 
   useEffect(() => {
     runOptimization();
-  }, [runOptimization]);
+    runBottleneckAnalysis(); // Fetch real network data on mount
+  }, [runOptimization, runBottleneckAnalysis]);
 
   // Zoom and pan functions
   const handleZoomIn = () => {

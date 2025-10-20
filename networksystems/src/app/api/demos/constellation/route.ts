@@ -32,36 +32,33 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({
-      success: true,
-      demo: {
-        scenario: demo.scenario,
-        constraints: demo.constraints,
-        digitalTwin: {
-          processing: demo.digitalTwin.processing,
-          logistics: demo.digitalTwin.logistics,
-          activeConstraints: demo.digitalTwin.activeConstraints.length,
-        },
-        mitigationOptions: demo.mitigationOptions,
-        financialImpact: demo.financialImpact,
-        recommendations: {
-          optimal: demo.scenario.optimalMitigationPlan.actions.map(a => ({
-            description: a.description,
-            cost: a.cost,
-            npvImpact: a.npvImpact,
-            roi: a.npvImpact / a.cost,
-            timeToImplement: a.timeToImplement,
-          })),
-          summary: {
-            totalCost: demo.scenario.optimalMitigationPlan.totalCost,
-            expectedBenefit: demo.scenario.optimalMitigationPlan.expectedBenefit,
-            netValue:
-              demo.scenario.optimalMitigationPlan.expectedBenefit -
-              demo.scenario.optimalMitigationPlan.totalCost,
-            roi: demo.scenario.optimalMitigationPlan.roi,
-          },
-        },
-        visualization: generateDemoVisualization(demo),
+      scenario: demo.scenario,
+      constraints: demo.constraints,
+      digitalTwin: {
+        processing: demo.digitalTwin.processing,
+        logistics: demo.digitalTwin.logistics,
+        activeConstraints: demo.digitalTwin.activeConstraints.length,
       },
+      mitigationOptions: demo.mitigationOptions,
+      financialImpact: demo.financialImpact,
+      recommendations: {
+        optimal: demo.scenario.optimalMitigationPlan.actions.map(a => ({
+          description: a.description,
+          cost: a.cost,
+          npvImpact: a.npvImpact,
+          roi: a.npvImpact / a.cost,
+          timeToImplement: a.timeToImplement,
+        })),
+        summary: {
+          totalCost: demo.scenario.optimalMitigationPlan.totalCost,
+          expectedBenefit: demo.scenario.optimalMitigationPlan.expectedBenefit,
+          netValue:
+            demo.scenario.optimalMitigationPlan.expectedBenefit -
+            demo.scenario.optimalMitigationPlan.totalCost,
+          roi: demo.scenario.optimalMitigationPlan.roi,
+        },
+      },
+      visualization: generateDemoVisualization(demo),
     });
   } catch (error) {
     console.error('Constellation demo error:', error);
