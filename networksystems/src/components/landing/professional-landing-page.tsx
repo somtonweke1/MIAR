@@ -165,8 +165,8 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
               <p className="text-zinc-600 font-light">Avoid $500M+ losses through early warning systems on supply chain disruptions and geopolitical risks.</p>
             </div>
             <div className="text-center">
-              <div className="bg-violet-100/60 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <TrendingUp className="w-8 h-8 text-violet-600" />
+              <div className="bg-blue-100/60 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <TrendingUp className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-light text-zinc-900 mb-4">Strategic Advantage</h3>
               <p className="text-zinc-600 font-light">Access exclusive intelligence on 68% of global critical mineral flows and reduce due diligence from 6 months to 2 weeks.</p>

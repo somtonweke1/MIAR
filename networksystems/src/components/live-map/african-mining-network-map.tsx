@@ -812,7 +812,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
               <div className="border border-zinc-200/50 rounded-xl p-6 bg-white/40 backdrop-blur-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-light text-zinc-900">Ultra-Deep Mining Technology</h4>
-                  <span className="bg-violet-100/80 text-violet-700 px-3 py-1 rounded-full text-xs font-light">25% Cost Reduction</span>
+                  <span className="bg-emerald-100/80 text-emerald-700 px-3 py-1 rounded-full text-xs font-light">25% Cost Reduction</span>
                 </div>
                 <p className="text-sm text-zinc-600 mb-4 font-light leading-relaxed">Operations at 3-4km depth face extreme temperatures and costs.</p>
                 <div className="space-y-3 text-sm">
@@ -1021,7 +1021,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   <div className="text-xs text-zinc-400 font-light">Annual tax contribution</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extralight text-violet-600">6</div>
+                  <div className="text-3xl font-extralight text-emerald-600">6</div>
                   <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Network Links</div>
                   <div className="text-xs text-zinc-400 font-light">Cross-border connections</div>
                 </div>
@@ -1132,7 +1132,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <span className="text-gray-600">Net Value</span>
-                      <span className="font-bold text-purple-600">$4,536M</span>
+                      <span className="font-bold text-emerald-600">$4,536M</span>
                     </div>
                   </div>
                 </div>
@@ -1169,15 +1169,15 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
                   <h4 className="font-semibold text-gray-900">Market Position</h4>
                 </div>
                 <p className="text-sm text-gray-700 mb-3">South Africa can reclaim 8-12% global market share through tailings reprocessing and efficiency gains.</p>
                 <div className="text-xs bg-white p-2 rounded border">
                   <div className="text-gray-500">Impact</div>
-                  <div className="font-medium text-purple-600">Strategic opportunity</div>
+                  <div className="font-medium text-emerald-600">Strategic opportunity</div>
                 </div>
               </div>
             </div>
@@ -1202,9 +1202,9 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   <div className="text-xs text-blue-500">Through automation</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">150K+</div>
+                  <div className="text-2xl font-bold text-emerald-600">150K+</div>
                   <div className="text-sm text-gray-600">Jobs Sustainable</div>
-                  <div className="text-xs text-purple-500">With technology adoption</div>
+                  <div className="text-xs text-emerald-500">With technology adoption</div>
                 </div>
               </div>
             </div>
@@ -1384,8 +1384,8 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-6">
-                  <div className="flex items-center justify-center w-16 h-16 bg-violet-100/60 rounded-2xl mx-auto">
-                    <TrendingUp className="h-8 w-8 text-violet-600" />
+                  <div className="flex items-center justify-center w-16 h-16 bg-emerald-100/60 rounded-2xl mx-auto">
+                    <TrendingUp className="h-8 w-8 text-emerald-600" />
                   </div>
                   <div>
                     <div className="text-2xl font-extralight text-zinc-900 mb-2">NETWORK</div>
@@ -1477,8 +1477,8 @@ const AfricanMiningNetworkMap: React.FC = () => {
                 <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Current Gold Price</div>
                 <div className="text-xs text-amber-500 font-light">+$12 (0.5%)</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-violet-50/50 to-violet-100/30 rounded-xl border border-violet-200/30">
-                <div className="text-2xl font-extralight text-violet-600 mb-2">24</div>
+              <div className="text-center p-4 bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl border border-emerald-200/30">
+                <div className="text-2xl font-extralight text-emerald-600 mb-2">24</div>
                 <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Active Connections</div>
                 <div className="text-xs text-violet-500 font-light">Continental network</div>
               </div>
@@ -1523,7 +1523,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
               </div>
 
               <div className="flex items-start space-x-4 p-4 bg-zinc-50/50 rounded-xl border border-zinc-200/30">
-                <div className="w-2 h-2 bg-violet-400 rounded-full mt-2"></div>
+                <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2"></div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-light text-zinc-900">Technology deployment success</span>

@@ -536,7 +536,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('network')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'network'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -547,7 +547,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('materials')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'materials'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -558,7 +558,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('scenarios')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'scenarios'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -569,7 +569,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('custom_scenarios')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'custom_scenarios'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -580,7 +580,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('geopolitical_risk')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'geopolitical_risk'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -591,7 +591,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('scenario_comparison')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'scenario_comparison'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
@@ -602,7 +602,7 @@ const SupplyChainOptimization: React.FC = () => {
                   onClick={() => setActiveView('esg_compliance')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
                     activeView === 'esg_compliance'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >

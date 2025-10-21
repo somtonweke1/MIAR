@@ -148,7 +148,7 @@ function HomeContent() {
                   onClick={() => setActiveTab('supply-chain')}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-light transition-all ${
                     activeTab === 'supply-chain'
-                      ? 'bg-purple-500 text-white shadow-sm'
+                      ? 'bg-zinc-700 text-white shadow-sm'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
                   }`}
                 >
