@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useCommodityPrices, useFinancialData } from '@/hooks/use-live-data';
 import { TrendingUp, TrendingDown, RefreshCw, Activity, AlertTriangle, DollarSign, Zap, CheckCircle, Database } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import PlatformMetricsBar from '@/components/integrated/platform-metrics-bar';
 
 interface LiveConstraintData {
   gasPrice: {
@@ -174,6 +175,9 @@ const LiveMarketFeed: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Live Monitoring Metrics Bar */}
+      <PlatformMetricsBar />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

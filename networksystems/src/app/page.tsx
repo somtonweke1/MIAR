@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity, Zap, Database, Target, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { useUnifiedPlatform } from '@/stores/unified-platform-store';
-import PlatformMetricsBar from '@/components/integrated/platform-metrics-bar';
 import QuickDataUpload from '@/components/integrated/quick-data-upload';
 
 type TabType = 'mining' | 'investment' | 'trade' | 'supply-chain' | 'live-markets';
@@ -207,9 +206,6 @@ function HomeContent() {
           </div>
         </div>
       </nav>
-
-      {/* Integrated Metrics Bar */}
-      <PlatformMetricsBar />
 
       {/* Main Content Area */}
       <main className="px-6 py-8">
