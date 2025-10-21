@@ -43,7 +43,7 @@ const NetworkAnalysisDashboard: React.FC = () => {
     const colors = {
       'west_africa': 'bg-green-100 text-green-800 border-green-200',
       'east_africa': 'bg-blue-100 text-blue-800 border-blue-200',
-      'southern_africa': 'bg-purple-100 text-purple-800 border-purple-200',
+      'southern_africa': 'bg-emerald-100 text-emerald-800 border-emerald-200',
       'central_africa': 'bg-orange-100 text-orange-800 border-orange-200',
       'north_africa': 'bg-red-100 text-red-800 border-red-200'
     };
@@ -59,7 +59,7 @@ const NetworkAnalysisDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <div className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex justify-between items-start">
             <div>
@@ -82,7 +82,7 @@ const NetworkAnalysisDashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Global Value Proposition */}
-        <Card className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+        <Card className="p-6 bg-gradient-to-r from-indigo-50 to-emerald-50 border-indigo-200">
           <div className="text-center mb-6">
             <h2 className="text-xl font-medium text-gray-900 mb-2">Africa Controls the World's Critical Mineral Supply Chains</h2>
             <p className="text-gray-700 max-w-4xl mx-auto">
@@ -149,7 +149,7 @@ const NetworkAnalysisDashboard: React.FC = () => {
               ${(continentalImpact.total_government_revenue / 1000).toFixed(1)}B
             </div>
             <div className="text-sm font-medium text-gray-700 mb-1">Govt Revenue</div>
-            <div className="text-xs text-purple-600">Annual tax contribution</div>
+            <div className="text-xs text-emerald-600">Annual tax contribution</div>
           </Card>
 
           <Card className="p-6 text-center">
@@ -338,24 +338,24 @@ const NetworkAnalysisDashboard: React.FC = () => {
                   {(() => {
                     const centrality = AfricanMiningNetwork.calculateNetworkCentrality(selectedOperation.id);
                     return (
-                      <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                        <h4 className="font-medium text-purple-900 mb-3">Network Analysis</h4>
+                      <div className="mt-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                        <h4 className="font-medium text-emerald-900 mb-3">Network Analysis</h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div className="text-center">
-                            <div className="text-xl font-light text-purple-900">{centrality.degree}</div>
-                            <div className="text-xs text-purple-700">Network Connections</div>
+                            <div className="text-xl font-light text-emerald-900">{centrality.degree}</div>
+                            <div className="text-xs text-emerald-700">Network Connections</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-xl font-light text-purple-900">{centrality.importance_score.toFixed(1)}</div>
-                            <div className="text-xs text-purple-700">Importance Score</div>
+                            <div className="text-xl font-light text-emerald-900">{centrality.importance_score.toFixed(1)}</div>
+                            <div className="text-xs text-emerald-700">Importance Score</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-xl font-light text-purple-900">{(centrality.closeness * 100).toFixed(0)}%</div>
-                            <div className="text-xs text-purple-700">Avg Connection Strength</div>
+                            <div className="text-xl font-light text-emerald-900">{(centrality.closeness * 100).toFixed(0)}%</div>
+                            <div className="text-xs text-emerald-700">Avg Connection Strength</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-xl font-light text-purple-900">{(centrality.betweenness * 100).toFixed(0)}%</div>
-                            <div className="text-xs text-purple-700">Network Centrality</div>
+                            <div className="text-xl font-light text-emerald-900">{(centrality.betweenness * 100).toFixed(0)}%</div>
+                            <div className="text-xs text-emerald-700">Network Centrality</div>
                           </div>
                         </div>
                       </div>
@@ -391,7 +391,7 @@ const NetworkAnalysisDashboard: React.FC = () => {
                           <span className={`px-2 py-1 text-xs rounded-full ${
                             connection.connection_type === 'supply_chain' ? 'bg-blue-100 text-blue-800' :
                             connection.connection_type === 'knowledge_transfer' ? 'bg-green-100 text-green-800' :
-                            connection.connection_type === 'financial' ? 'bg-purple-100 text-purple-800' :
+                            connection.connection_type === 'financial' ? 'bg-emerald-100 text-emerald-800' :
                             connection.connection_type === 'logistics' ? 'bg-orange-100 text-orange-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>

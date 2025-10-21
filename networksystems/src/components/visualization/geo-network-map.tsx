@@ -379,7 +379,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
 
                 <div>
                   <span className="text-gray-400">Employees:</span>
-                  <div className="font-semibold text-purple-400">
+                  <div className="font-semibold text-emerald-400">
                     {selectedNodeData.data.employees?.toLocaleString()}
                   </div>
                 </div>
@@ -447,7 +447,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
             <span>Research Labs</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
+            <div className="w-4 h-4 bg-emerald-500 rounded-full"></div>
             <span>Logistics Hubs</span>
           </div>
         </div>

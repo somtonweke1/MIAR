@@ -398,7 +398,7 @@ export default function EnhancedEnterpriseDashboard() {
                 </Card>
 
                 <Card className="p-4">
-                  <h4 className="font-semibold mb-3 text-purple-600">Connectivity Metrics</h4>
+                  <h4 className="font-semibold mb-3 text-emerald-600">Connectivity Metrics</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>Total Connections:</span>
@@ -553,10 +553,10 @@ export default function EnhancedEnterpriseDashboard() {
 
                   <div className="space-y-4">
                     <h4 className="font-medium">Market Intelligence</h4>
-                    <div className="bg-purple-50 p-4 rounded">
-                      <div className="font-medium text-purple-800">Commodity Price Alert</div>
-                      <div className="text-sm text-purple-600">Gold prices up 3.2% - optimal selling window</div>
-                      <div className="text-xs text-purple-500 mt-1">Revenue impact: +$180K this month</div>
+                    <div className="bg-emerald-50 p-4 rounded">
+                      <div className="font-medium text-emerald-800">Commodity Price Alert</div>
+                      <div className="text-sm text-emerald-600">Gold prices up 3.2% - optimal selling window</div>
+                      <div className="text-xs text-emerald-500 mt-1">Revenue impact: +$180K this month</div>
                     </div>
                     <div className="bg-orange-50 p-4 rounded">
                       <div className="font-medium text-orange-800">Supply Chain Optimization</div>
@@ -585,9 +585,9 @@ export default function EnhancedEnterpriseDashboard() {
                     <div className="text-sm text-blue-600 mt-1">↑ 24.3% from last year</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-purple-600">425%</div>
+                    <div className="text-3xl font-bold text-emerald-600">425%</div>
                     <div className="text-gray-600">ROI on MIAR Platform</div>
-                    <div className="text-sm text-purple-600 mt-1">Based on 12-month period</div>
+                    <div className="text-sm text-emerald-600 mt-1">Based on 12-month period</div>
                   </div>
                 </div>
               </Card>
@@ -627,9 +627,9 @@ export default function EnhancedEnterpriseDashboard() {
                       <div className="font-medium text-blue-800">Energy Optimization</div>
                       <div className="text-sm text-blue-600">Potential annual savings: $280K</div>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded">
-                      <div className="font-medium text-purple-800">Process Efficiency</div>
-                      <div className="text-sm text-purple-600">Potential annual savings: $420K</div>
+                    <div className="p-3 bg-emerald-50 rounded">
+                      <div className="font-medium text-emerald-800">Process Efficiency</div>
+                      <div className="text-sm text-emerald-600">Potential annual savings: $420K</div>
                     </div>
                   </div>
                 </Card>

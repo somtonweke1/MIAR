@@ -405,7 +405,7 @@ export default function ThreeDNetworkMap({
             </div>
             <div className="flex justify-between">
               <span>Connections:</span>
-              <span className="text-purple-400">{selectedNodeData.data.connections.length}</span>
+              <span className="text-emerald-400">{selectedNodeData.data.connections.length}</span>
             </div>
           </div>
         </div>

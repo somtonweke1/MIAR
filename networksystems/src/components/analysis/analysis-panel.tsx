@@ -16,9 +16,9 @@ export function AnalysisPanel() {
           <h3 className="font-semibold text-green-900">Network Metrics</h3>
           <p className="text-green-700 text-sm">Calculate network-level statistics and properties</p>
         </div>
-        <div className="p-4 bg-purple-50 rounded-lg">
-          <h3 className="font-semibold text-purple-900">Visualization</h3>
-          <p className="text-purple-700 text-sm">Interactive network visualization and exploration</p>
+        <div className="p-4 bg-emerald-50 rounded-lg">
+          <h3 className="font-semibold text-emerald-900">Visualization</h3>
+          <p className="text-emerald-700 text-sm">Interactive network visualization and exploration</p>
         </div>
       </div>
     </Card>

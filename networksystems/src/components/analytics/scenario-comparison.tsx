@@ -345,7 +345,7 @@ const ScenarioComparison: React.FC = () => {
               <Button
                 onClick={runNewScenario}
                 disabled={isRunning}
-                className="bg-purple-600 text-white hover:bg-purple-700"
+                className="bg-emerald-600 text-white hover:bg-emerald-700"
               >
                 {isRunning ? (
                   <>
@@ -415,7 +415,7 @@ const ScenarioComparison: React.FC = () => {
               
               return (
                 <Card key={scenario.id} className={`p-6 border transition-all cursor-pointer ${
-                  isSelected ? 'border-purple-300 bg-purple-50/50' : 'border-zinc-200 hover:border-zinc-300'
+                  isSelected ? 'border-emerald-300 bg-emerald-50/50' : 'border-zinc-200 hover:border-zinc-300'
                 }`} onClick={() => {
                   setSelectedScenarios(prev => 
                     prev.includes(scenario.id) 

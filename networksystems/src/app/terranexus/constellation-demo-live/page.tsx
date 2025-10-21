@@ -293,16 +293,16 @@ export default function ConstellationDemoLivePage() {
               </p>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-violet-50 to-violet-100 border-violet-200">
+            <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
               <div className="flex items-center justify-between mb-2">
-                <Clock className="w-8 h-8 text-violet-700" />
-                <Activity className="w-5 h-5 text-violet-600" />
+                <Clock className="w-8 h-8 text-blue-700" />
+                <Activity className="w-5 h-5 text-blue-600" />
               </div>
-              <p className="text-sm text-violet-700 font-medium mb-1">Time to Implement</p>
-              <p className="text-3xl font-bold text-violet-900">
+              <p className="text-sm text-blue-700 font-medium mb-1">Time to Implement</p>
+              <p className="text-3xl font-bold text-zinc-900">
                 {Math.max(...demoData.mitigationOptions.filter(m => selectedMitigations.includes(m.id)).map(m => m.timeToImplement))}h
               </p>
-              <p className="text-xs text-violet-600 mt-2">
+              <p className="text-xs text-blue-600 mt-2">
                 Critical path timeline
               </p>
             </Card>
@@ -311,23 +311,23 @@ export default function ConstellationDemoLivePage() {
       </section>
 
       {/* Interactive Scenario Parameters */}
-      <section className="py-12 bg-gradient-to-br from-violet-50 to-violet-100 border-y border-violet-200">
+      <section className="py-12 bg-gradient-to-br from-emerald-50 to-emerald-100 border-y border-emerald-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-6">
-            <Sliders className="w-6 h-6 text-violet-600" />
+            <Sliders className="w-6 h-6 text-blue-600" />
             <div>
               <h2 className="text-2xl font-bold text-zinc-900">Interactive "What-If" Scenario Modeling</h2>
               <p className="text-sm text-zinc-600 mt-1">Adjust parameters to see real-time impact on constraint severity and financial exposure</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-violet-200 shadow-xl p-8">
+          <div className="bg-white rounded-2xl border border-blue-200 shadow-xl p-8">
             <div className="grid md:grid-cols-3 gap-8">
               {/* LNG Export Increase Slider */}
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-sm font-semibold text-zinc-900">LNG Export Surge</label>
-                  <span className="text-2xl font-bold text-violet-600">{lngExportIncrease}%</span>
+                  <span className="text-2xl font-bold text-blue-600">{lngExportIncrease}%</span>
                 </div>
                 <input
                   type="range"
@@ -335,7 +335,7 @@ export default function ConstellationDemoLivePage() {
                   max="70"
                   value={lngExportIncrease}
                   onChange={(e) => setLngExportIncrease(Number(e.target.value))}
-                  className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                 />
                 <div className="flex justify-between text-xs text-zinc-500 mt-2">
                   <span>30% (Mild)</span>
@@ -350,7 +350,7 @@ export default function ConstellationDemoLivePage() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-sm font-semibold text-zinc-900">Pipeline Capacity Reduction</label>
-                  <span className="text-2xl font-bold text-violet-600">{pipelineImpact}%</span>
+                  <span className="text-2xl font-bold text-blue-600">{pipelineImpact}%</span>
                 </div>
                 <input
                   type="range"
@@ -358,7 +358,7 @@ export default function ConstellationDemoLivePage() {
                   max="50"
                   value={pipelineImpact}
                   onChange={(e) => setPipelineImpact(Number(e.target.value))}
-                  className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                 />
                 <div className="flex justify-between text-xs text-zinc-500 mt-2">
                   <span>20% (Moderate)</span>
@@ -373,7 +373,7 @@ export default function ConstellationDemoLivePage() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-sm font-semibold text-zinc-900">Constraint Duration</label>
-                  <span className="text-2xl font-bold text-violet-600">{duration} days</span>
+                  <span className="text-2xl font-bold text-blue-600">{duration} days</span>
                 </div>
                 <input
                   type="range"
@@ -381,7 +381,7 @@ export default function ConstellationDemoLivePage() {
                   max="15"
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
-                  className="w-full h-2 bg-violet-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                 />
                 <div className="flex justify-between text-xs text-zinc-500 mt-2">
                   <span>5 days</span>
@@ -394,7 +394,7 @@ export default function ConstellationDemoLivePage() {
             </div>
 
             {/* Real-time Impact Display */}
-            <div className="mt-8 pt-8 border-t border-violet-200">
+            <div className="mt-8 pt-8 border-t border-blue-200">
               <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 border border-rose-200">
                 <div className="flex items-center justify-between">
                   <div>
@@ -418,7 +418,7 @@ export default function ConstellationDemoLivePage() {
               </div>
 
               <div className="mt-4 flex items-center gap-2 text-sm text-zinc-600">
-                <Activity className="w-4 h-4 text-violet-600" />
+                <Activity className="w-4 h-4 text-blue-600" />
                 <span>Impact recalculates in real-time as you adjust parameters • This demonstrates MIAR's constraint modeling engine</span>
               </div>
             </div>
@@ -573,7 +573,7 @@ export default function ConstellationDemoLivePage() {
                       </div>
                       <div>
                         <div className="text-xs text-zinc-600 mb-1">Implementation</div>
-                        <div className="text-lg font-bold text-violet-600">
+                        <div className="text-lg font-bold text-blue-600">
                           {mitigation.timeToImplement}h
                         </div>
                       </div>

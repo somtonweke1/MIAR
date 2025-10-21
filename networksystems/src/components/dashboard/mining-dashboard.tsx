@@ -266,14 +266,14 @@ const MiningDashboard: React.FC = () => {
         </Card>
 
         {/* Quick Insights */}
-        <Card className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+        <Card className="p-6 bg-gradient-to-r from-emerald-50 to-indigo-50 border-emerald-200">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <Zap className="h-6 w-6 text-purple-600" />
+            <div className="p-2 bg-emerald-100 rounded-lg">
+              <Zap className="h-6 w-6 text-emerald-600" />
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-900">Key Insights</h3>
-              <p className="text-sm text-purple-700">AI analysis of current operations</p>
+              <p className="text-sm text-emerald-700">AI analysis of current operations</p>
             </div>
           </div>
 
@@ -299,7 +299,7 @@ const MiningDashboard: React.FC = () => {
               <p className="text-sm text-gray-700 mb-3">
                 South Africa can reclaim 8-12% global market share through tailings reprocessing and efficiency gains.
               </p>
-              <div className="text-xs text-purple-600 font-medium">Strategic opportunity</div>
+              <div className="text-xs text-emerald-600 font-medium">Strategic opportunity</div>
             </div>
           </div>
         </Card>

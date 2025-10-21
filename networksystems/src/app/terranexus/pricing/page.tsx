@@ -257,7 +257,7 @@ export default function TerraNexusPricingPage() {
           <div className="bg-white rounded-2xl shadow-xl border border-zinc-200 overflow-hidden">
             <div className="p-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-lg flex items-center justify-center">
                   <Crown className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -279,55 +279,55 @@ export default function TerraNexusPricingPage() {
                 <p className="text-zinc-700 font-medium mb-4">Everything in Enterprise, plus:</p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       <strong>Dedicated Rapid Response Team</strong> (24/7)
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Co-development of new features
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Custom Constraint Library Builds
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       White-glove onboarding (executive level)
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Monthly Strategic Review Sessions
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Industry leadership program participation
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Exclusive network insights
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Joint business planning
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                    <Star className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-zinc-700">
                       Shared IP on custom developments
                     </span>
@@ -337,7 +337,7 @@ export default function TerraNexusPricingPage() {
 
               <Link
                 href="/terranexus/contact?tier=elite"
-                className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg font-semibold hover:from-violet-700 hover:to-purple-700 transition-colors"
+                className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-emerald-700 transition-colors"
               >
                 Schedule Discussion
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -391,7 +391,7 @@ export default function TerraNexusPricingPage() {
                     <Check className="w-5 h-5 text-emerald-600 mx-auto" />
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -401,7 +401,7 @@ export default function TerraNexusPricingPage() {
                     <Check className="w-5 h-5 text-emerald-600 mx-auto" />
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -411,7 +411,7 @@ export default function TerraNexusPricingPage() {
                     <Check className="w-5 h-5 text-emerald-600 mx-auto" />
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -437,7 +437,7 @@ export default function TerraNexusPricingPage() {
                   <td className="px-6 py-4 text-center text-zinc-400">—</td>
                   <td className="px-6 py-4 text-center text-zinc-400 bg-emerald-50/30">—</td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -447,7 +447,7 @@ export default function TerraNexusPricingPage() {
                     <Check className="w-5 h-5 text-emerald-600 mx-auto" />
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -455,7 +455,7 @@ export default function TerraNexusPricingPage() {
                   <td className="px-6 py-4 text-center text-zinc-400">—</td>
                   <td className="px-6 py-4 text-center text-zinc-400 bg-emerald-50/30">—</td>
                   <td className="px-6 py-4 text-center">
-                    <Check className="w-5 h-5 text-violet-600 mx-auto" />
+                    <Check className="w-5 h-5 text-blue-600 mx-auto" />
                   </td>
                 </tr>
                 <tr>
@@ -504,8 +504,8 @@ export default function TerraNexusPricingPage() {
             </div>
 
             <div className="bg-white rounded-xl shadow-md p-8">
-              <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center mb-4">
-                <Clock className="w-6 h-6 text-violet-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <Clock className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-xl font-bold text-zinc-900 mb-3">
                 Fast Time-to-Value

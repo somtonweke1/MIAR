@@ -105,7 +105,7 @@ const LiveConstraintMonitoring: React.FC = () => {
     return (
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-purple-600 mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-emerald-600 mx-auto mb-4" />
           <p className="text-sm text-zinc-500 font-light">Loading real-time data...</p>
         </div>
       </div>

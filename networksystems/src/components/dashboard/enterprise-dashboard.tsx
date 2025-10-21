@@ -81,7 +81,7 @@ const EnterpriseDashboard: React.FC = () => {
                 <span className="text-sm text-gray-500">Client:</span>
                 <span className="font-semibold text-gray-900">{currentClient.name}</span>
                 <span className={`px-2 py-1 text-xs rounded-full ${
-                  currentClient.tier === 'enterprise' ? 'bg-purple-100 text-purple-800' :
+                  currentClient.tier === 'enterprise' ? 'bg-emerald-100 text-emerald-800' :
                   currentClient.tier === 'professional' ? 'bg-blue-100 text-blue-800' :
                   'bg-green-100 text-green-800'
                 }`}>
@@ -172,12 +172,12 @@ const EnterpriseDashboard: React.FC = () => {
 
               <Card className="p-6">
                 <div className="flex items-center">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+                  <div className="p-2 bg-emerald-100 rounded-lg">
                     <CheckCircle className="h-8 w-8 text-green-600" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Compliance Score</p>
-                    <p className="text-2xl font-bold text-purple-600">
+                    <p className="text-2xl font-bold text-emerald-600">
                       {complianceScore}%
                     </p>
                   </div>
@@ -590,7 +590,7 @@ const EnterpriseDashboard: React.FC = () => {
                       
                       <div className="flex justify-between">
                         <span className="text-gray-600">IRR:</span>
-                        <span className="font-bold text-purple-600">
+                        <span className="font-bold text-emerald-600">
                           {site.economicAssessment.irr.toFixed(1)}%
                         </span>
                       </div>
@@ -647,7 +647,7 @@ const EnterpriseDashboard: React.FC = () => {
               
               <Card className="p-6">
                 <h3 className="text-sm text-gray-500 mb-2">Payback Period</h3>
-                <div className="text-2xl font-bold text-purple-600">
+                <div className="text-2xl font-bold text-emerald-600">
                   {(currentClient.contractValue / (clientMetrics.costSavings * 12)).toFixed(1)} years
                 </div>
                 <p className="text-sm text-gray-500 mt-1">Time to break even</p>

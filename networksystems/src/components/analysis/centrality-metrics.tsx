@@ -17,7 +17,7 @@ export function CentralityMetrics() {
           <div className="text-sm text-gray-600">Betweenness</div>
         </div>
         <div className="text-center p-4 bg-gray-50 rounded">
-          <div className="text-2xl font-bold text-purple-600">0.91</div>
+          <div className="text-2xl font-bold text-emerald-600">0.91</div>
           <div className="text-sm text-gray-600">Closeness</div>
         </div>
         <div className="text-center p-4 bg-gray-50 rounded">

@@ -53,12 +53,12 @@ const TemporalAnalysis: React.FC<TemporalAnalysisProps> = ({
             <p className="text-sm text-green-600">per month</p>
           </div>
 
-          <div className="bg-purple-50 p-4 rounded">
-            <h4 className="font-medium text-purple-800">Avg Efficiency</h4>
-            <p className="text-2xl font-bold text-purple-600">
+          <div className="bg-emerald-50 p-4 rounded">
+            <h4 className="font-medium text-emerald-800">Avg Efficiency</h4>
+            <p className="text-2xl font-bold text-emerald-600">
               {(mockData.reduce((sum, d) => sum + d.efficiency, 0) / mockData.length * 100).toFixed(1)}%
             </p>
-            <p className="text-sm text-purple-600">network efficiency</p>
+            <p className="text-sm text-emerald-600">network efficiency</p>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ const TemporalAnalysis: React.FC<TemporalAnalysisProps> = ({
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm">Efficiency Score</span>
-              <span className="text-sm font-medium text-purple-600">↗ +8%</span>
+              <span className="text-sm font-medium text-emerald-600">↗ +8%</span>
             </div>
           </div>
         </div>

@@ -1480,7 +1480,7 @@ const AfricanMiningNetworkMap: React.FC = () => {
               <div className="text-center p-4 bg-gradient-to-br from-emerald-50/50 to-emerald-100/30 rounded-xl border border-emerald-200/30">
                 <div className="text-2xl font-extralight text-emerald-600 mb-2">24</div>
                 <div className="text-xs text-zinc-500 uppercase tracking-wider font-light">Active Connections</div>
-                <div className="text-xs text-violet-500 font-light">Continental network</div>
+                <div className="text-xs text-blue-500 font-light">Continental network</div>
               </div>
             </div>
           </div>

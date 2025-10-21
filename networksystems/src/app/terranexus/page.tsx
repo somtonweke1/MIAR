@@ -150,7 +150,7 @@ export default function TerraNexusPage() {
 
           {/* Pillar 3 */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-zinc-200 hover:shadow-xl transition-shadow">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl flex items-center justify-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
               <Users className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-zinc-900 mb-3">
@@ -163,21 +163,21 @@ export default function TerraNexusPage() {
             </p>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-sm text-zinc-700">
-                <CheckCircle2 className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <span>Dedicated experts for onboarding & modeling</span>
               </li>
               <li className="flex items-start gap-2 text-sm text-zinc-700">
-                <CheckCircle2 className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <span>Quarterly strategic review sessions</span>
               </li>
               <li className="flex items-start gap-2 text-sm text-zinc-700">
-                <CheckCircle2 className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <span>24/7 rapid response for acute disruptions</span>
               </li>
             </ul>
             <Link
               href="/terranexus/advisory"
-              className="inline-flex items-center gap-2 text-violet-600 font-semibold mt-6 hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-blue-600 font-semibold mt-6 hover:gap-3 transition-all"
             >
               Learn More
               <ArrowRight className="w-4 h-4" />

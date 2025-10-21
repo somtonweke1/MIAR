@@ -181,7 +181,7 @@ const MiningInsights: React.FC = () => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'market': return 'text-blue-600 bg-blue-100';
-      case 'technology': return 'text-purple-600 bg-purple-100';
+      case 'technology': return 'text-emerald-600 bg-emerald-100';
       case 'sustainability': return 'text-green-600 bg-green-100';
       case 'opportunity': return 'text-amber-600 bg-amber-100';
       default: return 'text-gray-600 bg-gray-100';

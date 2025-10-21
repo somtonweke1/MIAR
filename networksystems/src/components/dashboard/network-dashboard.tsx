@@ -336,7 +336,7 @@ const NetworkDashboard: React.FC = () => {
                     <button
                       onClick={handleRunCompleteAnalysis}
                       disabled={loading}
-                      className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50"
+                      className="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-50"
                     >
                       {loading ? 'Running Complete Analysis...' : 'Run Complete Analysis'}
                     </button>

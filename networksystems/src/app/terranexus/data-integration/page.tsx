@@ -100,14 +100,14 @@ export default function DataIntegrationPage() {
             </div>
 
             <div className="border border-zinc-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-violet-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <Shield className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-zinc-900 mb-2">Secure SFTP</h3>
               <p className="text-sm text-zinc-600 mb-4">
                 Enterprise-grade secure file transfer for automated data sync
               </p>
-              <div className="flex items-center text-sm text-violet-600 font-medium">
+              <div className="flex items-center text-sm text-blue-600 font-medium">
                 Enterprise option
                 <ArrowRight className="w-4 h-4 ml-1" />
               </div>
@@ -296,8 +296,8 @@ export default function DataIntegrationPage() {
             <p className="text-sm text-zinc-600">SOC 2 compliant, encrypted at rest and in transit</p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Database className="w-8 h-8 text-violet-600" />
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Database className="w-8 h-8 text-blue-600" />
             </div>
             <h3 className="font-semibold text-zinc-900 mb-2">Works With Your Stack</h3>
             <p className="text-sm text-zinc-600">SAP, Oracle, custom ERP - we integrate with everything</p>

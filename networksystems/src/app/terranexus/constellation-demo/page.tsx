@@ -113,14 +113,14 @@ export default function ConstellationDemoPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl p-6 border border-violet-200">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
               <div className="flex items-center justify-between mb-2">
-                <Target className="w-8 h-8 text-violet-700" />
-                <Clock className="w-5 h-5 text-violet-600" />
+                <Target className="w-8 h-8 text-blue-700" />
+                <Clock className="w-5 h-5 text-blue-600" />
               </div>
-              <p className="text-sm text-violet-700 font-medium mb-1">Time to Value</p>
-              <p className="text-3xl font-bold text-violet-900">90 days</p>
-              <p className="text-xs text-violet-600 mt-1">
+              <p className="text-sm text-blue-700 font-medium mb-1">Time to Value</p>
+              <p className="text-3xl font-bold text-zinc-900">90 days</p>
+              <p className="text-xs text-blue-600 mt-1">
                 Average first savings verification
               </p>
             </div>
@@ -437,7 +437,7 @@ export default function ConstellationDemoPage() {
                 </div>
                 <div>
                   <p className="text-xs text-zinc-600 mb-1">Availability Improvement</p>
-                  <p className="text-2xl font-bold text-violet-700">
+                  <p className="text-2xl font-bold text-blue-700">
                     +{scenario.quantifiedBenefits.availabilityImprovement.toFixed(1)}%
                   </p>
                 </div>

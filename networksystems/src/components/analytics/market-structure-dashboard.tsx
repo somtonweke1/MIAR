@@ -182,18 +182,18 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
         </Card>
 
         {/* Modularity */}
-        <Card className="p-4 border-2 border-purple-300 bg-purple-50">
+        <Card className="p-4 border-2 border-emerald-300 bg-emerald-50">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-purple-700">Modularity Score</p>
-              <p className="text-2xl font-bold mt-1 text-purple-900">
+              <p className="text-sm font-medium text-emerald-700">Modularity Score</p>
+              <p className="text-2xl font-bold mt-1 text-emerald-900">
                 {results.modularity.toFixed(3)}
               </p>
-              <p className="text-xs text-purple-600 mt-1">
+              <p className="text-xs text-emerald-600 mt-1">
                 {results.interpretation || 'Moderate structure'}
               </p>
             </div>
-            <GitBranch className="w-8 h-8 text-purple-600" />
+            <GitBranch className="w-8 h-8 text-emerald-600" />
           </div>
         </Card>
 
@@ -302,14 +302,14 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
       {results.community_profiles && results.community_profiles.length > 0 && (
         <Card className="p-6">
           <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Users className="w-5 h-5 text-purple-600" />
+            <Users className="w-5 h-5 text-emerald-600" />
             Community Profiles
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {results.community_profiles.map((comm) => (
               <Card
                 key={comm.community_id}
-                className={`p-4 cursor-pointer transition-all border-2 ${selectedCommunity === comm.community_id ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-300'
+                className={`p-4 cursor-pointer transition-all border-2 ${selectedCommunity === comm.community_id ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-emerald-300'
                   }`}
                 onClick={() => setSelectedCommunity(comm.community_id)}
               >
@@ -318,8 +318,8 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
                     <h4 className="font-bold text-lg">Community {comm.community_id + 1}</h4>
                     <p className="text-sm text-gray-600">{comm.size} operations</p>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                    <span className="text-xl font-bold text-purple-700">{comm.size}</span>
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <span className="text-xl font-bold text-emerald-700">{comm.size}</span>
                   </div>
                 </div>
 
@@ -351,7 +351,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
                       {Object.entries(comm.characteristics.primary_commodities).map(([commodity, count]) => (
                         <span
                           key={commodity}
-                          className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full"
+                          className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full"
                         >
                           {commodity} ({count})
                         </span>
@@ -397,11 +397,11 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
       </Card>
 
       {/* Modularity Interpretation */}
-      <Card className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200">
+      <Card className="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200">
         <div className="flex items-start gap-4">
-          <BarChart3 className="w-8 h-8 text-purple-600 flex-shrink-0" />
+          <BarChart3 className="w-8 h-8 text-emerald-600 flex-shrink-0" />
           <div>
-            <h3 className="text-lg font-bold text-purple-900 mb-2">
+            <h3 className="text-lg font-bold text-emerald-900 mb-2">
               Network Modularity Analysis
             </h3>
             <p className="text-sm text-gray-700 leading-relaxed">
@@ -416,7 +416,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
                 <p className="text-xs text-gray-600">Modularity Range</p>
                 <div className="w-48 h-3 bg-gradient-to-r from-red-300 via-yellow-300 to-green-300 rounded-full mt-1 relative">
                   <div
-                    className="absolute top-0 h-full w-1 bg-purple-900 rounded-full"
+                    className="absolute top-0 h-full w-1 bg-emerald-900 rounded-full"
                     style={{ left: `${Math.min(results.modularity * 100, 100)}%` }}
                   />
                 </div>

@@ -253,23 +253,23 @@ export default function LiveMonitoringPage() {
             </Card>
 
             {/* Electricity Demand */}
-            <Card className="p-6 border-2 border-violet-200 bg-gradient-to-br from-violet-50 to-violet-100">
+            <Card className="p-6 border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Zap className="w-6 h-6 text-violet-600" />
-                  <h3 className="font-semibold text-violet-900">PJM Demand</h3>
+                  <Zap className="w-6 h-6 text-blue-600" />
+                  <h3 className="font-semibold text-zinc-900">PJM Demand</h3>
                 </div>
-                <span className="text-xs bg-violet-200 text-violet-800 px-2 py-1 rounded">
+                <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
                   Live
                 </span>
               </div>
 
-              <div className="text-4xl font-bold text-violet-900 mb-2">
+              <div className="text-4xl font-bold text-zinc-900 mb-2">
                 {currentDemand.toFixed(0)}
               </div>
-              <div className="text-sm text-violet-700">MW</div>
+              <div className="text-sm text-zinc-700">MW</div>
 
-              <div className="mt-4 text-sm text-violet-700">
+              <div className="mt-4 text-sm text-zinc-700">
                 24hr avg: {avgDemand.toFixed(0)} MW
                 ({(((currentDemand - avgDemand) / avgDemand) * 100).toFixed(1)}% variance)
               </div>
