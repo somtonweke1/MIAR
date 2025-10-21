@@ -171,13 +171,13 @@ const LiveConstraintMonitoring: React.FC = () => {
 
             <Card className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50">
               <div className="text-xs text-zinc-500 mb-1 font-light">Proven ROI</div>
-              <div className="text-2xl font-extralight text-purple-600">{backtestData.conclusions.provenROI}</div>
+              <div className="text-2xl font-extralight text-emerald-600">{backtestData.conclusions.provenROI}</div>
               <div className="text-xs text-zinc-500 mt-1">Return on investment</div>
             </Card>
 
             <Card className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50">
               <div className="text-xs text-zinc-500 mb-1 font-light">Detection Speed</div>
-              <div className="text-2xl font-extralight text-blue-600">{backtestData.conclusions.averageDetectionSpeed}</div>
+              <div className="text-2xl font-extralight text-zinc-900">{backtestData.conclusions.averageDetectionSpeed}</div>
               <div className="text-xs text-zinc-500 mt-1">Faster response</div>
             </Card>
           </div>
@@ -202,21 +202,21 @@ const LiveConstraintMonitoring: React.FC = () => {
         <div className="p-6">
           <div className="grid grid-cols-3 gap-4">
             {/* Gas Prices */}
-            <Card className="p-4 border-2 border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-blue-100/50">
+            <Card className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-blue-600" />
-                  <h4 className="text-sm font-light text-blue-900">Natural Gas Price</h4>
+                  <DollarSign className="h-4 w-4 text-zinc-600" />
+                  <h4 className="text-sm font-light text-zinc-900">Natural Gas Price</h4>
                 </div>
-                <span className="text-xs bg-blue-200/50 text-blue-800 px-2 py-0.5 rounded font-light">
+                <span className="text-xs bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded font-light">
                   EIA Henry Hub
                 </span>
               </div>
 
-              <div className="text-3xl font-extralight text-blue-900 mb-1">
+              <div className="text-3xl font-extralight text-zinc-900 mb-1">
                 ${liveData.gasPrice.price.toFixed(2)}
               </div>
-              <div className="text-xs text-blue-700 font-light">per MMBtu</div>
+              <div className="text-xs text-zinc-500 font-light">per MMBtu</div>
 
               <div className={`mt-3 flex items-center gap-1.5 text-xs font-light ${
                 liveData.gasPrice.changePercent >= 0 ? 'text-rose-600' : 'text-emerald-600'
@@ -230,46 +230,46 @@ const LiveConstraintMonitoring: React.FC = () => {
             </Card>
 
             {/* Electricity Demand */}
-            <Card className="p-4 border-2 border-violet-200/50 bg-gradient-to-br from-violet-50/50 to-violet-100/50">
+            <Card className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-violet-600" />
-                  <h4 className="text-sm font-light text-violet-900">PJM Demand</h4>
+                  <Zap className="h-4 w-4 text-zinc-600" />
+                  <h4 className="text-sm font-light text-zinc-900">PJM Demand</h4>
                 </div>
-                <span className="text-xs bg-violet-200/50 text-violet-800 px-2 py-0.5 rounded font-light">
+                <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-light">
                   Live
                 </span>
               </div>
 
-              <div className="text-3xl font-extralight text-violet-900 mb-1">
+              <div className="text-3xl font-extralight text-zinc-900 mb-1">
                 {currentDemand.toFixed(0)}
               </div>
-              <div className="text-xs text-violet-700 font-light">MW</div>
+              <div className="text-xs text-zinc-500 font-light">MW</div>
 
-              <div className="mt-3 text-xs text-violet-700 font-light">
+              <div className="mt-3 text-xs text-zinc-600 font-light">
                 24hr avg: {avgDemand.toFixed(0)} MW
                 ({(((currentDemand - avgDemand) / avgDemand) * 100).toFixed(1)}% variance)
               </div>
             </Card>
 
             {/* Weather */}
-            <Card className="p-4 border-2 border-amber-200/50 bg-gradient-to-br from-amber-50/50 to-amber-100/50">
+            <Card className="p-4 bg-white/60 backdrop-blur-sm border-zinc-200/50">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-amber-600" />
-                  <h4 className="text-sm font-light text-amber-900">Weather</h4>
+                  <Activity className="h-4 w-4 text-zinc-600" />
+                  <h4 className="text-sm font-light text-zinc-900">Weather</h4>
                 </div>
-                <span className="text-xs bg-amber-200/50 text-amber-800 px-2 py-0.5 rounded font-light">
+                <span className="text-xs bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded font-light">
                   Mid-Atlantic
                 </span>
               </div>
 
-              <div className="text-3xl font-extralight text-amber-900 mb-1">
+              <div className="text-3xl font-extralight text-zinc-900 mb-1">
                 {liveData.weather.temperature.toFixed(0)}°F
               </div>
-              <div className="text-xs text-amber-700 font-light">{liveData.weather.conditions}</div>
+              <div className="text-xs text-zinc-500 font-light">{liveData.weather.conditions}</div>
 
-              <div className="mt-3 text-xs text-amber-700 font-light">
+              <div className="mt-3 text-xs text-zinc-600 font-light">
                 Wind: {liveData.weather.windSpeed.toFixed(0)} mph
               </div>
             </Card>
