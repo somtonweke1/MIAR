@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Network, TrendingUp, Ship, Package, HelpCircle, Activity, Zap, Database, Target, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { useUnifiedPlatform } from '@/stores/unified-platform-store';
-import UnifiedAlertPanel from '@/components/integrated/unified-alert-panel';
 import PlatformMetricsBar from '@/components/integrated/platform-metrics-bar';
 import QuickDataUpload from '@/components/integrated/quick-data-upload';
 
@@ -230,9 +229,6 @@ function HomeContent() {
           <QuickDataUpload onClose={() => setShowQuickUpload(false)} />
         </div>
       )}
-
-      {/* Unified Alert Panel - Always visible */}
-      <UnifiedAlertPanel />
     </div>
   );
 }
