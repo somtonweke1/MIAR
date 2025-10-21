@@ -170,22 +170,8 @@ function HomeContent() {
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* New Features - Quick Access Links */}
+              {/* Quick Access Tools */}
               <div className="flex items-center space-x-2 border-l border-zinc-200 pl-4">
-                <Link
-                  href="/decision-center"
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200 relative"
-                  title="Real-time constraint monitoring and decision automation"
-                >
-                  <Target className="h-4 w-4 text-blue-600" />
-                  <span className="hidden lg:inline">Decision Center</span>
-                  {metrics.pendingDecisions > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
-                      {metrics.pendingDecisions}
-                    </span>
-                  )}
-                </Link>
-
                 <button
                   onClick={() => setShowQuickUpload(true)}
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
@@ -194,24 +180,6 @@ function HomeContent() {
                   <Upload className="h-4 w-4 text-violet-600" />
                   <span className="hidden lg:inline">Quick Upload</span>
                 </button>
-
-                <Link
-                  href="/live-monitoring"
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
-                  title="Real-time constraint monitoring with live data"
-                >
-                  <Database className="h-4 w-4 text-blue-600" />
-                  <span className="hidden lg:inline">Live Monitoring</span>
-                </Link>
-
-                <Link
-                  href="/terranexus/constellation-demo-live"
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-light text-zinc-600 hover:text-zinc-900 hover:bg-white/80 transition-all border border-transparent hover:border-zinc-200"
-                  title="Interactive constraint intelligence demo"
-                >
-                  <Zap className="h-4 w-4 text-emerald-600" />
-                  <span className="hidden lg:inline">Demo</span>
-                </Link>
               </div>
 
               <div className="hidden md:block text-sm text-zinc-500 font-light border-l border-zinc-200 pl-4">

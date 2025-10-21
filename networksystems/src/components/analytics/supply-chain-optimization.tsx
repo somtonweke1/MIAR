@@ -9,6 +9,7 @@ import GeopoliticalRiskDashboard from './geopolitical-risk-dashboard';
 import ScenarioComparison from './scenario-comparison';
 import ESGComplianceTracker from './esg-compliance-tracker';
 import CustomScenarioBuilder from './custom-scenario-builder';
+import LiveConstraintMonitoring from './live-constraint-monitoring';
 import ThreeDSupplyChainNetwork from '../visualization/3d-supply-chain-network';
 import {
   Package,
@@ -105,7 +106,7 @@ const SupplyChainOptimization: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState('africa');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['materials', 'technologies']));
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'custom_scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance'>('network');
+  const [activeView, setActiveView] = useState<'network' | 'materials' | 'scenarios' | 'custom_scenarios' | 'geopolitical_risk' | 'scenario_comparison' | 'esg_compliance' | 'constraints'>('network');
 
   // Zoom and pan state
   const [zoom, setZoom] = useState(1);
@@ -292,6 +293,8 @@ const SupplyChainOptimization: React.FC = () => {
         return <ScenarioComparison />;
       case 'esg_compliance':
         return <ESGComplianceTracker />;
+      case 'constraints':
+        return <LiveConstraintMonitoring />;
       default:
         return renderNetworkView();
     }
@@ -608,6 +611,17 @@ const SupplyChainOptimization: React.FC = () => {
                 >
                   <Shield className="h-4 w-4" />
                   <span>ESG</span>
+                </button>
+                <button
+                  onClick={() => setActiveView('constraints')}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-light transition-all ${
+                    activeView === 'constraints'
+                      ? 'bg-purple-500 text-white shadow-sm'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/50'
+                  }`}
+                >
+                  <AlertTriangle className="h-4 w-4" />
+                  <span>Constraints</span>
                 </button>
               </div>
               {activeView === 'network' && (
