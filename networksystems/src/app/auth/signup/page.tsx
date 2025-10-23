@@ -82,32 +82,32 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-50 to-zinc-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="flex justify-center">
-            <div className="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">M</span>
+            <div className="w-12 h-12 bg-zinc-900 rounded-lg flex items-center justify-center">
+              <span className="text-white font-extralight text-xl tracking-wide">M</span>
             </div>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extralight tracking-tight text-zinc-900">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm font-light text-zinc-600">
             Join MIAR today
           </p>
         </div>
 
-        <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-zinc-200/50" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-800">{error}</div>
+            <div className="rounded-lg bg-rose-50 border border-rose-200 p-4">
+              <div className="text-sm font-light text-rose-700">{error}</div>
             </div>
           )}
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-light text-zinc-700 mb-2">
                 Full Name *
               </label>
               <input
@@ -116,13 +116,13 @@ export default function SignUpPage() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="John Doe"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-light text-zinc-700 mb-2">
                 Email address *
               </label>
               <input
@@ -131,13 +131,13 @@ export default function SignUpPage() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="company" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="company" className="block text-sm font-light text-zinc-700 mb-2">
                 Company (Optional)
               </label>
               <input
@@ -145,13 +145,13 @@ export default function SignUpPage() {
                 type="text"
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="Acme Mining Corp"
               />
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="phone" className="block text-sm font-light text-zinc-700 mb-2">
                 Phone (Optional)
               </label>
               <input
@@ -159,13 +159,13 @@ export default function SignUpPage() {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="+1 (555) 000-0000"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-light text-zinc-700 mb-2">
                 Password *
               </label>
               <input
@@ -174,16 +174,16 @@ export default function SignUpPage() {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="••••••••"
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-2 text-xs font-light text-zinc-500">
                 Must be at least 8 characters with uppercase, lowercase, and number
               </p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-sm font-light text-zinc-700 mb-2">
                 Confirm Password *
               </label>
               <input
@@ -192,7 +192,7 @@ export default function SignUpPage() {
                 required
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 placeholder="••••••••"
               />
             </div>
@@ -202,16 +202,16 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-lg text-lg font-light text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
             >
               {isLoading ? 'Creating account...' : 'Sign up'}
             </button>
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm font-light text-zinc-600">
               Already have an account?{' '}
-              <Link href="/auth/signin" className="font-medium text-emerald-600 hover:text-emerald-500">
+              <Link href="/auth/signin" className="font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
                 Sign in
               </Link>
             </p>
