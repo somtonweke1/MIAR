@@ -180,7 +180,7 @@ export default function DecisionCenterPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
             <Link
-              href="/"
+              href="/?access=platform"
               className="inline-flex items-center gap-2 text-zinc-600 hover:text-zinc-900 transition-colors text-sm font-light"
             >
               <ArrowLeft className="w-4 h-4" />
