@@ -104,7 +104,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
       case 'highly_fragmented':
         return 'text-blue-600 bg-blue-100 border-blue-300';
       default:
-        return 'text-gray-600 bg-gray-100 border-gray-300';
+        return 'text-zinc-600 bg-zinc-100 border-zinc-300';
     }
   };
 
@@ -119,7 +119,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
       case 'low':
         return 'text-green-700 bg-green-50 border-green-400';
       default:
-        return 'text-gray-700 bg-gray-50 border-gray-400';
+        return 'text-zinc-700 bg-zinc-50 border-gray-400';
     }
   };
 
@@ -143,7 +143,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
   if (!results) {
     return (
       <Card className="p-8">
-        <p className="text-gray-500 text-center">Load a network to analyze market structure</p>
+        <p className="text-zinc-500 text-center">Load a network to analyze market structure</p>
       </Card>
     );
   }
@@ -157,7 +157,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
             <Network className="w-6 h-6 text-blue-600" />
             Market Structure Analysis
           </h2>
-          <p className="text-gray-600 mt-1">
+          <p className="text-zinc-600 mt-1">
             Community detection, modularity analysis, and consolidation tracking
           </p>
         </div>
@@ -278,13 +278,13 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold">{player.nodeId}</p>
-                  <p className="text-sm text-gray-600">Community {player.community}</p>
+                  <p className="text-sm text-zinc-600">Community {player.community}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-blue-700">
                     {(player.market_share * 100).toFixed(1)}%
                   </p>
-                  <p className="text-xs text-gray-500">Market share</p>
+                  <p className="text-xs text-zinc-500">Market share</p>
                 </div>
                 <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -309,14 +309,14 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
             {results.community_profiles.map((comm) => (
               <Card
                 key={comm.community_id}
-                className={`p-4 cursor-pointer transition-all border-2 ${selectedCommunity === comm.community_id ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 hover:border-emerald-300'
+                className={`p-4 cursor-pointer transition-all border-2 ${selectedCommunity === comm.community_id ? 'border-emerald-500 bg-emerald-50' : 'border-zinc-200 hover:border-emerald-300'
                   }`}
                 onClick={() => setSelectedCommunity(comm.community_id)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h4 className="font-bold text-lg">Community {comm.community_id + 1}</h4>
-                    <p className="text-sm text-gray-600">{comm.size} operations</p>
+                    <p className="text-sm text-zinc-600">{comm.size} operations</p>
                   </div>
                   <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
                     <span className="text-xl font-bold text-emerald-700">{comm.size}</span>
@@ -325,19 +325,19 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Production:</span>
+                    <span className="text-zinc-600">Production:</span>
                     <span className="font-semibold">
                       {formatNumber(comm.characteristics.total_production)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Employment:</span>
+                    <span className="text-zinc-600">Employment:</span>
                     <span className="font-semibold">
                       {formatNumber(comm.characteristics.total_employment)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Avg GDP:</span>
+                    <span className="text-zinc-600">Avg GDP:</span>
                     <span className="font-semibold">
                       {comm.characteristics.avg_gdp_contribution.toFixed(1)}%
                     </span>
@@ -346,7 +346,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
 
                 {Object.keys(comm.characteristics.primary_commodities).length > 0 && (
                   <div className="mt-3 pt-3 border-t">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Primary Commodities:</p>
+                    <p className="text-xs font-semibold text-zinc-700 mb-2">Primary Commodities:</p>
                     <div className="flex flex-wrap gap-1">
                       {Object.entries(comm.characteristics.primary_commodities).map(([commodity, count]) => (
                         <span
@@ -362,10 +362,10 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
 
                 {selectedCommunity === comm.community_id && (
                   <div className="mt-3 pt-3 border-t">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Members:</p>
+                    <p className="text-xs font-semibold text-zinc-700 mb-2">Members:</p>
                     <div className="max-h-32 overflow-y-auto space-y-1">
                       {comm.members.map((member) => (
-                        <p key={member.id} className="text-xs text-gray-600">
+                        <p key={member.id} className="text-xs text-zinc-600">
                           • {member.label}
                         </p>
                       ))}
@@ -390,7 +390,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
               <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-white text-xs font-bold">{idx + 1}</span>
               </div>
-              <p className="text-sm text-gray-700 flex-1">{insight}</p>
+              <p className="text-sm text-zinc-700 flex-1">{insight}</p>
             </div>
           ))}
         </div>
@@ -404,7 +404,7 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
             <h3 className="text-lg font-bold text-emerald-900 mb-2">
               Network Modularity Analysis
             </h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-sm text-zinc-700 leading-relaxed">
               {results.interpretation || `Modularity score of ${results.modularity.toFixed(3)} indicates ${results.modularity > 0.5 ? 'strong' : 'moderate'
                 } community structure. `}
               {results.modularity > 0.6 && 'The network exhibits clear clustering with distinct regional or commodity-based communities.'}
@@ -413,14 +413,14 @@ export default function MarketStructureDashboard({ network }: MarketStructureDas
             </p>
             <div className="mt-4 flex items-center gap-6">
               <div>
-                <p className="text-xs text-gray-600">Modularity Range</p>
+                <p className="text-xs text-zinc-600">Modularity Range</p>
                 <div className="w-48 h-3 bg-gradient-to-r from-red-300 via-yellow-300 to-green-300 rounded-full mt-1 relative">
                   <div
                     className="absolute top-0 h-full w-1 bg-emerald-900 rounded-full"
                     style={{ left: `${Math.min(results.modularity * 100, 100)}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <div className="flex justify-between text-xs text-zinc-500 mt-1">
                   <span>0.0 (Weak)</span>
                   <span>1.0 (Strong)</span>
                 </div>

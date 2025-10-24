@@ -83,23 +83,23 @@ const SimpleNetworkDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-50">
       <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
 
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-light tracking-tight text-gray-900">
+              <h1 className="text-2xl font-light tracking-tight text-zinc-900">
                 Network Analysis
               </h1>
-              <p className="mt-2 text-sm text-gray-600 font-light">
+              <p className="mt-2 text-sm text-zinc-600 font-light">
                 African mining network topology and performance monitoring
               </p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="h-2 w-2 rounded-full bg-green-500"></div>
-              <span className="text-sm text-gray-600 font-light">Live Network</span>
+              <span className="text-sm text-zinc-600 font-light">Live Network</span>
             </div>
           </div>
         </div>
@@ -110,12 +110,12 @@ const SimpleNetworkDashboard: React.FC = () => {
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm ring-1 ring-gray-200">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Network className="h-5 w-5 text-gray-600" />
+                <Network className="h-5 w-5 text-zinc-600" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-light text-gray-500">Total Nodes</dt>
-                  <dd className="text-lg font-medium text-gray-900">{networkStats.totalNodes}</dd>
+                  <dt className="text-sm font-light text-zinc-500">Total Nodes</dt>
+                  <dd className="text-lg font-medium text-zinc-900">{networkStats.totalNodes}</dd>
                 </dl>
               </div>
             </div>
@@ -124,12 +124,12 @@ const SimpleNetworkDashboard: React.FC = () => {
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm ring-1 ring-gray-200">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Activity className="h-5 w-5 text-gray-600" />
+                <Activity className="h-5 w-5 text-zinc-600" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-light text-gray-500">Active Connections</dt>
-                  <dd className="text-lg font-medium text-gray-900">{networkStats.activeConnections}</dd>
+                  <dt className="text-sm font-light text-zinc-500">Active Connections</dt>
+                  <dd className="text-lg font-medium text-zinc-900">{networkStats.activeConnections}</dd>
                 </dl>
               </div>
             </div>
@@ -138,12 +138,12 @@ const SimpleNetworkDashboard: React.FC = () => {
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm ring-1 ring-gray-200">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <BarChart3 className="h-5 w-5 text-gray-600" />
+                <BarChart3 className="h-5 w-5 text-zinc-600" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-light text-gray-500">Network Health</dt>
-                  <dd className="text-lg font-medium text-gray-900">{networkStats.networkHealth}%</dd>
+                  <dt className="text-sm font-light text-zinc-500">Network Health</dt>
+                  <dd className="text-lg font-medium text-zinc-900">{networkStats.networkHealth}%</dd>
                 </dl>
               </div>
             </div>
@@ -152,12 +152,12 @@ const SimpleNetworkDashboard: React.FC = () => {
           <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow-sm ring-1 ring-gray-200">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Zap className="h-5 w-5 text-gray-600" />
+                <Zap className="h-5 w-5 text-zinc-600" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-light text-gray-500">Data Flow</dt>
-                  <dd className="text-lg font-medium text-gray-900">{networkStats.dataFlowRate}</dd>
+                  <dt className="text-sm font-light text-zinc-500">Data Flow</dt>
+                  <dd className="text-lg font-medium text-zinc-900">{networkStats.dataFlowRate}</dd>
                 </dl>
               </div>
             </div>
@@ -168,11 +168,11 @@ const SimpleNetworkDashboard: React.FC = () => {
         {/* Main Network Visualization */}
         <div className="mb-8">
           <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
-            <div className="border-b border-gray-200 bg-white px-6 py-4">
-              <h2 className="text-lg font-medium text-gray-900">
+            <div className="border-b border-zinc-200 bg-white px-6 py-4">
+              <h2 className="text-lg font-medium text-zinc-900">
                 Interactive Network Map
               </h2>
-              <p className="mt-1 text-sm text-gray-600 font-light">
+              <p className="mt-1 text-sm text-zinc-600 font-light">
                 Click on nodes to view detailed information and network relationships
               </p>
             </div>
@@ -190,34 +190,34 @@ const SimpleNetworkDashboard: React.FC = () => {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
           <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
-            <div className="border-b border-gray-200 bg-white px-6 py-4">
-              <h3 className="text-base font-medium text-gray-900">Network Performance</h3>
+            <div className="border-b border-zinc-200 bg-white px-6 py-4">
+              <h3 className="text-base font-medium text-zinc-900">Network Performance</h3>
             </div>
             <div className="px-6 py-4">
               <dl className="space-y-4">
                 <div className="flex justify-between">
-                  <dt className="text-sm font-light text-gray-500">Average Efficiency</dt>
-                  <dd className="text-sm font-medium text-gray-900">88.4%</dd>
+                  <dt className="text-sm font-light text-zinc-500">Average Efficiency</dt>
+                  <dd className="text-sm font-medium text-zinc-900">88.4%</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm font-light text-gray-500">Total Production</dt>
-                  <dd className="text-sm font-medium text-gray-900">860,000 tonnes</dd>
+                  <dt className="text-sm font-light text-zinc-500">Total Production</dt>
+                  <dd className="text-sm font-medium text-zinc-900">860,000 tonnes</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm font-light text-gray-500">Network Latency</dt>
-                  <dd className="text-sm font-medium text-gray-900">45ms</dd>
+                  <dt className="text-sm font-light text-zinc-500">Network Latency</dt>
+                  <dd className="text-sm font-medium text-zinc-900">45ms</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm font-light text-gray-500">Uptime</dt>
-                  <dd className="text-sm font-medium text-gray-900">99.7%</dd>
+                  <dt className="text-sm font-light text-zinc-500">Uptime</dt>
+                  <dd className="text-sm font-medium text-zinc-900">99.7%</dd>
                 </div>
               </dl>
             </div>
           </div>
 
           <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
-            <div className="border-b border-gray-200 bg-white px-6 py-4">
-              <h3 className="text-base font-medium text-gray-900">Connected Locations</h3>
+            <div className="border-b border-zinc-200 bg-white px-6 py-4">
+              <h3 className="text-base font-medium text-zinc-900">Connected Locations</h3>
             </div>
             <div className="px-6 py-4">
               <div className="space-y-3">
@@ -226,11 +226,11 @@ const SimpleNetworkDashboard: React.FC = () => {
                     <div className="flex items-center space-x-3">
                       <div className={`h-2 w-2 rounded-full ${
                         node.data.status === 'operational' ? 'bg-green-500' :
-                        node.data.status === 'maintenance' ? 'bg-yellow-500' : 'bg-red-500'
+                        node.data.status === 'maintenance' ? 'bg-yellow-500' : 'bg-rose-500'
                       }`} />
-                      <span className="text-sm font-light text-gray-900">{node.name}</span>
+                      <span className="text-sm font-light text-zinc-900">{node.name}</span>
                     </div>
-                    <span className="text-xs font-light text-gray-500">
+                    <span className="text-xs font-light text-zinc-500">
                       {node.data.efficiency.toFixed(1)}%
                     </span>
                   </div>

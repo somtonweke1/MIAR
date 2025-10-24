@@ -289,7 +289,7 @@ const ScenarioComparison: React.FC = () => {
       case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'high': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'critical': return 'text-rose-600 bg-rose-50 border-rose-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-zinc-600 bg-zinc-50 border-zinc-200';
     }
   };
 

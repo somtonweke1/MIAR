@@ -305,7 +305,7 @@ const ESGComplianceTracker: React.FC = () => {
       case 'passed': return 'text-green-600 bg-green-50 border-green-200';
       case 'conditional': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'failed': return 'text-rose-600 bg-rose-50 border-rose-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-zinc-600 bg-zinc-50 border-zinc-200';
     }
   };
 
@@ -315,7 +315,7 @@ const ESGComplianceTracker: React.FC = () => {
       case 'high': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      default: return 'text-zinc-600 bg-zinc-50 border-zinc-200';
     }
   };
 
@@ -433,7 +433,7 @@ const ESGComplianceTracker: React.FC = () => {
                     </span>
                     {report.metrics.trend === 'improving' && <TrendingUp className="h-4 w-4 text-green-500" />}
                     {report.metrics.trend === 'deteriorating' && <TrendingDown className="h-4 w-4 text-rose-500" />}
-                    {report.metrics.trend === 'stable' && <Activity className="h-4 w-4 text-gray-500" />}
+                    {report.metrics.trend === 'stable' && <Activity className="h-4 w-4 text-zinc-500" />}
                   </div>
                 </div>
 

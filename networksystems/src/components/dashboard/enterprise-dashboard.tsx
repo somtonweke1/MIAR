@@ -62,7 +62,7 @@ const EnterpriseDashboard: React.FC = () => {
   if (!currentClient) {
     return (
       <div className="p-6">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-zinc-500">
           No client selected. Please select a client to view dashboard.
         </div>
       </div>
@@ -70,16 +70,16 @@ const EnterpriseDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold text-gray-900">MIAR Enterprise</h1>
+              <h1 className="text-2xl font-bold text-zinc-900">MIAR Enterprise</h1>
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">Client:</span>
-                <span className="font-semibold text-gray-900">{currentClient.name}</span>
+                <span className="text-sm text-zinc-500">Client:</span>
+                <span className="font-semibold text-zinc-900">{currentClient.name}</span>
                 <span className={`px-2 py-1 text-xs rounded-full ${
                   currentClient.tier === 'enterprise' ? 'bg-emerald-100 text-emerald-800' :
                   currentClient.tier === 'professional' ? 'bg-blue-100 text-blue-800' :
@@ -90,7 +90,7 @@ const EnterpriseDashboard: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">Contract Value:</span>
+              <span className="text-sm text-zinc-500">Contract Value:</span>
               <span className="text-lg font-bold text-green-600">
                 ${currentClient.contractValue.toLocaleString()}
               </span>
@@ -116,7 +116,7 @@ const EnterpriseDashboard: React.FC = () => {
                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300'
                 }`}
               >
                 {tab.icon}
@@ -130,7 +130,7 @@ const EnterpriseDashboard: React.FC = () => {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded mb-6">
             {error}
             <Button onClick={() => useEnterpriseStore.getState().setError(null)} className="ml-2 text-sm" variant="outline">
               Dismiss
@@ -148,7 +148,7 @@ const EnterpriseDashboard: React.FC = () => {
                     <DollarSign className="h-8 w-8 text-green-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm text-gray-500">Monthly Savings</p>
+                    <p className="text-sm text-zinc-500">Monthly Savings</p>
                     <p className="text-2xl font-bold text-green-600">
                       ${clientMetrics.costSavings.toLocaleString()}
                     </p>
@@ -162,7 +162,7 @@ const EnterpriseDashboard: React.FC = () => {
                     <TrendingUp className="h-8 w-8 text-blue-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm text-gray-500">Efficiency Gains</p>
+                    <p className="text-sm text-zinc-500">Efficiency Gains</p>
                     <p className="text-2xl font-bold text-blue-600">
                       +{clientMetrics.efficiencyGains.toFixed(1)}%
                     </p>
@@ -176,7 +176,7 @@ const EnterpriseDashboard: React.FC = () => {
                     <CheckCircle className="h-8 w-8 text-green-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm text-gray-500">Compliance Score</p>
+                    <p className="text-sm text-zinc-500">Compliance Score</p>
                     <p className="text-2xl font-bold text-emerald-600">
                       {complianceScore}%
                     </p>
@@ -190,7 +190,7 @@ const EnterpriseDashboard: React.FC = () => {
                     <span className="text-2xl">🚨</span>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm text-gray-500">Active Alerts</p>
+                    <p className="text-sm text-zinc-500">Active Alerts</p>
                     <p className="text-2xl font-bold text-orange-600">
                       {assetAlerts.filter(alert => !alert.acknowledged).length}
                     </p>
@@ -224,7 +224,7 @@ const EnterpriseDashboard: React.FC = () => {
                   className="h-20 flex flex-col items-center justify-center space-y-2"
                   variant="outline"
                 >
-                  <Clipboard className="h-8 w-8 text-gray-600" />
+                  <Clipboard className="h-8 w-8 text-zinc-600" />
                   <span>Compliance Check</span>
                 </Button>
               </div>
@@ -239,7 +239,7 @@ const EnterpriseDashboard: React.FC = () => {
                     <div 
                       key={index}
                       className={`p-4 rounded-lg border-l-4 ${
-                        alert.severity === 'critical' ? 'border-red-500 bg-red-50' :
+                        alert.severity === 'critical' ? 'border-rose-500 bg-rose-50' :
                         alert.severity === 'warning' ? 'border-orange-500 bg-orange-50' :
                         'border-blue-500 bg-blue-50'
                       }`}
@@ -247,8 +247,8 @@ const EnterpriseDashboard: React.FC = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <h4 className="font-semibold">{alert.assetId}</h4>
-                          <p className="text-sm text-gray-600 mt-1">{alert.message}</p>
-                          <p className="text-xs text-gray-500 mt-2">
+                          <p className="text-sm text-zinc-600 mt-1">{alert.message}</p>
+                          <p className="text-xs text-zinc-500 mt-2">
                             {new Date(alert.timestamp).toLocaleString()}
                           </p>
                         </div>
@@ -298,7 +298,7 @@ const EnterpriseDashboard: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span>Faults:</span>
-                    <span className="font-bold text-red-600">
+                    <span className="font-bold text-rose-600">
                       {assets.filter(a => a.status === 'fault').length}
                     </span>
                   </div>
@@ -330,7 +330,7 @@ const EnterpriseDashboard: React.FC = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>High Risk Assets:</span>
-                    <span className="font-bold text-red-600">
+                    <span className="font-bold text-rose-600">
                       {assets.filter(a => a.faultPrediction.probability > 0.7).length}
                     </span>
                   </div>
@@ -349,24 +349,24 @@ const EnterpriseDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold mb-4">Asset Details</h3>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-zinc-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Asset ID
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Type
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Efficiency
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Risk Level
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
                         Action
                       </th>
                     </tr>
@@ -374,28 +374,28 @@ const EnterpriseDashboard: React.FC = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {assets.map((asset) => (
                       <tr key={asset.assetId}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900">
                           {asset.assetId}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">
                           {asset.assetType}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             asset.status === 'operational' ? 'bg-green-100 text-green-800' :
                             asset.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
-                            asset.status === 'fault' ? 'bg-red-100 text-red-800' :
-                            'bg-gray-100 text-gray-800'
+                            asset.status === 'fault' ? 'bg-rose-100 text-rose-800' :
+                            'bg-zinc-100 text-zinc-800'
                           }`}>
                             {asset.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">
                           {asset.efficiency.toFixed(1)}%
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                           <span className={`font-semibold ${
-                            asset.faultPrediction.probability > 0.7 ? 'text-red-600' :
+                            asset.faultPrediction.probability > 0.7 ? 'text-rose-600' :
                             asset.faultPrediction.probability > 0.3 ? 'text-orange-600' :
                             'text-green-600'
                           }`}>
@@ -439,7 +439,7 @@ const EnterpriseDashboard: React.FC = () => {
                   <span className={`${
                     complianceScore >= 90 ? 'text-green-600' :
                     complianceScore >= 70 ? 'text-orange-600' :
-                    'text-red-600'
+                    'text-rose-600'
                   }`}>
                     {complianceScore}%
                   </span>
@@ -462,7 +462,7 @@ const EnterpriseDashboard: React.FC = () => {
 
               <Card className="p-6">
                 <h3 className="font-semibold mb-2">Violations</h3>
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-rose-600">
                   {compliance.filter(c => c.status === 'violation').length}
                 </div>
               </Card>
@@ -478,22 +478,22 @@ const EnterpriseDashboard: React.FC = () => {
                     className={`p-4 rounded-lg border-l-4 ${
                       check.status === 'compliant' ? 'border-green-500 bg-green-50' :
                       check.status === 'warning' ? 'border-orange-500 bg-orange-50' :
-                      check.status === 'violation' ? 'border-red-500 bg-red-50' :
-                      'border-gray-500 bg-gray-50'
+                      check.status === 'violation' ? 'border-rose-500 bg-rose-50' :
+                      'border-gray-500 bg-zinc-50'
                     }`}
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <h4 className="font-semibold">{check.requirement}</h4>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-zinc-600 mt-1">
                           {check.jurisdiction} - {check.regulationType}
                         </p>
                         <div className="flex items-center space-x-4 mt-2 text-sm">
-                          <span className="text-gray-500">
+                          <span className="text-zinc-500">
                             Last Check: {new Date(check.lastCheck).toLocaleDateString()}
                           </span>
                           <span className={`font-semibold ${
-                            check.riskLevel === 'critical' ? 'text-red-600' :
+                            check.riskLevel === 'critical' ? 'text-rose-600' :
                             check.riskLevel === 'high' ? 'text-orange-600' :
                             check.riskLevel === 'medium' ? 'text-yellow-600' :
                             'text-green-600'
@@ -501,7 +501,7 @@ const EnterpriseDashboard: React.FC = () => {
                             Risk: {check.riskLevel}
                           </span>
                           {check.potentialFine > 0 && (
-                            <span className="text-red-600 font-semibold">
+                            <span className="text-rose-600 font-semibold">
                               Potential Fine: ${check.potentialFine.toLocaleString()}
                             </span>
                           )}
@@ -511,8 +511,8 @@ const EnterpriseDashboard: React.FC = () => {
                         <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
                           check.status === 'compliant' ? 'bg-green-100 text-green-800' :
                           check.status === 'warning' ? 'bg-orange-100 text-orange-800' :
-                          check.status === 'violation' ? 'bg-red-100 text-red-800' :
-                          'bg-gray-100 text-gray-800'
+                          check.status === 'violation' ? 'bg-rose-100 text-rose-800' :
+                          'bg-zinc-100 text-zinc-800'
                         }`}>
                           {check.status}
                         </span>
@@ -540,7 +540,7 @@ const EnterpriseDashboard: React.FC = () => {
                   <Pickaxe className="h-16 w-16 text-amber-600 mx-auto" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">No Tailings Analysis Available</h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-zinc-600 mb-4">
                   Run your first tailings analysis to discover the economic potential of your abandoned mine lands.
                 </p>
                 <Button onClick={handleRunTailingsAnalysis}>
@@ -555,33 +555,33 @@ const EnterpriseDashboard: React.FC = () => {
                     
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Volume:</span>
+                        <span className="text-zinc-600">Volume:</span>
                         <span className="font-semibold">
                           {site.volumeEstimate.toLocaleString()} m³
                         </span>
                       </div>
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Total Value:</span>
+                        <span className="text-zinc-600">Total Value:</span>
                         <span className="font-bold text-green-600">
                           ${site.economicAssessment.totalValue.toLocaleString()}
                         </span>
                       </div>
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Net Profit:</span>
+                        <span className="text-zinc-600">Net Profit:</span>
                         <span className="font-bold text-blue-600">
                           ${site.economicAssessment.netProfit.toLocaleString()}
                         </span>
                       </div>
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Feasibility:</span>
+                        <span className="text-zinc-600">Feasibility:</span>
                         <div className="flex items-center">
                           <span className={`font-bold ${
                             site.feasibilityScore >= 80 ? 'text-green-600' :
                             site.feasibilityScore >= 60 ? 'text-orange-600' :
-                            'text-red-600'
+                            'text-rose-600'
                           }`}>
                             {site.feasibilityScore}/100
                           </span>
@@ -589,7 +589,7 @@ const EnterpriseDashboard: React.FC = () => {
                       </div>
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-600">IRR:</span>
+                        <span className="text-zinc-600">IRR:</span>
                         <span className="font-bold text-emerald-600">
                           {site.economicAssessment.irr.toFixed(1)}%
                         </span>
@@ -630,35 +630,35 @@ const EnterpriseDashboard: React.FC = () => {
             {/* ROI Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="p-6">
-                <h3 className="text-sm text-gray-500 mb-2">Total Value Generated</h3>
+                <h3 className="text-sm text-zinc-500 mb-2">Total Value Generated</h3>
                 <div className="text-2xl font-bold text-green-600">
                   ${(clientMetrics.predictedSavings).toLocaleString()}
                 </div>
-                <p className="text-sm text-gray-500 mt-1">Next 12 months</p>
+                <p className="text-sm text-zinc-500 mt-1">Next 12 months</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-sm text-gray-500 mb-2">Monthly ROI</h3>
+                <h3 className="text-sm text-zinc-500 mb-2">Monthly ROI</h3>
                 <div className="text-2xl font-bold text-blue-600">
                   {((clientMetrics.costSavings * 12) / currentClient.contractValue * 100).toFixed(1)}%
                 </div>
-                <p className="text-sm text-gray-500 mt-1">Return on investment</p>
+                <p className="text-sm text-zinc-500 mt-1">Return on investment</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-sm text-gray-500 mb-2">Payback Period</h3>
+                <h3 className="text-sm text-zinc-500 mb-2">Payback Period</h3>
                 <div className="text-2xl font-bold text-emerald-600">
                   {(currentClient.contractValue / (clientMetrics.costSavings * 12)).toFixed(1)} years
                 </div>
-                <p className="text-sm text-gray-500 mt-1">Time to break even</p>
+                <p className="text-sm text-zinc-500 mt-1">Time to break even</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-sm text-gray-500 mb-2">Risk Reduction</h3>
+                <h3 className="text-sm text-zinc-500 mb-2">Risk Reduction</h3>
                 <div className="text-2xl font-bold text-orange-600">
                   ${clientMetrics.complianceImprovements * 50000}
                 </div>
-                <p className="text-sm text-gray-500 mt-1">Compliance cost avoidance</p>
+                <p className="text-sm text-zinc-500 mt-1">Compliance cost avoidance</p>
               </Card>
             </div>
             

@@ -148,19 +148,19 @@ const NetworkDashboard: React.FC = () => {
   const currentAnalysisResult = currentNetwork ? analysisResults[currentNetwork.id] : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-zinc-50 p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+        <h1 className="text-3xl font-bold text-zinc-900 mb-8">
           MIAR - Unified Dashboard
         </h1>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded mb-6">
             <div className="flex justify-between items-center">
               <span>{error}</span>
               <button
                 onClick={clearError}
-                className="text-red-500 hover:text-red-700"
+                className="text-rose-500 hover:text-rose-700"
               >
                 ×
               </button>
@@ -172,13 +172,13 @@ const NetworkDashboard: React.FC = () => {
           {/* Left Panel - Network Management */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              <h2 className="text-xl font-semibold text-zinc-800 mb-4">
                 Network Management
               </h2>
 
               {/* Create New Network */}
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-700 mb-3">
+                <h3 className="text-lg font-medium text-zinc-700 mb-3">
                   Create New Network
                 </h3>
                 <div className="flex gap-2">
@@ -187,7 +187,7 @@ const NetworkDashboard: React.FC = () => {
                     value={newNetworkName}
                     onChange={(e) => setNewNetworkName(e.target.value)}
                     placeholder="Network name"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     onClick={handleCreateNewNetwork}
@@ -201,7 +201,7 @@ const NetworkDashboard: React.FC = () => {
 
               {/* Add Sample Network */}
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-700 mb-3">
+                <h3 className="text-lg font-medium text-zinc-700 mb-3">
                   Sample Data
                 </h3>
                 <button
@@ -215,7 +215,7 @@ const NetworkDashboard: React.FC = () => {
 
               {/* Network List */}
               <div>
-                <h3 className="text-lg font-medium text-gray-700 mb-3">
+                <h3 className="text-lg font-medium text-zinc-700 mb-3">
                   Networks ({networks.length})
                 </h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -225,12 +225,12 @@ const NetworkDashboard: React.FC = () => {
                       className={`p-3 border rounded-md cursor-pointer transition-colors ${
                         currentNetwork?.id === network.id
                           ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          : 'border-zinc-200 hover:border-zinc-300'
                       }`}
                       onClick={() => setCurrentNetwork(network)}
                     >
-                      <div className="font-medium text-gray-800">{network.name}</div>
-                      <div className="text-sm text-gray-600">
+                      <div className="font-medium text-zinc-800">{network.name}</div>
+                      <div className="text-sm text-zinc-600">
                         {network.nodes.length} nodes, {network.edges.length} edges
                       </div>
                     </div>
@@ -243,38 +243,38 @@ const NetworkDashboard: React.FC = () => {
           {/* Center Panel - Analysis Controls */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">
+              <h2 className="text-xl font-semibold text-zinc-800 mb-6">
                 Network Analysis
               </h2>
 
               {currentNetwork ? (
                 <div className="space-y-6">
                   {/* Current Network Info */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-gray-700 mb-2">
+                  <div className="bg-zinc-50 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-zinc-700 mb-2">
                       Current Network: {currentNetwork.name}
                     </h3>
-                    <p className="text-gray-600 mb-2">{currentNetwork.description}</p>
-                    <div className="text-sm text-gray-500">
+                    <p className="text-zinc-600 mb-2">{currentNetwork.description}</p>
+                    <div className="text-sm text-zinc-500">
                       {currentNetwork.nodes.length} nodes • {currentNetwork.edges.length} edges
                       {currentNetwork.directed ? ' • Directed' : ' • Undirected'}
                     </div>
                   </div>
 
                   {/* Centrality Analysis */}
-                  <div className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-gray-700 mb-3">
+                  <div className="border border-zinc-200 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-zinc-700 mb-3">
                       Centrality Analysis
                     </h3>
                     <div className="flex gap-4 items-end">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                        <label className="block text-sm font-medium text-zinc-600 mb-1">
                           Algorithm
                         </label>
                         <select
                           value={selectedAlgorithm}
                           onChange={(e) => setSelectedAlgorithm(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                           {centralityAlgorithms.map((algo) => (
                             <option key={algo.value} value={algo.value}>
@@ -294,19 +294,19 @@ const NetworkDashboard: React.FC = () => {
                   </div>
 
                   {/* Network Analysis */}
-                  <div className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-gray-700 mb-3">
+                  <div className="border border-zinc-200 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-zinc-700 mb-3">
                       Network Analysis
                     </h3>
                     <div className="flex gap-4 items-end">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-600 mb-1">
+                        <label className="block text-sm font-medium text-zinc-600 mb-1">
                           Analysis Type
                         </label>
                         <select
                           value={selectedAnalysis}
                           onChange={(e) => setSelectedAnalysis(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                           {analysisTypes.map((type) => (
                             <option key={type.value} value={type.value}>
@@ -326,11 +326,11 @@ const NetworkDashboard: React.FC = () => {
                   </div>
 
                   {/* Complete Analysis */}
-                  <div className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-gray-700 mb-3">
+                  <div className="border border-zinc-200 rounded-lg p-4">
+                    <h3 className="text-lg font-medium text-zinc-700 mb-3">
                       Complete Analysis
                     </h3>
-                    <p className="text-gray-600 mb-3">
+                    <p className="text-zinc-600 mb-3">
                       Run comprehensive analysis including centrality, community detection, and structural properties.
                     </p>
                     <button
@@ -344,12 +344,12 @@ const NetworkDashboard: React.FC = () => {
 
                   {/* Results Display */}
                   {currentAnalysisResult && (
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h3 className="text-lg font-medium text-gray-700 mb-3">
+                    <div className="border border-zinc-200 rounded-lg p-4">
+                      <h3 className="text-lg font-medium text-zinc-700 mb-3">
                         Analysis Results
                       </h3>
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <pre className="text-sm text-gray-700 overflow-auto">
+                      <div className="bg-zinc-50 rounded-lg p-4">
+                        <pre className="text-sm text-zinc-700 overflow-auto">
                           {JSON.stringify(currentAnalysisResult, null, 2)}
                         </pre>
                       </div>
@@ -358,7 +358,7 @@ const NetworkDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <div className="text-gray-500 text-lg">
+                  <div className="text-zinc-500 text-lg">
                     Select or create a network to begin analysis
                   </div>
                 </div>
@@ -369,25 +369,25 @@ const NetworkDashboard: React.FC = () => {
 
         {/* API Status */}
         <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-xl font-semibold text-zinc-800 mb-4">
             API Status
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 border border-gray-200 rounded-lg">
+            <div className="text-center p-4 border border-zinc-200 rounded-lg">
               <div className="text-2xl font-bold text-green-600">✓</div>
-              <div className="text-sm text-gray-600">Centrality API</div>
+              <div className="text-sm text-zinc-600">Centrality API</div>
             </div>
-            <div className="text-center p-4 border border-gray-200 rounded-lg">
+            <div className="text-center p-4 border border-zinc-200 rounded-lg">
               <div className="text-2xl font-bold text-green-600">✓</div>
-              <div className="text-sm text-gray-600">Analysis API</div>
+              <div className="text-sm text-zinc-600">Analysis API</div>
             </div>
-            <div className="text-center p-4 border border-gray-200 rounded-lg">
+            <div className="text-center p-4 border border-zinc-200 rounded-lg">
               <div className="text-2xl font-bold text-green-600">✓</div>
-              <div className="text-sm text-gray-600">Database API</div>
+              <div className="text-sm text-zinc-600">Database API</div>
             </div>
-            <div className="text-center p-4 border border-gray-200 rounded-lg">
+            <div className="text-center p-4 border border-zinc-200 rounded-lg">
               <div className="text-2xl font-bold text-green-600">✓</div>
-              <div className="text-sm text-gray-600">Integration API</div>
+              <div className="text-sm text-zinc-600">Integration API</div>
             </div>
           </div>
         </div>

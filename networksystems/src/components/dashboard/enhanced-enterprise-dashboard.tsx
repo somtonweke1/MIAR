@@ -93,8 +93,8 @@ export default function EnhancedEnterpriseDashboard() {
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up': return <TrendingUp className="h-4 w-4 text-green-500" />;
-      case 'down': return <TrendingDown className="h-4 w-4 text-red-500" />;
-      default: return <ArrowRight className="h-4 w-4 text-gray-500" />;
+      case 'down': return <TrendingDown className="h-4 w-4 text-rose-500" />;
+      default: return <ArrowRight className="h-4 w-4 text-zinc-500" />;
     }
   };
 
@@ -115,41 +115,41 @@ export default function EnhancedEnterpriseDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <div className="mt-4 text-gray-600">Loading enterprise dashboard...</div>
+          <div className="mt-4 text-zinc-600">Loading enterprise dashboard...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-zinc-200/50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-3">
-                <Building2 className="h-6 w-6 text-gray-900" />
-                <h1 className="text-xl font-light tracking-wide text-gray-900">MIAR Enterprise</h1>
+                <Building2 className="h-6 w-6 text-zinc-900" />
+                <h1 className="text-xl font-light tracking-wide text-zinc-900">MIAR Enterprise</h1>
               </div>
-              <div className="hidden md:block text-sm text-gray-500 font-light">
+              <div className="hidden md:block text-sm text-zinc-500 font-light">
                 {user?.company} • {user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User'}
               </div>
             </div>
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                <span className="text-sm text-gray-600 font-light">Live Data</span>
+                <span className="text-sm text-zinc-600 font-light">Live Data</span>
               </div>
-              <div className="hidden md:block text-sm text-gray-500 font-light">
+              <div className="hidden md:block text-sm text-zinc-500 font-light">
                 {new Date().toLocaleTimeString()}
               </div>
               <button
                 onClick={() => window.location.reload()}
-                className="inline-flex items-center justify-center rounded-lg bg-gray-50 px-3 py-2 text-sm font-light text-gray-700 hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center justify-center rounded-lg bg-zinc-50 px-3 py-2 text-sm font-light text-zinc-700 hover:bg-zinc-100 transition-colors"
               >
                 <Activity className="h-4 w-4" />
               </button>
@@ -159,7 +159,7 @@ export default function EnhancedEnterpriseDashboard() {
       </header>
 
       {/* Navigation Tabs */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-white border-b border-zinc-200">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex space-x-8">
             {tabs.map(tab => {
@@ -181,8 +181,8 @@ export default function EnhancedEnterpriseDashboard() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center py-4 px-1 border-b-2 text-sm font-light transition-colors ${
                     activeTab === tab.id
-                      ? 'border-gray-900 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-gray-900 text-zinc-900'
+                      : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300'
                   }`}
                 >
                   <IconComponent className="mr-2 h-4 w-4" />
@@ -206,13 +206,13 @@ export default function EnhancedEnterpriseDashboard() {
                   <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-600">{metric.label}</p>
-                        <p className="text-2xl font-bold text-gray-900 mt-2">{metric.value}</p>
+                        <p className="text-sm font-medium text-zinc-600">{metric.label}</p>
+                        <p className="text-2xl font-bold text-zinc-900 mt-2">{metric.value}</p>
                       </div>
                       <div className="text-right">
                         <div className="text-2xl">{getTrendIcon(metric.trend)}</div>
                         <div className={`text-sm font-medium ${
-                          metric.change > 0 ? 'text-green-600' : metric.change < 0 ? 'text-red-600' : 'text-gray-600'
+                          metric.change > 0 ? 'text-green-600' : metric.change < 0 ? 'text-rose-600' : 'text-zinc-600'
                         }`}>
                           {metric.change > 0 ? '+' : ''}{metric.change.toFixed(1)}%
                         </div>
@@ -231,21 +231,21 @@ export default function EnhancedEnterpriseDashboard() {
                       <CheckCircle className="h-5 w-5 text-green-600" />
                       <div>
                         <div className="font-medium">Production Target Achieved</div>
-                        <div className="text-sm text-gray-600">102.5% of daily target completed</div>
+                        <div className="text-sm text-zinc-600">102.5% of daily target completed</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded">
                       <Wrench className="h-5 w-5 text-blue-600" />
                       <div>
                         <div className="font-medium">Predictive Maintenance Alert</div>
-                        <div className="text-sm text-gray-600">3 assets scheduled for maintenance</div>
+                        <div className="text-sm text-zinc-600">3 assets scheduled for maintenance</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded">
                       <AlertTriangle className="h-5 w-5 text-yellow-600" />
                       <div>
                         <div className="font-medium">Weather Advisory</div>
-                        <div className="text-sm text-gray-600">Heavy rainfall expected tomorrow</div>
+                        <div className="text-sm text-zinc-600">Heavy rainfall expected tomorrow</div>
                       </div>
                     </div>
                   </div>
@@ -255,19 +255,19 @@ export default function EnhancedEnterpriseDashboard() {
                   <h3 className="text-lg font-semibold mb-4">Cost Optimization Impact</h3>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Prevented Equipment Failures</span>
+                      <span className="text-zinc-600">Prevented Equipment Failures</span>
                       <span className="font-semibold text-green-600">$485K saved</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Energy Optimization</span>
+                      <span className="text-zinc-600">Energy Optimization</span>
                       <span className="font-semibold text-green-600">$127K saved</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Process Efficiency Gains</span>
+                      <span className="text-zinc-600">Process Efficiency Gains</span>
                       <span className="font-semibold text-green-600">$203K saved</span>
                     </div>
                     <div className="border-t pt-4 flex justify-between items-center">
-                      <span className="font-semibold text-gray-800">Total Monthly Impact</span>
+                      <span className="font-semibold text-zinc-800">Total Monthly Impact</span>
                       <span className="font-bold text-green-600 text-lg">$815K</span>
                     </div>
                   </div>
@@ -283,19 +283,19 @@ export default function EnhancedEnterpriseDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">189</div>
-                    <div className="text-sm text-gray-600">Operational</div>
+                    <div className="text-sm text-zinc-600">Operational</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-yellow-600">12</div>
-                    <div className="text-sm text-gray-600">Maintenance</div>
+                    <div className="text-sm text-zinc-600">Maintenance</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">3</div>
-                    <div className="text-sm text-gray-600">Critical</div>
+                    <div className="text-2xl font-bold text-rose-600">3</div>
+                    <div className="text-sm text-zinc-600">Critical</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">43</div>
-                    <div className="text-sm text-gray-600">Offline</div>
+                    <div className="text-2xl font-bold text-zinc-600">43</div>
+                    <div className="text-sm text-zinc-600">Offline</div>
                   </div>
                 </div>
               </Card>
@@ -338,11 +338,11 @@ export default function EnhancedEnterpriseDashboard() {
               <Card className="p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold">African Mining Network - Geospatial View</h3>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-zinc-600">
                     Real-time network topology with geographic context
                   </div>
                 </div>
-                <div className="bg-gray-100 rounded-lg" style={{ height: '500px' }}>
+                <div className="bg-zinc-100 rounded-lg" style={{ height: '500px' }}>
                   <GeoNetworkMap
                     nodes={[]}
                     onNodeSelect={(nodeId) => {
@@ -424,7 +424,7 @@ export default function EnhancedEnterpriseDashboard() {
                 <h4 className="font-semibold mb-4">Real-Time Network Status</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h5 className="text-sm font-medium text-gray-700 mb-3">Production Sites Status</h5>
+                    <h5 className="text-sm font-medium text-zinc-700 mb-3">Production Sites Status</h5>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between p-2 bg-green-50 rounded">
                         <span className="text-sm">Witwatersrand Complex</span>
@@ -441,7 +441,7 @@ export default function EnhancedEnterpriseDashboard() {
                     </div>
                   </div>
                   <div>
-                    <h5 className="text-sm font-medium text-gray-700 mb-3">Network Performance</h5>
+                    <h5 className="text-sm font-medium text-zinc-700 mb-3">Network Performance</h5>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm">Data Latency:</span>
@@ -473,19 +473,19 @@ export default function EnhancedEnterpriseDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center p-4 bg-green-50 rounded">
                     <div className="text-2xl font-bold text-green-600">96%</div>
-                    <div className="text-sm text-gray-600">Overall Score</div>
+                    <div className="text-sm text-zinc-600">Overall Score</div>
                   </div>
                   <div className="text-center p-4 bg-blue-50 rounded">
                     <div className="text-2xl font-bold text-blue-600">24</div>
-                    <div className="text-sm text-gray-600">Checks Passed</div>
+                    <div className="text-sm text-zinc-600">Checks Passed</div>
                   </div>
                   <div className="text-center p-4 bg-yellow-50 rounded">
                     <div className="text-2xl font-bold text-yellow-600">3</div>
-                    <div className="text-sm text-gray-600">Warnings</div>
+                    <div className="text-sm text-zinc-600">Warnings</div>
                   </div>
-                  <div className="text-center p-4 bg-red-50 rounded">
-                    <div className="text-2xl font-bold text-red-600">1</div>
-                    <div className="text-sm text-gray-600">Critical</div>
+                  <div className="text-center p-4 bg-rose-50 rounded">
+                    <div className="text-2xl font-bold text-rose-600">1</div>
+                    <div className="text-sm text-zinc-600">Critical</div>
                   </div>
                 </div>
               </Card>
@@ -498,14 +498,14 @@ export default function EnhancedEnterpriseDashboard() {
                       <CheckCircle className="h-5 w-5 text-green-600" />
                       <div>
                         <div className="font-medium">Environmental Audit Passed</div>
-                        <div className="text-sm text-gray-600">2 hours ago</div>
+                        <div className="text-sm text-zinc-600">2 hours ago</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 p-3 border rounded">
                       <AlertTriangle className="h-5 w-5 text-yellow-600" />
                       <div>
                         <div className="font-medium">Safety Training Due</div>
-                        <div className="text-sm text-gray-600">5 employees need certification</div>
+                        <div className="text-sm text-zinc-600">5 employees need certification</div>
                       </div>
                     </div>
                   </div>
@@ -576,17 +576,17 @@ export default function EnhancedEnterpriseDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-green-600">$2.4M</div>
-                    <div className="text-gray-600">Monthly Revenue</div>
+                    <div className="text-zinc-600">Monthly Revenue</div>
                     <div className="text-sm text-green-600 mt-1">↑ 12.5% from last month</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-blue-600">$1.8M</div>
-                    <div className="text-gray-600">Cost Savings (YTD)</div>
+                    <div className="text-zinc-600">Cost Savings (YTD)</div>
                     <div className="text-sm text-blue-600 mt-1">↑ 24.3% from last year</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-emerald-600">425%</div>
-                    <div className="text-gray-600">ROI on MIAR Platform</div>
+                    <div className="text-zinc-600">ROI on MIAR Platform</div>
                     <div className="text-sm text-emerald-600 mt-1">Based on 12-month period</div>
                   </div>
                 </div>
@@ -609,7 +609,7 @@ export default function EnhancedEnterpriseDashboard() {
                         </div>
                         <div className="text-right">
                           <div className="font-semibold">{item.amount}</div>
-                          <div className="text-sm text-gray-500">{item.percentage}%</div>
+                          <div className="text-sm text-zinc-500">{item.percentage}%</div>
                         </div>
                       </div>
                     ))}
