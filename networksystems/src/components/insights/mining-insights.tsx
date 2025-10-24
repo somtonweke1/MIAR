@@ -184,7 +184,7 @@ const MiningInsights: React.FC = () => {
       case 'technology': return 'text-emerald-600 bg-emerald-100';
       case 'sustainability': return 'text-green-600 bg-green-100';
       case 'opportunity': return 'text-amber-600 bg-amber-100';
-      default: return 'text-gray-600 bg-gray-100';
+      default: return 'text-zinc-600 bg-zinc-100';
     }
   };
 
@@ -193,21 +193,21 @@ const MiningInsights: React.FC = () => {
       case 'high': return <AlertCircle className="h-4 w-4 text-rose-500" />;
       case 'medium': return <AlertCircle className="h-4 w-4 text-amber-500" />;
       case 'low': return <CheckCircle className="h-4 w-4 text-green-500" />;
-      default: return <AlertCircle className="h-4 w-4 text-gray-500" />;
+      default: return <AlertCircle className="h-4 w-4 text-zinc-500" />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b border-zinc-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-light text-gray-900 mb-2">
+              <h1 className="text-3xl font-light text-zinc-900 mb-2">
                 Mining Intelligence & Insights
               </h1>
-              <p className="text-lg text-gray-600 font-light">
+              <p className="text-lg text-zinc-600 font-light">
                 AI-powered analysis of South African gold mining sector opportunities and challenges
               </p>
             </div>
@@ -232,16 +232,16 @@ const MiningInsights: React.FC = () => {
                 className={`p-4 text-left border rounded-xl transition-all hover:shadow-md ${
                   selectedCategory === category
                     ? 'border-blue-500 bg-blue-50 shadow-md'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    : 'border-zinc-200 bg-white hover:border-zinc-300'
                 }`}
               >
                 <div className={`inline-flex items-center p-2 rounded-lg mb-2 ${getCategoryColor(category)}`}>
                   {getCategoryIcon(category)}
                 </div>
-                <div className="font-medium text-gray-900 mb-1">
+                <div className="font-medium text-zinc-900 mb-1">
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-zinc-600">
                   {count} insights • {highPriority} high priority
                 </div>
               </button>
@@ -253,7 +253,7 @@ const MiningInsights: React.FC = () => {
         <div className="space-y-6">
           {selectedCategory === 'all' && (
             <div className="mb-8">
-              <h2 className="text-xl font-medium text-gray-900 mb-4">High Priority Actions</h2>
+              <h2 className="text-xl font-medium text-zinc-900 mb-4">High Priority Actions</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {insights.filter(i => i.priority === 'high').slice(0, 2).map((insight) => (
                   <Card key={`priority-${insight.id}`} className="p-6 border-amber-200 bg-amber-50">
@@ -262,18 +262,18 @@ const MiningInsights: React.FC = () => {
                         {getCategoryIcon(insight.category)}
                       </div>
                       <div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-1">{insight.title}</h3>
+                        <h3 className="text-lg font-medium text-zinc-900 mb-1">{insight.title}</h3>
                         <div className="text-sm font-medium text-green-600">{insight.impact}</div>
                       </div>
                     </div>
-                    <p className="text-gray-700 text-sm leading-relaxed">{insight.description}</p>
+                    <p className="text-zinc-700 text-sm leading-relaxed">{insight.description}</p>
                   </Card>
                 ))}
               </div>
             </div>
           )}
 
-          <h2 className="text-xl font-medium text-gray-900 mb-4">
+          <h2 className="text-xl font-medium text-zinc-900 mb-4">
             {selectedCategory === 'all' ? 'All Strategic Insights' : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Insights`}
           </h2>
           <div className="grid grid-cols-1 gap-6">
@@ -286,11 +286,11 @@ const MiningInsights: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="text-lg font-medium text-gray-900">{insight.title}</h3>
+                        <h3 className="text-lg font-medium text-zinc-900">{insight.title}</h3>
                         {getPriorityIcon(insight.priority)}
                       </div>
                       <div className="text-sm font-medium text-green-600 mb-2">{insight.impact}</div>
-                      <p className="text-gray-700 text-sm leading-relaxed max-w-3xl">{insight.description}</p>
+                      <p className="text-zinc-700 text-sm leading-relaxed max-w-3xl">{insight.description}</p>
                     </div>
                   </div>
                 </div>
@@ -298,11 +298,11 @@ const MiningInsights: React.FC = () => {
                 {insight.metrics && (
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                     {insight.metrics.slice(0, 4).map((metric, index) => (
-                      <div key={index} className="bg-gray-50 p-3 rounded-lg">
-                        <div className="text-xs text-gray-600 mb-1">{metric.label}</div>
-                        <div className="text-lg font-medium text-gray-900">{metric.value}</div>
+                      <div key={index} className="bg-zinc-50 p-3 rounded-lg">
+                        <div className="text-xs text-zinc-600 mb-1">{metric.label}</div>
+                        <div className="text-lg font-medium text-zinc-900">{metric.value}</div>
                         {metric.change && (
-                          <div className="text-xs text-gray-500">{metric.change}</div>
+                          <div className="text-xs text-zinc-500">{metric.change}</div>
                         )}
                       </div>
                     ))}
@@ -337,7 +337,7 @@ const MiningInsights: React.FC = () => {
               <Globe className="h-6 w-6 text-blue-600" />
             </div>
             <div>
-              <h3 className="text-lg font-medium text-gray-900">Industry Transformation Outlook</h3>
+              <h3 className="text-lg font-medium text-zinc-900">Industry Transformation Outlook</h3>
               <p className="text-sm text-blue-700">Strategic positioning for the next decade</p>
             </div>
           </div>

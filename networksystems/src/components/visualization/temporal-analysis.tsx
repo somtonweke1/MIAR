@@ -62,7 +62,7 @@ const TemporalAnalysis: React.FC<TemporalAnalysisProps> = ({
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded" style={{ height: height / 2 }}>
+        <div className="bg-zinc-50 p-4 rounded" style={{ height: height / 2 }}>
           <h4 className="font-medium mb-4">Network Growth Timeline</h4>
           <div className="flex items-end justify-between h-32">
             {mockData.map((item, index) => (
@@ -75,13 +75,13 @@ const TemporalAnalysis: React.FC<TemporalAnalysisProps> = ({
                     minHeight: '10px'
                   }}
                 />
-                <span className="text-xs mt-2 text-gray-600">{item.month}</span>
+                <span className="text-xs mt-2 text-zinc-600">{item.month}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded">
+        <div className="bg-zinc-50 p-4 rounded">
           <h4 className="font-medium mb-4">Trending Patterns</h4>
           <div className="space-y-2">
             <div className="flex justify-between items-center">

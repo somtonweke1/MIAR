@@ -350,19 +350,19 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
             onClose={() => setSelectedNode(null)}
             className="min-w-80"
           >
-            <div className="bg-gray-900 text-white p-4 rounded-lg">
+            <div className="bg-zinc-900 text-white p-4 rounded-lg">
               <h3 className="text-lg font-bold mb-3">{selectedNodeData.name}</h3>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <span className="text-gray-400">Type:</span>
+                  <span className="text-zinc-400">Type:</span>
                   <div className="font-semibold capitalize">
                     {selectedNodeData.type.replace('_', ' ')}
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-gray-400">Status:</span>
+                  <span className="text-zinc-400">Status:</span>
                   <div className={`font-semibold capitalize ${
                     selectedNodeData.data.status === 'operational' ? 'text-green-400' : 'text-red-400'
                   }`}>
@@ -371,14 +371,14 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
                 </div>
 
                 <div>
-                  <span className="text-gray-400">Efficiency:</span>
+                  <span className="text-zinc-400">Efficiency:</span>
                   <div className="font-semibold text-blue-400">
                     {selectedNodeData.data.efficiency?.toFixed(1)}%
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-gray-400">Employees:</span>
+                  <span className="text-zinc-400">Employees:</span>
                   <div className="font-semibold text-emerald-400">
                     {selectedNodeData.data.employees?.toLocaleString()}
                   </div>
@@ -387,7 +387,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
 
               {selectedNodeData.data.production && (
                 <div className="mt-3">
-                  <span className="text-gray-400">Production:</span>
+                  <span className="text-zinc-400">Production:</span>
                   <div className="font-semibold text-yellow-400">
                     {selectedNodeData.data.production.toLocaleString()} tonnes/year
                   </div>
@@ -396,10 +396,10 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
 
               {selectedNodeData.data.minerals && (
                 <div className="mt-3">
-                  <span className="text-gray-400">Minerals:</span>
+                  <span className="text-zinc-400">Minerals:</span>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {selectedNodeData.data.minerals.map((mineral: string) => (
-                      <span key={mineral} className="px-2 py-1 bg-gray-700 text-xs rounded">
+                      <span key={mineral} className="px-2 py-1 bg-zinc-700 text-xs rounded">
                         {mineral}
                       </span>
                     ))}
@@ -409,18 +409,18 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
 
               {selectedNodeData.data.yearlyRevenue && (
                 <div className="mt-3">
-                  <span className="text-gray-400">Annual Revenue:</span>
+                  <span className="text-zinc-400">Annual Revenue:</span>
                   <div className="font-semibold text-green-400">
                     ${(selectedNodeData.data.yearlyRevenue / 1000000000).toFixed(1)}B
                   </div>
                 </div>
               )}
 
-              <div className="mt-3 pt-3 border-t border-gray-700">
-                <div className="text-xs text-gray-400">
+              <div className="mt-3 pt-3 border-t border-zinc-700">
+                <div className="text-xs text-zinc-400">
                   Coordinates: {selectedNodeData.position.lat.toFixed(4)}, {selectedNodeData.position.lng.toFixed(4)}
                 </div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-zinc-400">
                   Elevation: {selectedNodeData.position.elevation}m
                 </div>
               </div>
@@ -430,7 +430,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
       </Map>
 
       {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-gray-900 bg-opacity-95 text-white p-4 rounded-lg">
+      <div className="absolute bottom-4 left-4 bg-zinc-900 bg-opacity-95 text-white p-4 rounded-lg">
         <h4 className="font-semibold mb-3">Network Legend</h4>
 
         <div className="space-y-2 text-sm">
@@ -452,7 +452,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
           </div>
         </div>
 
-        <div className="mt-4 pt-3 border-t border-gray-600">
+        <div className="mt-4 pt-3 border-t border-zinc-600">
           <h5 className="font-semibold mb-2 text-xs">Connections</h5>
           <div className="space-y-1 text-xs">
             <div className="flex items-center space-x-2">
@@ -476,7 +476,7 @@ export default function GeoNetworkMap({ nodes = [], onNodeSelect }: GeoNetworkMa
       </div>
 
       {/* Controls */}
-      <div className="absolute top-4 right-4 bg-gray-900 bg-opacity-95 text-white p-3 rounded-lg">
+      <div className="absolute top-4 right-4 bg-zinc-900 bg-opacity-95 text-white p-3 rounded-lg">
         <div className="flex flex-col space-y-2">
           <button
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm transition-colors"

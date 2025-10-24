@@ -27,7 +27,7 @@ const Network3D: React.FC<Network3DProps> = ({
   colorScheme = 'default'
 }) => {
   return (
-    <div className="w-full h-full bg-gray-50 rounded-lg border flex items-center justify-center">
+    <div className="w-full h-full bg-zinc-50 rounded-lg border flex items-center justify-center">
       <div className="text-center space-y-4">
         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
           <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,8 +35,8 @@ const Network3D: React.FC<Network3DProps> = ({
           </svg>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Network Visualization</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <h3 className="text-lg font-semibold text-zinc-900">Network Visualization</h3>
+          <p className="text-sm text-zinc-600 mt-1">
             {nodes.length} nodes, {edges.length} connections
           </p>
           {selectedNode && (
@@ -61,14 +61,14 @@ const Network3D: React.FC<Network3DProps> = ({
               className={`px-3 py-1 text-xs rounded-full border ${
                 selectedNode === node.id
                   ? 'bg-blue-100 border-blue-300 text-blue-800'
-                  : 'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200'
+                  : 'bg-zinc-100 border-zinc-300 text-zinc-700 hover:bg-zinc-200'
               }`}
             >
               {node.label}
             </button>
           ))}
           {nodes.length > 5 && (
-            <span className="px-3 py-1 text-xs text-gray-500">
+            <span className="px-3 py-1 text-xs text-zinc-500">
               +{nodes.length - 5} more
             </span>
           )}
