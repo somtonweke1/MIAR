@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd networksystems && npm run build",
+  "devCommand": "cd networksystems && npm run dev",
+  "installCommand": "cd networksystems && npm install",
+  "framework": "nextjs",
+  "outputDirectory": "networksystems/.next"
+}
