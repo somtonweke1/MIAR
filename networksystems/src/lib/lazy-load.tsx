@@ -180,7 +180,7 @@ export const LazyComponents = {
 
   // Map Components
   GeoNetworkMap: lazyMap(() => import('@/components/visualization/geo-network-map')),
-  AfricanMiningMap: lazyMap(() => import('@/components/live-map/african-mining-network-map')),
+  CriticalMineralsRiskMap: lazyMap(() => import('@/components/live-map/critical-minerals-risk-map')),
 
   // Charts and Analysis
   NetworkVisualization: lazyChart(() => import('@/components/visualization/network-visualization')),

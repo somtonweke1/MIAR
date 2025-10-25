@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfessionalLandingPage from '@/components/landing/professional-landing-page';
-import AfricanMiningNetworkMap from '@/components/live-map/african-mining-network-map';
+import CriticalMineralsRiskMap from '@/components/live-map/critical-minerals-risk-map';
 import InvestmentPortfolioOptimization from '@/components/analytics/investment-portfolio-optimization';
 import GlobalTradeNetworkModeling from '@/components/analytics/global-trade-network-modeling';
 import SupplyChainOptimization from '@/components/analytics/supply-chain-optimization';
@@ -81,7 +81,7 @@ function HomeContent() {
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'mining':
-        return <AfricanMiningNetworkMap />;
+        return <CriticalMineralsRiskMap />;
       case 'investment':
         return <InvestmentPortfolioOptimization />;
       case 'trade':
@@ -91,7 +91,7 @@ function HomeContent() {
       case 'live-markets':
         return <LiveMarketFeed />;
       default:
-        return <AfricanMiningNetworkMap />;
+        return <CriticalMineralsRiskMap />;
     }
   };
 

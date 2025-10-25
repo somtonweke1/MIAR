@@ -131,7 +131,7 @@ class NetworkAlgorithms {
   }
 }
 
-const AfricanMiningNetworkMap: React.FC = () => {
+const CriticalMineralsRiskMap: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
   const [networkMetrics, setNetworkMetrics] = useState<any>({});
@@ -225,8 +225,8 @@ const AfricanMiningNetworkMap: React.FC = () => {
     const edges = [...continentalEdges, ...johannesburgEdges];
 
     return {
-      id: 'african-mining-network',
-      name: 'African Mining Network',
+      id: 'critical-minerals-risk-network',
+      name: 'Critical Minerals Risk Network',
       nodes,
       edges,
       directed: false
@@ -615,8 +615,8 @@ const AfricanMiningNetworkMap: React.FC = () => {
                   MIAR
                 </div>
                 <div>
-                  <h1 className="text-2xl font-extralight text-zinc-900 tracking-tight">Mining Intelligence</h1>
-                  <p className="text-sm text-zinc-500 font-light">African Network Analysis</p>
+                  <h1 className="text-2xl font-extralight text-zinc-900 tracking-tight">Critical Minerals Risk</h1>
+                  <p className="text-sm text-zinc-500 font-light">Supply Chain Intelligence</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3 bg-emerald-50/80 px-4 py-2 rounded-full border border-emerald-100/50">
@@ -668,8 +668,8 @@ const AfricanMiningNetworkMap: React.FC = () => {
           <div className="border-b border-zinc-200/50 px-8 py-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Continental Network Intelligence</h2>
-                <p className="text-sm text-zinc-500 mt-2 font-light">Live analysis of mining operations and trade flows</p>
+                <h2 className="text-2xl font-extralight text-zinc-900 tracking-tight">Critical Minerals Supply Chain</h2>
+                <p className="text-sm text-zinc-500 mt-2 font-light">Real-time risk monitoring of supply chain operations</p>
               </div>
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
@@ -1540,4 +1540,4 @@ const AfricanMiningNetworkMap: React.FC = () => {
   );
 };
 
-export default AfricanMiningNetworkMap;
+export default CriticalMineralsRiskMap;
