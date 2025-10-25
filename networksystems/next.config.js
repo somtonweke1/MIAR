@@ -4,7 +4,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  output: 'standalone',
+  // Removed 'standalone' for Vercel compatibility - standalone is for Docker/self-hosted only
   poweredByHeader: false,
   compress: true,
   generateEtags: false,
