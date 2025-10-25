@@ -6,8 +6,8 @@ import { Providers } from '@/components/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MIAR - Mining Intelligence & Analytics',
-  description: 'Advanced Mining Intelligence & Analytics Platform',
+  title: 'MIAR - Critical Minerals Supply Chain Risk Intelligence',
+  description: 'Supply chain risk intelligence for lithium, cobalt, copper, and rare earth elements. Trusted by energy companies, manufacturers, and defense contractors.',
 }
 
 export default function RootLayout({

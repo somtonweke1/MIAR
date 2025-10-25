@@ -118,7 +118,7 @@ function HomeContent() {
                   }`}
                 >
                   <Network className="h-4 w-4" />
-                  <span>Mining Intelligence</span>
+                  <span>Supply Chain Risk</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('investment')}
