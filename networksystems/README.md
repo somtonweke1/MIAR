@@ -1,19 +1,77 @@
-# MIAR - Critical Minerals Supply Chain Risk Intelligence
+# MIAR - Supply Chain Risk Intelligence Platform
 
-🌍 **Supply chain risk intelligence for lithium, cobalt, copper, and rare earth elements - with a focus on African supply chains where 68% of critical minerals originate.**
+🌍 **Dual-beachhead supply chain risk intelligence: BIS entity list compliance + critical minerals sourcing**
 
 ## 🚀 Live Platform
 
 **Production**: https://networksystems.vercel.app
-**Supply Chain Risk Intelligence**: https://networksystems.vercel.app/supply-chain-risk
+**Entity List Scanner**: https://networksystems.vercel.app/entity-list-scanner (FREE - First 10 companies)
+**Critical Minerals Risk**: https://networksystems.vercel.app/supply-chain-risk
 
 ---
 
 # Overview
 
-**MIAR** is a research-grade supply chain risk intelligence platform built by Johns Hopkins University researchers. We help energy companies, manufacturers, and defense contractors identify and mitigate risks in their critical mineral supply chains.
+**MIAR** is a research-grade supply chain risk intelligence platform built by Johns Hopkins University researchers. We help hardware companies, manufacturers, and energy companies solve two critical supply chain problems:
 
-## The Problem We Solve
+1. **BIS Entity List Compliance** (URGENT) - Are your suppliers affected by the expanded entity list?
+2. **Critical Minerals Risk** (STRATEGIC) - Can you secure lithium, cobalt, copper, rare earths reliably?
+
+---
+
+# Beachhead 1: BIS Entity List Compliance Scanner (URGENT)
+
+## The Problem
+
+The BIS entity list expansion now covers **affiliates and ownership structures**. Manual compliance checks don't scale:
+- One listed entity can affect dozens of suppliers through ownership
+- Joint ventures, minority stakes, and parent companies now trigger compliance requirements
+- Blocked shipments = revenue loss + project delays
+- **Financial exposure: $12M+ for medium-sized manufacturers**
+
+## Our Solution: Free Entity List Scanner
+
+**What We Do:**
+1. **Automatic Ownership Mapping** - Trace parent companies, subsidiaries, affiliates
+2. **Real-Time Entity List Cross-Reference** - Flag suppliers with BIS exposure
+3. **Alternative Source Recommendations** - Identify compliant backup suppliers
+4. **48-Hour Turnaround** - Detailed compliance report delivered fast
+
+**Free for First 10 Companies:** https://networksystems.vercel.app/entity-list-scanner
+
+### Deliverables
+
+**Free Compliance Check** (First 10 companies)
+- Upload supplier list (CSV/Excel/PDF)
+- Get detailed risk report in 48 hours
+- Includes alternative supplier recommendations
+- No credit card required
+
+**One-Time Deep Dive** ($5,000)
+- Comprehensive ownership structure mapping
+- Risk scores for all suppliers
+- Implementation roadmap
+- 2-week delivery
+
+**Continuous Monitoring** ($25K-$100K annual)
+- Real-time entity list monitoring
+- Automatic alerts when suppliers get listed
+- Monthly compliance briefings
+- API integration for ERP systems
+
+### Sample Report
+
+**View Example:** https://networksystems.vercel.app/entity-list-report
+- TechFlow Electronics case study
+- 8 suppliers flagged out of 47 analyzed
+- $12.4M exposure identified
+- Alternative sources provided
+
+---
+
+# Beachhead 2: Critical Minerals Risk Intelligence (STRATEGIC)
+
+## The Problem
 
 Energy companies building battery storage projects need 50,000+ tons of lithium, cobalt, and other critical minerals. But:
 - **68% flows through African supply chains** with political instability risks
@@ -56,22 +114,39 @@ Energy companies building battery storage projects need 50,000+ tons of lithium,
 
 ---
 
-## Target Customers
+## Target Customers (Dual Beachhead Strategy)
 
-### Primary: Energy & Utilities
+### Beachhead 1 Customers: Entity List Compliance
+
+**Primary: Hardware & Electronics Manufacturers**
+- **Use Case**: BIS entity list compliance for component suppliers
+- **Examples**: Electronics manufacturers, hardware startups, IoT companies
+- **Pain Point**: Shipments blocked, revenue loss, urgent compliance need
+- **Entry Point**: Free entity list scanner → $5K assessment → $25K annual monitoring
+
+**Secondary: Supply Chain Managers**
+- **Use Case**: Proactive compliance monitoring
+- **Examples**: Fortune 500 procurement teams, supply chain directors
+- **Pain Point**: Manual checks don't scale, need automation
+
+### Beachhead 2 Customers: Critical Minerals
+
+**Primary: Energy & Utilities**
 - **Use Case**: Secure mineral supplies for battery storage, grid infrastructure, renewable energy
 - **Examples**: Constellation Energy, NextEra, Duke Energy
 - **Pain Point**: $100M+ projects at risk from supply disruptions
+- **Entry Point**: Weekly briefing → $5K assessment → $25K-$100K annual
 
-### Secondary: Manufacturing & Automotive
+**Secondary: Manufacturing & Automotive**
 - **Use Case**: EV battery supply chain risk management
 - **Examples**: Tesla, Ford, GM, LG Energy
 - **Pain Point**: Production delays from material shortages
 
-### Tertiary: Defense & Aerospace
-- **Use Case**: Rare earth element supply chain security
+**Tertiary: Defense & Aerospace**
+- **Use Case**: Rare earth element supply chain security + entity list compliance
 - **Examples**: Lockheed, Raytheon, Boeing
 - **Pain Point**: National security implications of Chinese dependency
+- **Crossover**: Benefits from BOTH beachheads (entity list + critical minerals)
 
 ---
 

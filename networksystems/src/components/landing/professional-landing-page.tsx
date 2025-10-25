@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ArrowRight, CheckCircle, TrendingUp, Globe, DollarSign, Shield, Target, Users, Calendar, Mail, Phone } from 'lucide-react';
+import { ArrowRight, CheckCircle, TrendingUp, Globe, DollarSign, Shield, Target, Users, Calendar, Mail, Phone, AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
 
 interface ProfessionalLandingPageProps {
   onGetStarted: () => void;
@@ -118,12 +119,12 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-extralight text-zinc-900 mb-6 tracking-tight">
-            Critical Minerals Supply Chain Risk Intelligence for
-            <span className="block text-emerald-600 font-light">Energy Companies & Manufacturers</span>
+            Supply Chain Risk Intelligence for
+            <span className="block text-emerald-600 font-light">Hardware Companies & Manufacturers</span>
           </h1>
           <p className="text-xl text-zinc-600 mb-8 font-light max-w-3xl mx-auto leading-relaxed">
-            MIAR helps energy companies, manufacturers, and defense contractors identify and mitigate risks in their
-            critical mineral supply chains. 68% flows through African supply chains - we provide the intelligence you need.
+            From BIS entity list compliance to critical minerals sourcing - we help you identify and mitigate
+            supply chain risks before they impact your business.
           </p>
           {user ? (
             <button
@@ -142,6 +143,98 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
               <ArrowRight className="w-5 h-5" />
             </button>
           )}
+        </div>
+      </section>
+
+      {/* Two Beachheads - Use Cases */}
+      <section className="py-16 px-6 bg-gradient-to-br from-zinc-100 to-zinc-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extralight text-zinc-900 mb-4 tracking-tight">
+              Two Critical Problems. One Platform.
+            </h2>
+            <p className="text-lg text-zinc-600 font-light max-w-2xl mx-auto">
+              Whether you're facing immediate compliance risk or strategic sourcing challenges, we've got you covered.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Beachhead 1: Entity List Compliance */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-zinc-200/50">
+              <div className="inline-flex items-center gap-2 bg-rose-50 text-rose-700 px-3 py-1 rounded-full text-sm font-light mb-4">
+                <AlertTriangle className="w-4 h-4" />
+                URGENT
+              </div>
+              <h3 className="text-2xl font-light text-zinc-900 mb-4">
+                BIS Entity List Compliance Scanner
+              </h3>
+              <p className="text-zinc-600 font-light mb-6 leading-relaxed">
+                The BIS entity list now covers affiliates and ownership structures. Check your suppliers
+                for compliance risks before shipments get blocked.
+              </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">Automatic ownership tree mapping</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">48-hour compliance check</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">Alternative supplier recommendations</span>
+                </div>
+              </div>
+              <Link href="/entity-list-scanner">
+                <button className="w-full bg-rose-600 text-white px-6 py-3 rounded-lg font-light hover:bg-rose-700 transition-colors inline-flex items-center justify-center space-x-2">
+                  <span>Get Free Compliance Check</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </Link>
+              <p className="text-xs text-zinc-500 font-light mt-4 text-center">
+                ✓ Free for first 10 companies  •  ✓ No credit card required
+              </p>
+            </div>
+
+            {/* Beachhead 2: Critical Minerals */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-zinc-200/50">
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-light mb-4">
+                <Globe className="w-4 h-4" />
+                STRATEGIC
+              </div>
+              <h3 className="text-2xl font-light text-zinc-900 mb-4">
+                Critical Minerals Risk Intelligence
+              </h3>
+              <p className="text-zinc-600 font-light mb-6 leading-relaxed">
+                68% of critical minerals flow through African supply chains. De-risk your lithium, cobalt,
+                copper, and rare earth sourcing with real-time intelligence.
+              </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">Live risk scores for 4 critical minerals</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">Weekly risk briefing with strategic actions</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-zinc-700 font-light">3-6 month early warning on disruptions</span>
+                </div>
+              </div>
+              <Link href="/supply-chain-risk">
+                <button className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors inline-flex items-center justify-center space-x-2">
+                  <span>View Risk Dashboard</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </Link>
+              <p className="text-xs text-zinc-500 font-light mt-4 text-center">
+                ✓ Trusted by energy companies  •  ✓ Custom assessments from $5K
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
