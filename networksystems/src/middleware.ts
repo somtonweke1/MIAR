@@ -2,6 +2,15 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
+// Public routes that should NOT require authentication (marketing/lead gen pages)
+const publicRoutes = [
+  '/entity-list-scanner',
+  '/entity-list-report',
+  '/supply-chain-risk',
+  '/risk-report',
+  '/weekly-briefing-sample',
+];
+
 // Routes that require authentication
 const protectedRoutes = [
   '/dashboard',
@@ -23,6 +32,15 @@ const roleProtectedRoutes: Record<string, string[]> = {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Allow public routes without authentication
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  if (isPublicRoute) {
+    return NextResponse.next();
+  }
 
   // Check if route requires authentication
   const isProtectedRoute = protectedRoutes.some((route) =>
