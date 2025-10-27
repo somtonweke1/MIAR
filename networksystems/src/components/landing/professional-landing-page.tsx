@@ -119,12 +119,13 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-extralight text-zinc-900 mb-6 tracking-tight">
-            Supply Chain Risk Intelligence for
-            <span className="block text-emerald-600 font-light">Hardware Companies & Manufacturers</span>
+            See Supply Chain Risks
+            <span className="block text-emerald-600 font-light">Before They Become Crises</span>
           </h1>
           <p className="text-xl text-zinc-600 mb-8 font-light max-w-3xl mx-auto leading-relaxed">
-            From BIS entity list compliance to critical minerals sourcing - we help you identify and mitigate
-            supply chain risks before they impact your business.
+            From blocked shipments to material shortages - we map hidden relationships in your supply chain
+            and warn you of disruptions before they cost you millions. Network analysis technology trusted by
+            manufacturers, energy companies, and defense contractors.
           </p>
           {user ? (
             <button
@@ -151,10 +152,11 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-extralight text-zinc-900 mb-4 tracking-tight">
-              Two Critical Problems. One Platform.
+              Two Critical Threats to Your Supply Chain
             </h2>
             <p className="text-lg text-zinc-600 font-light max-w-2xl mx-auto">
-              Whether you're facing immediate compliance risk or strategic sourcing challenges, we've got you covered.
+              Hidden compliance exposure can block shipments tomorrow. Strategic sourcing risks can cost you millions over months.
+              Our network analysis technology helps you see both - before they hit your bottom line.
             </p>
           </div>
 
@@ -163,14 +165,19 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
             <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-zinc-200/50">
               <div className="inline-flex items-center gap-2 bg-rose-50 text-rose-700 px-3 py-1 rounded-full text-sm font-light mb-4">
                 <AlertTriangle className="w-4 h-4" />
-                URGENT
+                THREAT 1: COMPLIANCE
               </div>
               <h3 className="text-2xl font-light text-zinc-900 mb-4">
-                BIS Entity List Compliance Scanner
+                Hidden Entity List Exposure
               </h3>
+              <p className="text-zinc-600 font-light mb-4 leading-relaxed">
+                <strong className="text-zinc-900">The Risk:</strong> BIS expanded rules now cover parent companies,
+                subsidiaries, and joint ventures. Your supplier might be compliant, but their owners might not be.
+                One hidden relationship = blocked shipments + lost revenue.
+              </p>
               <p className="text-zinc-600 font-light mb-6 leading-relaxed">
-                The BIS entity list now covers affiliates and ownership structures. Check your suppliers
-                for compliance risks before shipments get blocked.
+                <strong className="text-zinc-900">Our Solution:</strong> Automatic ownership tree mapping reveals hidden
+                entity list exposure across your supplier network in 48 hours.
               </p>
               <div className="space-y-3 mb-6">
                 <div className="flex items-start gap-2">
@@ -204,14 +211,19 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
             <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow border border-zinc-200/50">
               <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-light mb-4">
                 <Globe className="w-4 h-4" />
-                STRATEGIC
+                THREAT 2: SOURCING
               </div>
               <h3 className="text-2xl font-light text-zinc-900 mb-4">
-                Critical Minerals Risk Intelligence
+                Critical Minerals Supply Disruption
               </h3>
               <p className="text-zinc-600 font-light mb-6 leading-relaxed">
-                68% of critical minerals flow through African supply chains. De-risk your lithium, cobalt,
-                copper, and rare earth sourcing with real-time intelligence.
+                <strong className="text-zinc-900">The Risk:</strong> Lithium, cobalt, copper, and rare earths flow through
+                concentrated, unstable supply chains. Political upheaval, export bans, or price spikes can halt production.
+                No backup suppliers = project delays + cost overruns.
+              </p>
+              <p className="text-zinc-600 font-light mb-6 leading-relaxed">
+                <strong className="text-zinc-900">Our Solution:</strong> Real-time risk scoring and 3-6 month early warnings
+                help you diversify sources before disruptions hit.
               </p>
               <div className="space-y-3 mb-6">
                 <div className="flex items-start gap-2">
