@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { PublicNav } from '@/components/navigation/public-nav';
 import { AlertTriangle, CheckCircle, XCircle, ArrowRight, Shield, Users, DollarSign, Zap } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -122,6 +123,7 @@ export default function EntityListReportPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
+      <PublicNav />
       {/* Header */}
       <div className="bg-white border-b border-zinc-200">
         <div className="max-w-7xl mx-auto px-6 py-8">

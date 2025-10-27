@@ -186,11 +186,14 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
                   <span className="text-sm text-zinc-700 font-light">Alternative supplier recommendations</span>
                 </div>
               </div>
-              <Link href="/entity-list-scanner">
+              <Link href="/compliance">
                 <button className="w-full bg-rose-600 text-white px-6 py-3 rounded-lg font-light hover:bg-rose-700 transition-colors inline-flex items-center justify-center space-x-2">
-                  <span>Get Free Compliance Check</span>
+                  <span>Explore Compliance Scanner</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
+              </Link>
+              <Link href="/entity-list-scanner" className="text-center">
+                <span className="text-sm text-rose-600 hover:text-rose-700 font-light underline">or run free scan now</span>
               </Link>
               <p className="text-xs text-zinc-500 font-light mt-4 text-center">
                 ✓ Free for first 10 companies  •  ✓ No credit card required
@@ -224,11 +227,14 @@ export default function ProfessionalLandingPage({ onGetStarted, user, onAccessPl
                   <span className="text-sm text-zinc-700 font-light">3-6 month early warning on disruptions</span>
                 </div>
               </div>
-              <Link href="/supply-chain-risk">
+              <Link href="/critical-minerals">
                 <button className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors inline-flex items-center justify-center space-x-2">
-                  <span>View Risk Dashboard</span>
+                  <span>Explore Risk Intelligence</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
+              </Link>
+              <Link href="/supply-chain-risk" className="text-center">
+                <span className="text-sm text-emerald-600 hover:text-emerald-700 font-light underline">or view live risk dashboard</span>
               </Link>
               <p className="text-xs text-zinc-500 font-light mt-4 text-center">
                 ✓ Trusted by energy companies  •  ✓ Custom assessments from $5K

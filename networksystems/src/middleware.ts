@@ -4,6 +4,8 @@ import { getToken } from 'next-auth/jwt';
 
 // Public routes that should NOT require authentication (marketing/lead gen pages)
 const publicRoutes = [
+  '/compliance',
+  '/critical-minerals',
   '/entity-list-scanner',
   '/entity-list-report',
   '/supply-chain-risk',

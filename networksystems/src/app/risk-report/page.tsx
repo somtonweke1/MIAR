@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { PublicNav } from '@/components/navigation/public-nav';
 import {
   AlertTriangle,
   TrendingUp,
@@ -179,6 +180,7 @@ export default function RiskReportPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
+      <PublicNav />
       {/* Header */}
       <section className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

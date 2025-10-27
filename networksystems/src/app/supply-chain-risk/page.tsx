@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { PublicNav } from '@/components/navigation/public-nav';
 import {
   AlertTriangle,
   TrendingUp,
@@ -85,6 +86,8 @@ export default function SupplyChainRiskPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
+      <PublicNav />
+
       {/* Hero Section */}
       <section className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -321,6 +324,34 @@ export default function SupplyChainRiskPage() {
               <div className="text-zinc-900 font-light">African Mining Network Analysis</div>
               <div className="w-px h-8 bg-zinc-300"></div>
               <div className="text-zinc-900 font-light">Real-Time Data Integration</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cross-Link to Compliance Scanner */}
+      <section className="py-12 px-6 bg-zinc-100/50 border-t border-zinc-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl p-8 shadow-md border border-zinc-200/50">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-rose-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="w-6 h-6 text-rose-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-light text-zinc-900 mb-2">
+                  Need Urgent Compliance Help?
+                </h3>
+                <p className="text-zinc-600 font-light mb-4">
+                  Check if your current suppliers are affected by the expanded BIS Entity List. Free compliance scan available.
+                </p>
+                <Link
+                  href="/entity-list-scanner"
+                  className="text-emerald-600 font-light hover:text-emerald-700 inline-flex items-center gap-2"
+                >
+                  Run Free Entity List Compliance Check
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

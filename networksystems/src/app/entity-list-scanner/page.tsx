@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { PublicNav } from '@/components/navigation/public-nav';
 import {
   AlertTriangle,
   Upload,
@@ -58,6 +59,8 @@ export default function EntityListScannerPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
+      <PublicNav />
+
       {/* Hero Section */}
       <section className="bg-white/95 backdrop-blur-md border-b border-zinc-200/50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -481,6 +484,34 @@ export default function EntityListScannerPage() {
               </div>
             </div>
           </Card>
+        </div>
+      </section>
+
+      {/* Cross-Link to Critical Minerals */}
+      <section className="py-12 px-6 bg-zinc-100/50 border-t border-zinc-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl p-8 shadow-md border border-zinc-200/50">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <TrendingUp className="w-6 h-6 text-blue-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-light text-zinc-900 mb-2">
+                  Also Struggling with Critical Minerals Sourcing?
+                </h3>
+                <p className="text-zinc-600 font-light mb-4">
+                  Beyond compliance, we help manufacturers navigate lithium, cobalt, and rare earth supply chain risks.
+                </p>
+                <Link
+                  href="/critical-minerals"
+                  className="text-emerald-600 font-light hover:text-emerald-700 inline-flex items-center gap-2"
+                >
+                  Explore Critical Minerals Risk Intelligence
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
