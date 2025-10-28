@@ -1,7 +1,4 @@
 {
-  "buildCommand": "cd networksystems && npm run build",
-  "installCommand": "cd networksystems && npm install",
-  "outputDirectory": "networksystems/.next",
   "headers": [
     {
       "source": "/api/(.*)",
