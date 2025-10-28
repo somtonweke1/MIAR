@@ -1398,7 +1398,8 @@ const CriticalMineralsRiskMap: React.FC = () => {
           </div>
         )}
 
-        {/* Real-Time Business Intelligence Dashboard */}
+        {/* Real-Time Business Intelligence Dashboard - HIDDEN PER USER REQUEST */}
+        {/*
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
           <div className="border-b border-zinc-200/50 px-8 py-6">
             <div className="flex items-center justify-between">
@@ -1413,7 +1414,6 @@ const CriticalMineralsRiskMap: React.FC = () => {
             </div>
           </div>
 
-          {/* Immediate Action Items */}
           <div className="px-8 py-6 border-b border-zinc-200/50">
             <h3 className="text-lg font-light text-zinc-900 mb-6">Priority Actions Required</h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -1458,7 +1458,6 @@ const CriticalMineralsRiskMap: React.FC = () => {
             </div>
           </div>
 
-          {/* Live Operations Dashboard */}
           <div className="px-8 py-6 border-b border-zinc-200/50">
             <h3 className="text-lg font-light text-zinc-900 mb-6">Live Operations Status</h3>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -1485,7 +1484,6 @@ const CriticalMineralsRiskMap: React.FC = () => {
             </div>
           </div>
 
-          {/* Market Intelligence Feed */}
           <div className="px-8 py-6">
             <h3 className="text-lg font-light text-zinc-900 mb-6">Market Intelligence Feed</h3>
             <div className="space-y-4">
@@ -1535,6 +1533,7 @@ const CriticalMineralsRiskMap: React.FC = () => {
             </div>
           </div>
         </div>
+        */}
       </div>
     </div>
   );
