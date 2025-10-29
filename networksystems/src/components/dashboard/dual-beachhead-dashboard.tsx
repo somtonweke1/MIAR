@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, Shield, TrendingUp, FileText, Zap, ArrowRight, CheckCircle, Globe } from 'lucide-react';
+import { AlertTriangle, Shield, FileText, ArrowRight, CheckCircle, Globe } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DualBeachheadDashboard() {
@@ -59,15 +59,13 @@ export default function DualBeachheadDashboard() {
 
             <div className="flex flex-col gap-3">
               <Link href="/entity-list-scanner" className="w-full">
-                <button className="w-full bg-rose-600 text-white px-6 py-3 rounded-lg font-light hover:bg-rose-700 transition-colors inline-flex items-center justify-center gap-2">
-                  <Zap className="w-5 h-5" />
-                  <span>Upload Supplier List</span>
+                <button className="w-full bg-rose-600 text-white px-6 py-3 rounded-lg font-light hover:bg-rose-700 transition-colors">
+                  Upload Supplier List
                 </button>
               </Link>
               <Link href="/entity-list-report" className="w-full">
-                <button className="w-full bg-zinc-100 text-zinc-900 px-6 py-3 rounded-lg font-light hover:bg-zinc-200 transition-colors inline-flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  <span>View Sample Report</span>
+                <button className="w-full bg-zinc-100 text-zinc-900 px-6 py-3 rounded-lg font-light hover:bg-zinc-200 transition-colors">
+                  View Sample Report
                 </button>
               </Link>
             </div>
@@ -96,14 +94,19 @@ export default function DualBeachheadDashboard() {
                 { mineral: 'Cobalt', risk: 7.2, color: 'rose', trend: 'up' },
                 { mineral: 'Lithium', risk: 5.8, color: 'amber', trend: 'stable' },
                 { mineral: 'Copper', risk: 6.1, color: 'orange', trend: 'up' },
-                { mineral: 'Rare Earths', risk: 8.5, color: 'red', trend: 'up' }
+                { mineral: 'Rare Earths', risk: 8.5, color: 'rose', trend: 'up' }
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1">
                     <div className="text-sm font-light text-zinc-700 w-24">{item.mineral}</div>
                     <div className="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
                       <div
-                        className={`h-full bg-${item.color}-500 rounded-full transition-all`}
+                        className={`h-full rounded-full transition-all ${
+                          item.color === 'rose' ? 'bg-rose-500' :
+                          item.color === 'amber' ? 'bg-amber-500' :
+                          item.color === 'orange' ? 'bg-orange-500' :
+                          'bg-rose-500'
+                        }`}
                         style={{width: `${(item.risk / 10) * 100}%`}}
                       ></div>
                     </div>
@@ -130,15 +133,13 @@ export default function DualBeachheadDashboard() {
 
             <div className="flex flex-col gap-3">
               <Link href="/supply-chain-risk" className="w-full">
-                <button className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors inline-flex items-center justify-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  <span>View Risk Dashboard</span>
+                <button className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg font-light hover:bg-emerald-700 transition-colors">
+                  View Risk Dashboard
                 </button>
               </Link>
               <Link href="/risk-report" className="w-full">
-                <button className="w-full bg-zinc-100 text-zinc-900 px-6 py-3 rounded-lg font-light hover:bg-zinc-200 transition-colors inline-flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  <span>View Sample Risk Report</span>
+                <button className="w-full bg-zinc-100 text-zinc-900 px-6 py-3 rounded-lg font-light hover:bg-zinc-200 transition-colors">
+                  View Sample Risk Report
                 </button>
               </Link>
             </div>

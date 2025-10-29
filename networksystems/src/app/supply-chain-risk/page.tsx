@@ -103,7 +103,7 @@ export default function SupplyChainRiskPage() {
 
             <p className="text-xl font-light text-zinc-600 mb-8 leading-relaxed">
               Supply chain risk intelligence for lithium, cobalt, copper, and rare earth elements.
-              Built by Johns Hopkins researchers mapping the world's most critical mineral flows.
+              Research-grade intelligence mapping the world's most critical mineral flows.
             </p>
 
             <div className="flex items-center justify-center gap-4">
@@ -142,7 +142,12 @@ export default function SupplyChainRiskPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-2xl font-extralight text-zinc-900">{item.mineral}</h3>
-                      <span className={`px-3 py-1 rounded-lg text-xs font-medium uppercase tracking-wide bg-${item.color}-100 text-${item.color}-700`}>
+                      <span className={`px-3 py-1 rounded-lg text-xs font-medium uppercase tracking-wide ${
+                        item.color === 'rose' ? 'bg-rose-100 text-rose-700' :
+                        item.color === 'amber' ? 'bg-amber-100 text-amber-700' :
+                        item.color === 'orange' ? 'bg-orange-100 text-orange-700' :
+                        'bg-rose-100 text-rose-700'
+                      }`}>
                         {item.trend}
                       </span>
                     </div>
@@ -153,7 +158,12 @@ export default function SupplyChainRiskPage() {
                   </div>
 
                   <div className="text-right">
-                    <div className={`text-4xl font-extralight text-${item.color}-600`}>
+                    <div className={`text-4xl font-extralight ${
+                      item.color === 'rose' ? 'text-rose-600' :
+                      item.color === 'amber' ? 'text-amber-600' :
+                      item.color === 'orange' ? 'text-orange-600' :
+                      'text-rose-600'
+                    }`}>
                       {item.risk}
                     </div>
                     <div className="text-xs font-light text-zinc-500">Risk Score</div>
@@ -162,7 +172,12 @@ export default function SupplyChainRiskPage() {
 
                 <div className="pt-4 border-t border-zinc-200/50">
                   <div className="flex items-start gap-2">
-                    <AlertTriangle className={`w-4 h-4 mt-1 text-${item.color}-600 flex-shrink-0`} />
+                    <AlertTriangle className={`w-4 h-4 mt-1 flex-shrink-0 ${
+                      item.color === 'rose' ? 'text-rose-600' :
+                      item.color === 'amber' ? 'text-amber-600' :
+                      item.color === 'orange' ? 'text-orange-600' :
+                      'text-rose-600'
+                    }`} />
                     <p className="text-sm font-light text-zinc-700">{item.concern}</p>
                   </div>
                 </div>
@@ -176,13 +191,15 @@ export default function SupplyChainRiskPage() {
                 <Globe className="w-8 h-8 text-emerald-600" />
               </div>
               <div>
-                <h3 className="text-xl font-light text-zinc-900 mb-2">
-                  Comprehensive African Supply Chain Intelligence
-                </h3>
-                <p className="text-zinc-700 font-light mb-4">
-                  We track 127 mining operations, 45 processing facilities, and 23 critical trade routes across 8 African countries -
-                  representing 68% of global cobalt, 40% of manganese, and 25% of lithium reserves.
-                </p>
+                <Link href="/" className="group cursor-pointer block mb-4">
+                  <h3 className="text-xl font-light text-zinc-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    Comprehensive African Supply Chain Intelligence
+                  </h3>
+                  <p className="text-zinc-700 font-light group-hover:text-zinc-900 transition-colors">
+                    We track 127 mining operations, 45 processing facilities, and 23 critical trade routes across 8 African countries -
+                    representing 68% of global cobalt, 40% of manganese, and 25% of lithium reserves.
+                  </p>
+                </Link>
                 <Link href="/decision-center">
                   <Button variant="outline" className="bg-white">
                     Explore Full Intelligence Platform
@@ -319,7 +336,7 @@ export default function SupplyChainRiskPage() {
           <div className="text-center">
             <p className="text-sm font-light text-zinc-600 mb-2">Research-Grade Intelligence</p>
             <div className="flex items-center justify-center gap-8">
-              <div className="text-zinc-900 font-light">Johns Hopkins University</div>
+              <div className="text-zinc-900 font-light">Academic-Grade Analysis</div>
               <div className="w-px h-8 bg-zinc-300"></div>
               <div className="text-zinc-900 font-light">African Mining Network Analysis</div>
               <div className="w-px h-8 bg-zinc-300"></div>
