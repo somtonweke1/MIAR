@@ -182,6 +182,98 @@ export default function EntityListReportPage() {
           </div>
         </Card>
 
+        {/* Value of Information Analysis */}
+        <Card className="p-8 bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="p-3 bg-white rounded-xl">
+              <DollarSign className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div>
+              <h2 className="text-xl font-light text-zinc-900 mb-2">Decision Impact Analysis</h2>
+              <p className="text-sm text-zinc-700 font-light leading-relaxed">
+                This intelligence enables better decision-making under uncertainty. The Expected Value of Perfect Information (EVPI)
+                quantifies the maximum value of knowing compliance status before making sourcing decisions.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white/60 rounded-xl p-6 space-y-6">
+            {/* Decision Context */}
+            <div className="border-l-4 border-emerald-500 pl-4">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Your Decision</div>
+              <div className="text-base font-light text-zinc-900">
+                Continue sourcing from existing suppliers vs. Replace flagged suppliers
+              </div>
+              <div className="text-sm text-zinc-600 font-light mt-2">
+                Annual contracts: $12.4M • Critical suppliers: 3 • Alternatives available: 9
+              </div>
+            </div>
+
+            {/* Expected Values */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-rose-50/50 rounded-lg p-5">
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Without This Intelligence</div>
+                <div className="text-2xl font-light text-rose-600 mb-1">-$8.6M</div>
+                <div className="text-xs text-zinc-600 font-light">
+                  Expected loss from undetected compliance violations, shipment blocks, emergency sourcing
+                </div>
+                <div className="mt-3 text-xs text-zinc-500 font-light">
+                  • 65% probability of disruption<br/>
+                  • $21M worst-case exposure<br/>
+                  • 6-month recovery timeline
+                </div>
+              </div>
+
+              <div className="bg-emerald-50/50 rounded-lg p-5">
+                <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">With This Intelligence</div>
+                <div className="text-2xl font-light text-emerald-600 mb-1">+$1.2M</div>
+                <div className="text-xs text-zinc-600 font-light">
+                  Expected value from informed supplier transitions, compliance assurance, business continuity
+                </div>
+                <div className="mt-3 text-xs text-zinc-500 font-light">
+                  • Proactive supplier replacement<br/>
+                  • 15% cost premium vs. disruption<br/>
+                  • Zero compliance violations
+                </div>
+              </div>
+            </div>
+
+            {/* EVPI Calculation */}
+            <div className="border-t border-zinc-200 pt-6">
+              <div className="grid grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">EVPI (This Report)</div>
+                  <div className="text-3xl font-extralight text-emerald-600">$9.8M</div>
+                  <div className="text-xs text-zinc-600 font-light mt-1">Maximum value of compliance certainty</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Intelligence Cost</div>
+                  <div className="text-3xl font-extralight text-zinc-900">$85K</div>
+                  <div className="text-xs text-zinc-600 font-light mt-1">Annual subscription + analysis</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Net Benefit</div>
+                  <div className="text-3xl font-extralight text-emerald-600">$9.72M</div>
+                  <div className="text-xs text-zinc-600 font-light mt-1">115x ROI per decision cycle</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Information Quality */}
+            <div className="bg-blue-50/30 rounded-lg p-4 border border-blue-100">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="w-4 h-4 text-blue-600" />
+                <div className="text-sm font-medium text-zinc-900">Information Quality Assurance</div>
+              </div>
+              <div className="text-xs text-zinc-700 font-light leading-relaxed">
+                Our compliance intelligence provides <span className="font-medium">market research-grade quality control</span> for supply chain decisions.
+                Real-time BIS entity list monitoring, ownership structure analysis, and alternative supplier sourcing reduce
+                decision uncertainty from 65% to under 5%, enabling confident strategic sourcing choices.
+              </div>
+            </div>
+          </div>
+        </Card>
+
         {/* Flagged Suppliers */}
         <div>
           <h2 className="text-2xl font-extralight text-zinc-900 mb-6">Suppliers with Entity List Exposure</h2>

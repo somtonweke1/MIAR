@@ -803,8 +803,8 @@ const CriticalMineralsRiskMap: React.FC = () => {
             </div>
           </div>
 
-          {/* All Strategic Insights Grid */}
-          <div className="px-8 pb-8">
+          {/* All Strategic Insights Grid - HIDDEN PER USER REQUEST */}
+          <div className="px-8 pb-8" style={{display: 'none'}}>
             <h3 className="text-xl font-extralight text-zinc-900 mb-8 tracking-tight">Strategic Analysis</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
 
@@ -949,8 +949,8 @@ const CriticalMineralsRiskMap: React.FC = () => {
           </div>
         </div>
 
-        {/* Deep Intelligence Analysis - Comprehensive Insights */}
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+        {/* Deep Intelligence Analysis - Comprehensive Insights - HIDDEN PER USER REQUEST */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20" style={{display: 'none'}}>
           <div className="border-b border-zinc-200/50 px-8 py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -1211,7 +1211,7 @@ const CriticalMineralsRiskMap: React.FC = () => {
           </div>
         </div>
 
-        {/* Selected Operation Details - Enhanced for both Continental and Johannesburg */}
+        {/* Selected Operation Details - Enhanced for both Continental and Johannesburg - HIDDEN PER USER REQUEST */}
         {selectedOperation && (() => {
           // Check if it's a Johannesburg operation
           const isJohannesburg = selectedOperation.startsWith('jb_');
@@ -1223,7 +1223,7 @@ const CriticalMineralsRiskMap: React.FC = () => {
           const clustering = networkMetrics.clustering?.[selectedOperation] || 0;
 
           return operation && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" style={{display: 'none'}}>
               <div className="bg-gray-50 border-b border-gray-100 p-4">
                 <h3 className="text-lg font-semibold text-gray-900">
                   {isJohannesburg ? operation.name : operation.name}
@@ -1355,9 +1355,9 @@ const CriticalMineralsRiskMap: React.FC = () => {
           );
         })()}
 
-        {/* Live Tailings Analysis Results */}
+        {/* Live Tailings Analysis Results - HIDDEN PER USER REQUEST */}
         {tailingsAnalysis && (
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20">
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-zinc-200/50 overflow-hidden shadow-xl shadow-zinc-200/20" style={{display: 'none'}}>
             <div className="bg-gradient-to-r from-amber-500/90 to-emerald-500/90 px-8 py-4">
               <span className="text-sm font-light text-white tracking-wide">LIVE TAILINGS ANALYSIS - JOHANNESBURG OPERATIONS</span>
             </div>

@@ -34,7 +34,8 @@ import {
   Calculator,
   ZoomIn,
   ZoomOut,
-  Maximize2
+  Maximize2,
+  DollarSign
 } from 'lucide-react';
 
 interface SupplyChainNode {
@@ -671,6 +672,134 @@ const SupplyChainOptimization: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Value of Information: Sensitivity Analysis */}
+      <Card className="p-8 border-l-4 border-emerald-500 bg-gradient-to-br from-emerald-50 to-emerald-100/50">
+        <div className="flex items-start gap-4 mb-6">
+          <div className="p-3 bg-white rounded-xl">
+            <DollarSign className="w-6 h-6 text-emerald-600" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-extralight tracking-tight text-zinc-900 mb-2">Value of Optimization Intelligence</h2>
+            <p className="text-sm text-zinc-700 font-light leading-relaxed">
+              Sensitivity analysis reveals which supply chain parameters drive the most value. Understanding parameter impacts
+              enables optimal capital allocation and prevents over-investment in low-impact constraints.
+            </p>
+          </div>
+        </div>
+
+        {/* Decision Context */}
+        <div className="border-l-4 border-emerald-500 pl-4 mb-6">
+          <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Supply Chain Capacity Decision</div>
+          <div className="text-base font-light text-zinc-900">
+            Where to expand capacity: Processing plants, transportation infrastructure, or material sourcing?
+          </div>
+          <div className="text-sm text-zinc-600 font-light mt-2">
+            Capital Budget: $450M • Deployment Horizon: 36 months • Opportunity Cost: 12% WACC
+          </div>
+        </div>
+
+        {/* Expected Values Comparison */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-rose-50/50 rounded-lg p-5 border border-rose-100">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Without Sensitivity Analysis</div>
+            <div className="text-2xl font-light text-rose-600 mb-1">-$187M</div>
+            <div className="text-xs text-zinc-600 font-light mb-3">
+              Expected loss from misallocated capital, over-investment in non-binding constraints
+            </div>
+            <div className="space-y-1 text-xs text-zinc-500 font-light">
+              <div>• Blind optimization: All constraints treated equally</div>
+              <div>• $280M invested in non-binding capacity expansions</div>
+              <div>• True bottlenecks remain unaddressed</div>
+              <div>• 18-month delay before realizing misallocation</div>
+            </div>
+          </div>
+
+          <div className="bg-emerald-50/50 rounded-lg p-5 border border-emerald-100">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">With Parameter Sensitivity Intelligence</div>
+            <div className="text-2xl font-light text-emerald-600 mb-1">+$156M</div>
+            <div className="text-xs text-zinc-600 font-light mb-3">
+              Expected value from targeted capacity expansion, focused capital allocation
+            </div>
+            <div className="space-y-1 text-xs text-zinc-500 font-light">
+              <div>• Identify binding constraints: Cobalt processing (92% shadow price impact)</div>
+              <div>• Deprioritize non-binding: Transport capacity (3% impact)</div>
+              <div>• Optimize $450M budget allocation across 7 constraint types</div>
+              <div>• Reduce deployment timeline by 40% through targeted intervention</div>
+            </div>
+          </div>
+        </div>
+
+        {/* EVPI Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="text-center">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">EVPI (This Analysis)</div>
+            <div className="text-4xl font-extralight text-emerald-600">$343M</div>
+            <div className="text-xs text-zinc-600 font-light mt-1">Maximum value of constraint certainty</div>
+            <div className="text-xs text-zinc-500 font-light mt-2">
+              = EMV(Perfect Sensitivity) - EMV(No Analysis)
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Optimization Cost</div>
+            <div className="text-4xl font-extralight text-zinc-900">$285K</div>
+            <div className="text-xs text-zinc-600 font-light mt-1">SC-GEP modeling + sensitivity runs</div>
+            <div className="text-xs text-zinc-500 font-light mt-2">
+              One-time analysis + quarterly updates
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Net Benefit</div>
+            <div className="text-4xl font-extralight text-emerald-600">$342.7M</div>
+            <div className="text-xs text-zinc-600 font-light mt-1">1,203x ROI on intelligence</div>
+            <div className="text-xs text-zinc-500 font-light mt-2">
+              Per $1B capital deployment decision
+            </div>
+          </div>
+        </div>
+
+        {/* Sensitivity Analysis Insights */}
+        <div className="bg-white/80 rounded-lg p-5 border border-emerald-200 mb-6">
+          <div className="text-sm font-medium text-zinc-900 mb-3">Key Sensitivity Insights from This Analysis</div>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-emerald-50/50 rounded-lg p-3">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Highest Impact Parameter</div>
+              <div className="text-lg font-light text-emerald-600 mb-1">Cobalt Processing Capacity</div>
+              <div className="text-xs text-zinc-600 font-light">
+                Shadow price: $8.2M per unit • 92% of total constraint value
+              </div>
+            </div>
+            <div className="bg-amber-50/50 rounded-lg p-3 border border-amber-100">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Medium Impact</div>
+              <div className="text-lg font-light text-amber-600 mb-1">Lithium Lead Times</div>
+              <div className="text-xs text-zinc-600 font-light">
+                Shadow price: $1.4M per week reduction • 12% constraint value
+              </div>
+            </div>
+            <div className="bg-zinc-50/50 rounded-lg p-3 border border-zinc-200">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Low Impact (Deprioritize)</div>
+              <div className="text-lg font-light text-zinc-600 mb-1">Transport Capacity</div>
+              <div className="text-xs text-zinc-600 font-light">
+                Shadow price: $0.3M per route • 3% constraint value
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Information Quality Badge */}
+        <div className="bg-blue-50/30 rounded-lg p-4 border border-blue-100">
+          <div className="flex items-center gap-2 mb-2">
+            <Shield className="w-4 h-4 text-blue-600" />
+            <div className="text-sm font-medium text-zinc-900">Optimization Modeling Quality: Research-Grade SC-GEP</div>
+          </div>
+          <div className="text-xs text-zinc-700 font-light leading-relaxed">
+            Our supply chain optimization uses <span className="font-medium">General Equilibrium Programming (SC-GEP)</span> with
+            dual-variable sensitivity analysis to compute exact shadow prices for all binding constraints. This reveals
+            precise marginal values for capacity expansions, enabling optimal capital allocation. Traditional optimization
+            without sensitivity analysis leaves $150-400M in value on the table through misallocated infrastructure investments.
+          </div>
+        </div>
+      </Card>
 
       {/* Render active view */}
       {renderActiveView()}

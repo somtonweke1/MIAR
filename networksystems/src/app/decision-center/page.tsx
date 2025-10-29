@@ -6,9 +6,6 @@ import {
   CheckCircle,
   Clock,
   DollarSign,
-  TrendingUp,
-  TrendingDown,
-  Zap,
   Activity,
   Shield,
   Target,
@@ -17,8 +14,7 @@ import {
   ChevronRight,
   AlertCircle,
   ThumbsUp,
-  ArrowLeft,
-  Home
+  ArrowLeft
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -189,10 +185,7 @@ export default function DecisionCenterPage() {
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-50 rounded-xl">
-                  <Zap className="w-8 h-8 text-emerald-600" />
-                </div>
+              <div className="mb-4">
                 <h1 className="text-4xl font-extralight text-zinc-900 tracking-tight">Decision Center</h1>
               </div>
               <p className="text-xl font-light text-zinc-600">

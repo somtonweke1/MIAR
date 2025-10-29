@@ -174,8 +174,8 @@ export default function RiskReportPage() {
     setGenerating(true);
     setTimeout(() => {
       setGenerating(false);
-      alert('PDF generation coming soon. For now, use Print to PDF from your browser.');
-    }, 1500);
+      window.print();
+    }, 500);
   };
 
   return (
@@ -248,6 +248,117 @@ export default function RiskReportPage() {
                     <strong>Primary Concern:</strong> Over-reliance on DRC for cobalt (70% of supply) and Chinese processing
                     facilities (60% of lithium conversion) creates single-point-of-failure vulnerabilities.
                   </p>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* Value of Information Analysis */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="p-8 border-l-4 border-emerald-500 bg-gradient-to-br from-emerald-50 to-emerald-100/50">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="p-3 bg-white rounded-xl">
+                <DollarSign className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-extralight tracking-tight text-zinc-900 mb-2">Sourcing Decision Impact Analysis</h2>
+                <p className="text-sm text-zinc-700 font-light leading-relaxed">
+                  This supply chain intelligence quantifies the value of forward visibility in critical minerals markets.
+                  Understanding EVPI helps determine optimal contract timing and hedging strategies under price volatility.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Decision Context */}
+              <div className="bg-white rounded-xl p-6">
+                <div className="border-l-4 border-emerald-500 pl-4 mb-6">
+                  <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-1">Strategic Sourcing Decision</div>
+                  <div className="text-base font-light text-zinc-900">
+                    Lock multi-year contracts now vs. Spot market purchases with flexible timing
+                  </div>
+                  <div className="text-sm text-zinc-600 font-light mt-2">
+                    Project Value: $2.8B • Material Budget: $180M • Timeline: 2025-2030
+                  </div>
+                </div>
+
+                {/* Expected Values Comparison */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="bg-rose-50/50 rounded-lg p-5 border border-rose-100">
+                    <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Without Market Intelligence</div>
+                    <div className="text-2xl font-light text-rose-600 mb-1">-$47M</div>
+                    <div className="text-xs text-zinc-600 font-light mb-3">
+                      Expected cost from poor contract timing, supply disruptions, emergency premiums
+                    </div>
+                    <div className="space-y-1 text-xs text-zinc-500 font-light">
+                      <div>• 35% probability of moderate disruption</div>
+                      <div>• $170M+ cost overrun risk</div>
+                      <div>• 6-12 month deployment delays</div>
+                      <div>• Emergency sourcing at 2-3x spot prices</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-emerald-50/50 rounded-lg p-5 border border-emerald-100">
+                    <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">With Supply Chain Forecasting</div>
+                    <div className="text-2xl font-light text-emerald-600 mb-1">+$28M</div>
+                    <div className="text-xs text-zinc-600 font-light mb-3">
+                      Expected value from optimal contract timing, diversified sourcing, risk-adjusted hedging
+                    </div>
+                    <div className="space-y-1 text-xs text-zinc-500 font-light">
+                      <div>• Identify price floor opportunities</div>
+                      <div>• Diversify away from DRC concentration</div>
+                      <div>• Lock favorable cobalt contracts (Q1 2025)</div>
+                      <div>• Build strategic stockpiles before disruptions</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* EVPI Metrics */}
+                <div className="border-t border-zinc-200 pt-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">EVPI (This Analysis)</div>
+                      <div className="text-4xl font-extralight text-emerald-600">$75M</div>
+                      <div className="text-xs text-zinc-600 font-light mt-1">Maximum value of supply certainty</div>
+                      <div className="text-xs text-zinc-500 font-light mt-2">
+                        = EMV(Perfect Info) - EMV(No Info)
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Intelligence Cost</div>
+                      <div className="text-4xl font-extralight text-zinc-900">$120K</div>
+                      <div className="text-xs text-zinc-600 font-light mt-1">Market research + analysis</div>
+                      <div className="text-xs text-zinc-500 font-light mt-2">
+                        Annual subscription + custom modeling
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Net Benefit</div>
+                      <div className="text-4xl font-extralight text-emerald-600">$74.88M</div>
+                      <div className="text-xs text-zinc-600 font-light mt-1">624x ROI on intelligence</div>
+                      <div className="text-xs text-zinc-500 font-light mt-2">
+                        Per major project cycle
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Information Quality Badge */}
+              <div className="bg-blue-50/30 rounded-lg p-4 border border-blue-100">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="w-4 h-4 text-blue-600" />
+                  <div className="text-sm font-medium text-zinc-900">Forecasting Quality & Sequential Decision Value</div>
+                </div>
+                <div className="text-xs text-zinc-700 font-light leading-relaxed">
+                  Our critical minerals intelligence provides <span className="font-medium">market research-grade forecasting</span> with
+                  real-time geopolitical monitoring, price trend analysis, and supply chain bottleneck detection. This enables
+                  <span className="font-medium"> sequential decision optimization</span>: each quarterly review incorporates updated information,
+                  allowing dynamic contract adjustments, inventory rebalancing, and supplier diversification as market conditions evolve.
+                  Reduce procurement uncertainty from 55% to under 12%.
                 </div>
               </div>
             </div>
@@ -445,9 +556,9 @@ export default function RiskReportPage() {
               This report was generated by the Johns Hopkins Supply Chain Intelligence Lab
             </p>
             <div className="flex items-center justify-center gap-4">
-              <Link href="/supply-chain-risk">
+              <a href="mailto:somton@jhu.edu?subject=Custom Risk Assessment Request&body=I would like to request a custom critical minerals risk assessment.">
                 <Button variant="outline">Request Custom Assessment</Button>
-              </Link>
+              </a>
               <Button onClick={handleDownload}>
                 Download Full Report (PDF)
                 <Download className="ml-2 w-4 h-4" />

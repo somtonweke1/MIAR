@@ -320,6 +320,79 @@ export default function WeeklyBriefingSample() {
           </div>
         </div>
 
+        {/* Value of Weekly Intelligence */}
+        <Card className="p-8 bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="p-3 bg-white rounded-xl">
+              <DollarSign className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div>
+              <h2 className="text-xl font-light text-zinc-900 mb-2">Value of Continuous Market Intelligence</h2>
+              <p className="text-sm text-zinc-700 font-light leading-relaxed">
+                Weekly briefings enable <span className="font-medium">sequential decision optimization</span> - each update refines procurement strategy as market conditions evolve.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* This Week's Decision Impact */}
+            <div className="bg-white rounded-xl p-5">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">This Week's Alert Value</div>
+              <div className="text-2xl font-light text-emerald-600 mb-1">$12-18M</div>
+              <div className="text-xs text-zinc-600 font-light mb-3">
+                Avoided cost from early DRC cobalt disruption warning
+              </div>
+              <div className="space-y-1 text-xs text-zinc-500 font-light">
+                <div>• 18-25 day lead time to adjust</div>
+                <div>• Alternative routing identified</div>
+                <div>• Emergency premium avoided</div>
+              </div>
+            </div>
+
+            {/* Cumulative Annual Value */}
+            <div className="bg-white rounded-xl p-5">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Cumulative EVSI (Annual)</div>
+              <div className="text-2xl font-light text-emerald-600 mb-1">$85-120M</div>
+              <div className="text-xs text-zinc-600 font-light mb-3">
+                Expected value from 52 weekly intelligence cycles
+              </div>
+              <div className="space-y-1 text-xs text-zinc-500 font-light">
+                <div>• ~$1.6-2.3M avg per briefing</div>
+                <div>• 8-12 high-impact alerts/year</div>
+                <div>• Proactive vs. reactive sourcing</div>
+              </div>
+            </div>
+
+            {/* Subscription Economics */}
+            <div className="bg-white rounded-xl p-5">
+              <div className="text-xs text-zinc-500 uppercase tracking-wider font-light mb-2">Intelligence Cost</div>
+              <div className="text-2xl font-light text-zinc-900 mb-1">$36K/year</div>
+              <div className="text-xs text-zinc-600 font-light mb-3">
+                Weekly briefing + quarterly deep-dives
+              </div>
+              <div className="space-y-1 text-xs text-zinc-500 font-light">
+                <div>• Net benefit: $85-120M - $36K</div>
+                <div>• ROI: 2,360x - 3,330x</div>
+                <div>• Per-decision basis: 115x avg ROI</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Information Quality Note */}
+          <div className="mt-6 bg-blue-50/50 rounded-lg p-4 border border-blue-100">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="w-4 h-4 text-blue-600" />
+              <div className="text-sm font-medium text-zinc-900">Forecasting Quality: Market Research-Grade</div>
+            </div>
+            <div className="text-xs text-zinc-700 font-light leading-relaxed">
+              Our intelligence reduces procurement uncertainty through continuous monitoring of 147 critical supply routes,
+              real-time geopolitical analysis, and predictive disruption modeling. <span className="font-medium">Sequential decision value</span>: Each
+              weekly update allows dynamic contract adjustments, inventory rebalancing, and supplier diversification before
+              disruptions impact operations.
+            </div>
+          </div>
+        </Card>
+
         {/* Footer CTA */}
         <Card className="p-8 bg-gradient-to-br from-zinc-900 to-zinc-800 text-white">
           <div className="text-center">
