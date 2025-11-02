@@ -24,6 +24,9 @@ export default function EntityListScannerPage() {
   const [companyName, setCompanyName] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [scanResult, setScanResult] = useState<any>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -53,8 +56,37 @@ export default function EntityListScannerPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with backend API
-    setSubmitted(true);
+
+    if (!file || !email || !companyName) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('email', email);
+      formData.append('companyName', companyName);
+
+      const response = await fetch('/api/entity-list-scan', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Scan failed');
+      }
+
+      setScanResult(data);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred during scanning');
+      console.error('Scan error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -255,15 +287,22 @@ export default function EntityListScannerPage() {
                   />
                 </div>
 
+                {/* Error Message */}
+                {error && (
+                  <div className="p-4 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-sm">
+                    <strong>Error:</strong> {error}
+                  </div>
+                )}
+
                 {/* Submit */}
                 <Button
                   type="submit"
                   size="lg"
                   className="w-full text-lg py-6"
-                  disabled={!file || !email || !companyName}
+                  disabled={!file || !email || !companyName || loading}
                 >
-                  Get Free Compliance Report (48 hours)
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  {loading ? 'Scanning...' : 'Get Free Compliance Report (Instant)'}
+                  {!loading && <ArrowRight className="ml-2 w-5 h-5" />}
                 </Button>
 
                 <p className="text-xs text-zinc-500 font-light text-center">
@@ -273,31 +312,98 @@ export default function EntityListScannerPage() {
               </form>
             </Card>
           ) : (
-            <Card className="p-12 bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200">
+            <Card className={`p-12 ${
+              scanResult?.summary?.overallRiskLevel === 'critical' || scanResult?.summary?.overallRiskLevel === 'high'
+                ? 'bg-gradient-to-br from-rose-50 to-rose-100/50 border-rose-200'
+                : 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200'
+            }`}>
               <div className="text-center">
                 <div className="p-4 bg-white rounded-full inline-block mb-6">
-                  <CheckCircle className="w-16 h-16 text-emerald-600" />
+                  {scanResult?.summary?.criticalSuppliers > 0 ? (
+                    <AlertTriangle className="w-16 h-16 text-rose-600" />
+                  ) : (
+                    <CheckCircle className="w-16 h-16 text-emerald-600" />
+                  )}
                 </div>
                 <h3 className="text-2xl font-light text-zinc-900 mb-4">
-                  Your Compliance Check Is In Progress!
+                  Compliance Scan Complete!
                 </h3>
                 <p className="text-zinc-700 font-light mb-6 max-w-2xl mx-auto leading-relaxed">
-                  We're analyzing your supplier list against the BIS entity list and mapping ownership structures.
-                  You'll receive your detailed compliance report within 48 hours at <span className="font-medium">{email}</span>.
+                  We've analyzed <span className="font-medium">{scanResult?.summary?.totalSuppliers || 0} suppliers</span> from your list.
+                  {scanResult?.summary?.criticalSuppliers > 0 && (
+                    <span className="block mt-2 text-rose-700 font-medium">
+                      ⚠️ {scanResult.summary.criticalSuppliers} critical-risk supplier{scanResult.summary.criticalSuppliers > 1 ? 's' : ''} identified!
+                    </span>
+                  )}
                 </p>
-                <div className="grid md:grid-cols-3 gap-6 mt-8">
+
+                <div className="grid md:grid-cols-4 gap-6 mt-8 mb-8">
                   <div className="bg-white rounded-lg p-4">
-                    <div className="text-2xl font-light text-zinc-900 mb-2">Step 1</div>
-                    <p className="text-sm text-zinc-600 font-light">Mapping supplier ownership structures</p>
+                    <div className="text-2xl font-light text-zinc-900 mb-2">{scanResult?.summary?.totalSuppliers || 0}</div>
+                    <p className="text-sm text-zinc-600 font-light">Suppliers Scanned</p>
                   </div>
                   <div className="bg-white rounded-lg p-4">
-                    <div className="text-2xl font-light text-zinc-900 mb-2">Step 2</div>
-                    <p className="text-sm text-zinc-600 font-light">Cross-referencing entity list</p>
+                    <div className={`text-2xl font-light mb-2 ${
+                      (scanResult?.summary?.criticalSuppliers || 0) > 0 ? 'text-rose-600' : 'text-emerald-600'
+                    }`}>
+                      {scanResult?.summary?.criticalSuppliers || 0}
+                    </div>
+                    <p className="text-sm text-zinc-600 font-light">Critical Risk</p>
                   </div>
                   <div className="bg-white rounded-lg p-4">
-                    <div className="text-2xl font-light text-zinc-900 mb-2">Step 3</div>
-                    <p className="text-sm text-zinc-600 font-light">Identifying alternative sources</p>
+                    <div className={`text-2xl font-light mb-2 ${
+                      (scanResult?.summary?.highRiskSuppliers || 0) > 0 ? 'text-amber-600' : 'text-zinc-900'
+                    }`}>
+                      {scanResult?.summary?.highRiskSuppliers || 0}
+                    </div>
+                    <p className="text-sm text-zinc-600 font-light">High Risk</p>
                   </div>
+                  <div className="bg-white rounded-lg p-4">
+                    <div className="text-2xl font-light text-zinc-900 mb-2">
+                      {scanResult?.summary?.overallRiskScore?.toFixed(1) || '0.0'}/10
+                    </div>
+                    <p className="text-sm text-zinc-600 font-light">Overall Risk</p>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-6 mb-6">
+                  <p className="text-zinc-700 font-light">
+                    A detailed HTML report has been generated. Check your email at <span className="font-medium">{email}</span> for the full analysis including:
+                  </p>
+                  <ul className="text-sm text-zinc-600 mt-4 space-y-2 text-left max-w-md mx-auto">
+                    <li>• Detailed risk breakdown for each supplier</li>
+                    <li>• Alternative compliant suppliers</li>
+                    <li>• Strategic recommendations</li>
+                    <li>• Estimated financial exposure: <span className="font-medium text-rose-600">{scanResult?.summary?.estimatedExposure}</span></li>
+                  </ul>
+                </div>
+
+                <div className="flex items-center justify-center gap-4">
+                  {scanResult?.scanId && (
+                    <a
+                      href={`/api/entity-list-scan?scanId=${scanResult.scanId}&format=html`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button size="lg" className="text-lg px-8 py-6">
+                        View Full Report
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </a>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFile(null);
+                      setEmail('');
+                      setCompanyName('');
+                      setScanResult(null);
+                    }}
+                  >
+                    Scan Another List
+                  </Button>
                 </div>
               </div>
             </Card>
