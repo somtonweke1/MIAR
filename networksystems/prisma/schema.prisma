@@ -276,6 +276,59 @@ model ExportLog {
 }
 
 // ============================================
+// BIS ENTITY LIST SCANNER
+// ============================================
+
+model ScanResult {
+  id          String   @id @default(cuid())
+  scanId      String   @unique
+
+  // Company info
+  companyName String
+  email       String
+
+  // Scan metadata
+  fileType    String
+  fileName    String?
+  totalRows   Int
+  skippedRows Int      @default(0)
+
+  // Results summary
+  totalSuppliers      Int
+  clearSuppliers      Int      @default(0)
+  lowRiskSuppliers    Int      @default(0)
+  mediumRiskSuppliers Int      @default(0)
+  highRiskSuppliers   Int      @default(0)
+  criticalSuppliers   Int      @default(0)
+
+  overallRiskLevel    String   // low, medium, high, critical
+  overallRiskScore    Float    // 0-10
+  estimatedExposure   String?
+
+  // Full report data (JSON)
+  fullReport          String   // JSON: ComplianceScanReport
+  htmlReport          String   // HTML report
+  textSummary         String?  // Plain text summary
+
+  // Email delivery status
+  emailSent           Boolean  @default(false)
+  emailSentAt         DateTime?
+  emailError          String?
+
+  // Timestamps
+  createdAt           DateTime @default(now())
+  expiresAt           DateTime? // For automatic cleanup
+
+  @@index([scanId])
+  @@index([email])
+  @@index([companyName])
+  @@index([createdAt])
+  @@index([email, createdAt])
+  @@index([overallRiskLevel, createdAt])
+  @@index([expiresAt])
+}
+
+// ============================================
 // SYSTEM CONFIGURATION
 // ============================================
 

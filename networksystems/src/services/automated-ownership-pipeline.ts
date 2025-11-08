@@ -214,7 +214,18 @@ export class AutomatedOwnershipPipeline {
 
       try {
         const discovered = await openCorporatesAPI.discoverOwnership(entity.name);
-        relationships.push(...discovered);
+
+        // Convert OwnershipRelationship to OwnershipEdge
+        const edges: OwnershipEdge[] = discovered.map(rel => ({
+          from: rel.relationship === 'parent' ? rel.parent : rel.subsidiary,
+          to: rel.relationship === 'parent' ? rel.subsidiary : rel.parent,
+          relationshipType: rel.relationship,
+          confidence: rel.confidence,
+          source: rel.source,
+          evidence: rel.evidence
+        }));
+
+        relationships.push(...edges);
 
         if ((i + 1) % 10 === 0) {
           console.log(`   Progress: ${i + 1}/${entities.length}`);

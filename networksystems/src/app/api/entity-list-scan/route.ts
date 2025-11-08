@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getEntityListScanner } from '@/services/entity-list-scanner-service';
 import { getReportGenerator } from '@/services/compliance-report-generator';
+import { getEmailService } from '@/services/email-service';
+import { PrismaClient } from '@prisma/client';
 
-// Store scan results in memory (in production, use database)
-const scanResults = new Map<string, any>();
+// Initialize Prisma client
+const prisma = new PrismaClient();
+
+// Initialize email service
+const emailService = getEmailService();
 
 /**
  * POST /api/entity-list-scan
@@ -57,17 +62,66 @@ export async function POST(request: NextRequest) {
 
     const textSummary = reportGenerator.generateTextSummary(scanReport);
 
-    // Store results
-    scanResults.set(scanReport.scanId, {
-      report: scanReport,
-      htmlReport,
-      textSummary,
-      email,
-      createdAt: new Date().toISOString()
+    // Store results in database
+    const scanResult = await prisma.scanResult.create({
+      data: {
+        scanId: scanReport.scanId,
+        companyName,
+        email,
+        fileType: scanReport.metadata.fileType,
+        fileName: fileName,
+        totalRows: scanReport.metadata.totalRowsParsed,
+        skippedRows: scanReport.metadata.skippedRows,
+        totalSuppliers: scanReport.summary.totalSuppliers,
+        clearSuppliers: scanReport.summary.clearSuppliers,
+        lowRiskSuppliers: scanReport.summary.lowRiskSuppliers,
+        mediumRiskSuppliers: scanReport.summary.mediumRiskSuppliers,
+        highRiskSuppliers: scanReport.summary.highRiskSuppliers,
+        criticalSuppliers: scanReport.summary.criticalSuppliers,
+        overallRiskLevel: scanReport.summary.overallRiskLevel,
+        overallRiskScore: scanReport.summary.overallRiskScore,
+        estimatedExposure: scanReport.summary.estimatedExposure || 'N/A',
+        fullReport: JSON.stringify(scanReport),
+        htmlReport,
+        textSummary,
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
+      }
     });
 
-    // In production, send email here
-    // await sendEmailReport(email, htmlReport, scanReport);
+    // Send email report if email service is enabled
+    let emailSent = false;
+    let emailError: string | undefined;
+
+    if (emailService.isEnabled()) {
+      try {
+        emailSent = await emailService.sendComplianceReport(email, htmlReport, scanReport, textSummary);
+
+        if (emailSent) {
+          // Update database with email sent status
+          await prisma.scanResult.update({
+            where: { id: scanResult.id },
+            data: {
+              emailSent: true,
+              emailSentAt: new Date()
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Email send error:', error);
+        emailError = error instanceof Error ? error.message : 'Unknown error';
+
+        // Update database with email error
+        await prisma.scanResult.update({
+          where: { id: scanResult.id },
+          data: {
+            emailSent: false,
+            emailError
+          }
+        });
+      }
+    } else {
+      console.log('📧 Email service not configured - skipping email delivery');
+    }
 
     return NextResponse.json({
       success: true,
@@ -80,7 +134,10 @@ export async function POST(request: NextRequest) {
         overallRiskScore: scanReport.summary.overallRiskScore,
         estimatedExposure: scanReport.summary.estimatedExposure
       },
-      message: 'Compliance scan completed successfully. Report will be sent to ' + email
+      emailSent,
+      message: emailSent
+        ? `Compliance scan completed successfully. Report sent to ${email}`
+        : 'Compliance scan completed successfully. Download report below (email delivery not configured).'
     });
 
   } catch (error) {
@@ -94,7 +151,7 @@ export async function POST(request: NextRequest) {
 
 /**
  * GET /api/entity-list-scan?scanId=xxx
- * Retrieve scan report
+ * Retrieve scan report from database
  */
 export async function GET(request: NextRequest) {
   try {
@@ -109,7 +166,10 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const result = scanResults.get(scanId);
+    // Retrieve from database
+    const result = await prisma.scanResult.findUnique({
+      where: { scanId }
+    });
 
     if (!result) {
       return NextResponse.json({
@@ -128,7 +188,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (format === 'text') {
-      return new NextResponse(result.textSummary, {
+      return new NextResponse(result.textSummary || 'No text summary available', {
         headers: {
           'Content-Type': 'text/plain',
           'Content-Disposition': `inline; filename="compliance-report-${scanId}.txt"`
@@ -136,9 +196,14 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Parse the JSON report
+    const report = JSON.parse(result.fullReport);
+
     return NextResponse.json({
       success: true,
-      report: result.report
+      report,
+      emailSent: result.emailSent,
+      emailSentAt: result.emailSentAt
     });
 
   } catch (error) {
