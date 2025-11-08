@@ -329,6 +329,75 @@ model ScanResult {
 }
 
 // ============================================
+// DISCOVERED OWNERSHIP DATA
+// ============================================
+
+model DiscoveredOwnership {
+  id          String   @id @default(cuid())
+
+  // Entity info
+  entityName  String   @unique
+  parentCompany String?
+
+  // Relationships (JSON arrays)
+  subsidiaries String  @default("[]") // JSON array of subsidiary names
+  affiliates   String  @default("[]") // JSON array of affiliate names
+
+  // Data quality
+  confidence   Float   // 0-1
+  dataQuality  String  // high, medium, low
+  sources      String  // JSON array of source names
+
+  // Evidence
+  evidencePoints String @default("[]") // JSON array of evidence
+
+  // Metadata
+  lastUpdated  DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  verified     Boolean  @default(false)
+  verifiedBy   String?
+  verifiedAt   DateTime?
+
+  @@index([entityName])
+  @@index([parentCompany])
+  @@index([confidence])
+  @@index([dataQuality])
+  @@index([lastUpdated])
+  @@index([verified])
+}
+
+// Background job tracking
+model DiscoveryJob {
+  id          String   @id @default(cuid())
+
+  // Job info
+  status      String   // pending, running, completed, failed
+  type        String   // full_discovery, incremental_update, single_entity
+
+  // Progress
+  totalEntities    Int
+  processedEntities Int @default(0)
+  discoveredCount  Int @default(0)
+  failedCount      Int @default(0)
+
+  // Results
+  coveragePercent  Float?
+  results          String? // JSON
+
+  // Error tracking
+  errors           String? // JSON array of errors
+
+  // Timestamps
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([startedAt])
+}
+
+// ============================================
 // SYSTEM CONFIGURATION
 // ============================================
 
