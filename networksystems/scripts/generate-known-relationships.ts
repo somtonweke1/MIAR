@@ -212,6 +212,190 @@ function generateRelationships(): GeneratedRelationship[] {
         pattern: 'Kalashnikov subsidiary'
       });
     }
+
+    // Pattern 17: Tactical Missile Corporation (Russian - 35 entities!)
+    if (name.match(/tactical missile|тактическое ракетное/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Tactical Missiles Corporation JSC',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Tactical Missile subsidiary'
+      });
+    }
+
+    // Pattern 18: China State Shipbuilding Corporation (26 entities)
+    if (name.match(/china state shipbuilding|cssc|中国船舶/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'China State Shipbuilding Corporation (CSSC)',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'CSSC subsidiary'
+      });
+    }
+
+    // Pattern 19: United Shipbuilding Corporation (Russian - 11 entities)
+    if (name.match(/united shipbuilding|объединенная судостроительная/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'United Shipbuilding Corporation JSC',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'USC subsidiary'
+      });
+    }
+
+    // Pattern 20: Yangtze Memory Technologies
+    if (name.match(/yangtze memory|ymtc/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Yangtze Memory Technologies Co., Ltd.',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'YMTC subsidiary'
+      });
+    }
+
+    // Pattern 21: Gazprom
+    if (name.match(/gazprom|газпром/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Gazprom PJSC',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Gazprom subsidiary'
+      });
+    }
+
+    // Pattern 22: Sukhoi (Russian aircraft)
+    if (name.match(/sukhoi|сухой/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Sukhoi Company JSC',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Sukhoi subsidiary'
+      });
+    }
+
+    // Pattern 23: Almaz-Antey (Russian defense)
+    if (name.match(/almaz-antey|алмаз-антей/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Almaz-Antey Air Defense Concern',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Almaz-Antey subsidiary'
+      });
+    }
+
+    // Pattern 24: Cambricon (AI chips)
+    if (name.match(/cambricon|寒武纪/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Cambricon Technologies Corporation Limited',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Cambricon subsidiary'
+      });
+    }
+
+    // Pattern 25: Sophgo (AI chips)
+    if (name.match(/sophgo/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Sophgo Co., Ltd.',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Sophgo subsidiary'
+      });
+    }
+
+    // Pattern 26: Beijing China Aviation Technology
+    if (name.match(/beijing china aviation technology/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Beijing China Aviation Technology Co., Ltd.',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'BCAT subsidiary'
+      });
+    }
+
+    // Pattern 27: Hongdu Aviation Industry
+    if (name.match(/hongdu aviation|洪都航空/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Jiangxi Hongdu Aviation Industry Group',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'Hongdu subsidiary'
+      });
+    }
+
+    // Pattern 28: Myanmar Economic Corporation
+    if (name.match(/myanmar economic/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Myanmar Economic Corporation',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'MEC subsidiary'
+      });
+    }
+
+    // Pattern 29: China Academy of Sciences entities
+    if (name.match(/china academy of|chinese academy of|中国科学院/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Chinese Academy of Sciences',
+        confidence: 0.95,
+        source: 'Name pattern analysis',
+        pattern: 'CAS subsidiary'
+      });
+    }
+
+    // Pattern 30: JSC prefix (Russian joint stock companies)
+    if (name.match(/^JSC\s+(.+)/i)) {
+      const match = name.match(/^JSC\s+(.+)/i);
+      if (match) {
+        // Extract parent from JSC name
+        const jscName = match[1];
+        // Common JSC patterns
+        if (jscName.match(/concern|holding|group/i)) {
+          relationships.push({
+            entity: name,
+            parent: `JSC ${jscName}`,
+            confidence: 0.85,
+            source: 'Name pattern analysis',
+            pattern: 'Russian JSC entity'
+          });
+        }
+      }
+    }
+
+    // Pattern 31: Public Joint Stock Company (Russian PJSC)
+    if (name.match(/public joint stock company|pjsc/i)) {
+      relationships.push({
+        entity: name,
+        parent: name.replace(/public joint stock company/i, 'PJSC'),
+        confidence: 0.85,
+        source: 'Name pattern analysis',
+        pattern: 'Russian PJSC entity'
+      });
+    }
+
+    // Pattern 32: Iranian entities with "Shahid" prefix (martyrs, often defense-related)
+    if (name.match(/shahid\s+/i)) {
+      relationships.push({
+        entity: name,
+        parent: 'Iranian Defense Industries Organization',
+        confidence: 0.85,
+        source: 'Name pattern analysis',
+        pattern: 'Iranian defense entity'
+      });
+    }
   }
 
   return relationships;
