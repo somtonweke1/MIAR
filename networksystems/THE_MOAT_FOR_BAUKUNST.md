@@ -1,3 +1,11 @@
+# ⚠️ MARKETING VERSION - READ TRUTH_ABOUT_THE_MOAT.md FIRST ⚠️
+
+**This document contains inflated claims and made-up numbers.**
+
+**For the honest assessment, read: [TRUTH_ABOUT_THE_MOAT.md](./TRUTH_ABOUT_THE_MOAT.md)**
+
+---
+
 # THE MOAT - BIS Compliance Intelligence Platform
 
 ## Executive Summary
@@ -5,6 +13,8 @@
 **We built something Baukunst will actually PAY for.**
 
 Not just a database. Not just a scanner. A **Compliance Decision Engine** that transforms raw ownership data into actionable legal intelligence.
+
+**NOTE**: The metrics below are inflated. Real coverage is ~15-20%, not 39.3%. See TRUTH_ABOUT_THE_MOAT.md for honest numbers.
 
 ---
 
