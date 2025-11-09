@@ -626,9 +626,6 @@ export default function EntityListScannerPage() {
         <p className="text-sm text-zinc-500 font-light mb-2">
           MIAR - Supply Chain Risk Intelligence
         </p>
-        <p className="text-xs text-zinc-400 font-light">
-          Johns Hopkins University Supply Chain Intelligence Lab • Baltimore, MD 21218
-        </p>
       </div>
     </div>
   );
