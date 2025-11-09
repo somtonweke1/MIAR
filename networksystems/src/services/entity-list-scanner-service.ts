@@ -2,10 +2,16 @@
  * Entity List Scanner Service
  * Main service that coordinates file parsing, BIS matching, and report generation
  * NOW USES ADVANCED ENTITY RESOLUTION FOR WORLD-CLASS COMPLIANCE SCANNING
+ * ENHANCED WITH RISK SCORING ENGINE - THE MOAT
  */
 
 import { getAdvancedEntityResolution, EntityResolutionResult } from './advanced-entity-resolution';
 import { getSupplierFileParser, ParsedSupplier } from './supplier-file-parser';
+import { getRiskScoringEngine, RiskAssessment } from './risk-scoring-engine';
+import { getInferenceEngine } from './ownership-inference-engine';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export interface SupplierScanResult {
   supplier: ParsedSupplier;
@@ -23,6 +29,7 @@ export interface SupplierScanResult {
   recommendations: string[];
   ownershipAnalysis?: any; // NEW: ownership structure data
   legalDisclaimer?: string; // NEW: professional legal disclaimer
+  riskAssessment?: RiskAssessment; // THE MOAT: Full risk assessment with legal citations
 }
 
 export interface ComplianceScanReport {
@@ -122,6 +129,7 @@ class EntityListScannerService {
    * Scan individual supplier using ADVANCED ENTITY RESOLUTION
    * This now includes ownership structure detection, multi-factor analysis,
    * and confidence scoring with evidence trails
+   * ENHANCED WITH RISK SCORING ENGINE - THE MOAT
    */
   private async scanSupplier(supplier: ParsedSupplier): Promise<SupplierScanResult> {
     // Use the advanced entity resolution service
@@ -166,6 +174,31 @@ class EntityListScannerService {
       relationshipPath: entity.relationshipPath
     }));
 
+    // THE MOAT: Run comprehensive risk assessment with legal citations
+    let riskAssessment: RiskAssessment | undefined;
+    try {
+      // Get ownership data from database
+      const ownershipData = await prisma.discoveredOwnership.findUnique({
+        where: { entityName: supplier.originalName }
+      });
+
+      // Get inferred relationships from inference engine
+      const inferenceEngine = getInferenceEngine();
+      await inferenceEngine.buildGraph();
+      const enriched = inferenceEngine.getEnrichedOwnership(supplier.originalName);
+
+      // Run risk scoring engine
+      const riskEngine = getRiskScoringEngine();
+      riskAssessment = await riskEngine.assessRisk(
+        supplier.originalName,
+        ownershipData,
+        enriched?.siblings.map(s => ({ relatedEntity: s }))
+      );
+    } catch (error) {
+      console.error(`Risk assessment error for ${supplier.originalName}:`, error);
+      // Continue without risk assessment if it fails
+    }
+
     return {
       supplier,
       riskLevel: resolution.overallRisk,
@@ -175,7 +208,8 @@ class EntityListScannerService {
       flags,
       recommendations: resolution.recommendedActions,
       ownershipAnalysis: resolution.ownershipAnalysis,
-      legalDisclaimer: resolution.legalDisclaimer
+      legalDisclaimer: resolution.legalDisclaimer,
+      riskAssessment // THE MOAT: Full risk assessment with actionable recommendations
     };
   }
 
