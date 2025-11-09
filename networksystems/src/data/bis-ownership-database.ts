@@ -308,4 +308,62 @@ export const BIS_OWNERSHIP_DATABASE: OwnershipDatabase = {
   }
 };
 
+/**
+ * Merge auto-discovered relationships with manual database
+ */
+export function getCombinedOwnershipDatabase(): OwnershipDatabase {
+  // Import auto-discovered relationships
+  let autoDiscovered: any = null;
+  try {
+    const autoModule = require('./auto-discovered-relationships');
+    autoDiscovered = autoModule.AUTO_DISCOVERED_RELATIONSHIPS;
+  } catch (error) {
+    console.warn('Auto-discovered relationships not available, using manual only');
+  }
+
+  if (!autoDiscovered) {
+    return BIS_OWNERSHIP_DATABASE;
+  }
+
+  // Merge subsidiaries
+  const mergedSubsidiaries: Record<string, string[]> = {
+    ...BIS_OWNERSHIP_DATABASE.subsidiaries
+  };
+
+  for (const [parent, subs] of Object.entries(autoDiscovered.subsidiaries)) {
+    if (mergedSubsidiaries[parent]) {
+      // Merge and deduplicate
+      const existing = new Set(mergedSubsidiaries[parent]);
+      (subs as string[]).forEach(sub => existing.add(sub));
+      mergedSubsidiaries[parent] = Array.from(existing);
+    } else {
+      mergedSubsidiaries[parent] = subs as string[];
+    }
+  }
+
+  const totalRelationships = Object.values(mergedSubsidiaries).reduce(
+    (sum, subs) => sum + subs.length,
+    0
+  ) + Object.values(BIS_OWNERSHIP_DATABASE.affiliates).reduce(
+    (sum, affs) => sum + affs.length,
+    0
+  );
+
+  return {
+    ...BIS_OWNERSHIP_DATABASE,
+    subsidiaries: mergedSubsidiaries,
+    metadata: {
+      ...BIS_OWNERSHIP_DATABASE.metadata,
+      totalRelationships,
+      lastUpdated: new Date().toISOString().split('T')[0],
+      sources: [
+        ...BIS_OWNERSHIP_DATABASE.metadata.sources,
+        'Automated pattern matching',
+        'Geographic clustering',
+        'Name analysis'
+      ]
+    }
+  };
+}
+
 export default BIS_OWNERSHIP_DATABASE;

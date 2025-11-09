@@ -5,7 +5,7 @@
  * NOW INCLUDES 165+ KNOWN OWNERSHIP RELATIONSHIPS
  */
 
-import BIS_OWNERSHIP_DATABASE from '../data/bis-ownership-database';
+import BIS_OWNERSHIP_DATABASE, { getCombinedOwnershipDatabase } from '../data/bis-ownership-database';
 
 export interface OwnershipRelationship {
   companyName: string;
@@ -275,11 +275,13 @@ class OwnershipLookupService {
     subsidiaries: Record<string, string[]>;
     affiliates: Record<string, string[]>;
   } {
-    console.log(`📚 Loading ownership database: ${BIS_OWNERSHIP_DATABASE.metadata.totalRelationships} relationships`);
+    // Use combined database with auto-discovered relationships
+    const combined = getCombinedOwnershipDatabase();
+    console.log(`📚 Loading ownership database: ${combined.metadata.totalRelationships} relationships (manual + automated)`);
 
     return {
-      subsidiaries: BIS_OWNERSHIP_DATABASE.subsidiaries,
-      affiliates: BIS_OWNERSHIP_DATABASE.affiliates
+      subsidiaries: combined.subsidiaries,
+      affiliates: combined.affiliates
     };
   }
 

@@ -141,7 +141,7 @@ export class SimpleMLService {
    * Analyze risk trends by industry
    */
   public analyzeIndustryRisk(industry: string): IndustryRiskScore {
-    const baseRisk = this.historicalData.sectorRisk[industry] || 0.5;
+    const baseRisk = (this.historicalData.sectorRisk as Record<string, number>)[industry] || 0.5;
 
     // Simulate historical additions (in production, this would query real data)
     const entitiesAdded = {
@@ -214,14 +214,14 @@ export class SimpleMLService {
    * Calculate country risk
    */
   private calculateCountryRisk(country: string): number {
-    return this.historicalData.countryRisk[country] || 0.3; // Default low risk
+    return (this.historicalData.countryRisk as Record<string, number>)[country] || 0.3; // Default low risk
   }
 
   /**
    * Calculate sector risk
    */
   private calculateSectorRisk(sector: string): number {
-    return this.historicalData.sectorRisk[sector] || 0.5; // Default medium risk
+    return (this.historicalData.sectorRisk as Record<string, number>)[sector] || 0.5; // Default medium risk
   }
 
   /**
