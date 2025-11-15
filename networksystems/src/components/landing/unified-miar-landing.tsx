@@ -60,7 +60,7 @@ export default function UnifiedMIARLanding() {
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-6xl md:text-7xl font-extralight tracking-tight text-zinc-900 mb-8">
             Compliance Intelligence Engine
-            <span className="block text-5xl md:text-6xl font-extralight mt-4 bg-gradient-to-r from-blue-600 via-emerald-600 to-rose-600 bg-clip-text text-transparent">
+            <span className="block text-5xl md:text-6xl font-extralight mt-4 bg-gradient-to-r from-blue-600 via-emerald-600 to-rose-600 bg-clip-text text-transparent pb-2">
               for Regulated Physical Systems
             </span>
           </h1>
