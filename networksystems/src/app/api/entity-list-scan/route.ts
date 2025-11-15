@@ -10,6 +10,9 @@ const prisma = new PrismaClient();
 // Initialize email service
 const emailService = getEmailService();
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 /**
  * POST /api/entity-list-scan
  * Upload supplier list and initiate compliance scan

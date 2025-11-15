@@ -6,6 +6,9 @@ import type { PFASSystemData } from '@/types/pfas';
 // Initialize Prisma client
 const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 /**
  * POST /api/pfas-scan
  * Submit PFAS system data and initiate compliance analysis
