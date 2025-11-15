@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import ProfessionalLandingPage from '@/components/landing/professional-landing-page';
+import UnifiedMIARLanding from '@/components/landing/unified-miar-landing';
 import CriticalMineralsRiskMap from '@/components/live-map/critical-minerals-risk-map';
 import InvestmentPortfolioOptimization from '@/components/analytics/investment-portfolio-optimization';
 import GlobalTradeNetworkModeling from '@/components/analytics/global-trade-network-modeling';
@@ -72,7 +72,7 @@ function HomeContent() {
 
   // Show landing page for public access (no user) or when explicitly requested
   if (!user || showLanding) {
-    return <ProfessionalLandingPage onGetStarted={handleGetStarted} user={user} onAccessPlatform={handleAccessPlatform} />;
+    return <UnifiedMIARLanding />;
   }
 
   // If user is authenticated and showLanding is false, show the dashboard
