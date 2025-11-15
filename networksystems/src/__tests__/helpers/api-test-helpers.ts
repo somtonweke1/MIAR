@@ -18,7 +18,7 @@ export function createMockRequest(options: {
     cookies = {},
   } = options;
 
-  const requestInit: RequestInit = {
+  const requestInit: any = {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export function createMockRequest(options: {
     requestInit.body = JSON.stringify(body);
   }
 
-  const request = new NextRequest(url, requestInit);
+  const request = new NextRequest(url, requestInit as any);
 
   // Add cookies
   Object.entries(cookies).forEach(([key, value]) => {

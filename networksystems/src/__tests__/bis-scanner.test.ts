@@ -44,16 +44,16 @@ describe('BIS Entity List Scanner', () => {
 
   describe('BIS Scraper Service', () => {
     test('should load BIS scraper service', async () => {
-      const { getBISScraperService } = await import('@/services/bis-scraper-service');
+      const { getBISScraper } = await import('@/services/bis-scraper-service');
 
-      const scraper = getBISScraperService();
+      const scraper = getBISScraper();
       expect(scraper).toBeDefined();
     });
 
     test('should fetch entity list', async () => {
-      const { getBISScraperService } = await import('@/services/bis-scraper-service');
+      const { getBISScraper } = await import('@/services/bis-scraper-service');
 
-      const scraper = getBISScraperService();
+      const scraper = getBISScraper();
       const entities = await scraper.fetchFullEntityList();
 
       expect(entities).toBeDefined();
