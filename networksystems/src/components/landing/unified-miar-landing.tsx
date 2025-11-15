@@ -39,7 +39,7 @@ export default function UnifiedMIARLanding() {
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-6xl md:text-7xl font-extralight tracking-tight text-zinc-900 mb-8">
             Compliance Intelligence Engine
-            <span className="block text-5xl md:text-6xl text-zinc-600 font-extralight mt-4">
+            <span className="block text-5xl md:text-6xl font-extralight mt-4 bg-gradient-to-r from-blue-600 via-emerald-600 to-rose-600 bg-clip-text text-transparent">
               for Regulated Physical Systems
             </span>
           </h1>
@@ -51,13 +51,13 @@ export default function UnifiedMIARLanding() {
 
           <div className="flex items-center justify-center gap-4">
             <a href="#modules">
-              <Button size="lg" className="text-lg px-8 py-6 bg-zinc-900 hover:bg-zinc-800">
+              <Button size="lg" className="text-lg px-8 py-6 bg-emerald-600 hover:bg-emerald-700">
                 View Live Modules
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </a>
             <a href="mailto:somton@jhu.edu">
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-zinc-300 hover:border-emerald-600 hover:text-emerald-700">
                 Contact
               </Button>
             </a>
@@ -196,28 +196,28 @@ export default function UnifiedMIARLanding() {
           </h2>
 
           <div className="grid md:grid-cols-4 gap-6 text-left">
-            <Card className="p-6">
+            <Card className="p-6 border-l-4 border-blue-500">
               <h3 className="font-light text-zinc-900 mb-2">1. Ingest</h3>
               <p className="text-sm text-zinc-600 font-light leading-relaxed">
                 Material certificates, SDS sheets, supplier declarations, lab reports
               </p>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6 border-l-4 border-emerald-500">
               <h3 className="font-light text-zinc-900 mb-2">2. Graph</h3>
               <p className="text-sm text-zinc-600 font-light leading-relaxed">
                 Build dependency tree: chemicals → components → assemblies → products
               </p>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6 border-l-4 border-amber-500">
               <h3 className="font-light text-zinc-900 mb-2">3. Evaluate</h3>
               <p className="text-sm text-zinc-600 font-light leading-relaxed">
                 Rules engine applies PFAS, BIS, TSCA, REACH regulations across graph
               </p>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6 border-l-4 border-rose-500">
               <h3 className="font-light text-zinc-900 mb-2">4. Verify</h3>
               <p className="text-sm text-zinc-600 font-light leading-relaxed">
                 Auto-flag non-compliance, suggest alternatives, generate audit reports
@@ -240,15 +240,15 @@ export default function UnifiedMIARLanding() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <div className="text-3xl font-extralight text-zinc-900 mb-2">$25k/day</div>
+              <div className="text-3xl font-extralight text-rose-600 mb-2">$25k/day</div>
               <p className="text-sm text-zinc-600 font-light">EPA violation fines</p>
             </div>
             <div>
-              <div className="text-3xl font-extralight text-zinc-900 mb-2">3-6 months</div>
+              <div className="text-3xl font-extralight text-amber-600 mb-2">3-6 months</div>
               <p className="text-sm text-zinc-600 font-light">Product release delays</p>
             </div>
             <div>
-              <div className="text-3xl font-extralight text-zinc-900 mb-2">Weekly</div>
+              <div className="text-3xl font-extralight text-blue-600 mb-2">Weekly</div>
               <p className="text-sm text-zinc-600 font-light">BIS entity list updates</p>
             </div>
           </div>
