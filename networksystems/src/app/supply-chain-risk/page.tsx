@@ -212,32 +212,7 @@ export default function SupplyChainRiskPage() {
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section className="py-16 bg-white/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-extralight tracking-tight text-zinc-900 mb-4">
-              Built for Critical Infrastructure
-            </h2>
-            <p className="text-lg font-light text-zinc-600">
-              Trusted by energy companies, manufacturers, and defense contractors
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {useCases.map((useCase) => (
-              <Card key={useCase.title} className="p-6 hover:shadow-xl transition-shadow">
-                <div className="p-3 bg-emerald-50 rounded-xl w-fit mb-4">
-                  <useCase.icon className="w-6 h-6 text-emerald-600" />
-                </div>
-                <h3 className="text-xl font-light text-zinc-900 mb-3">{useCase.title}</h3>
-                <p className="text-zinc-600 font-light mb-4">{useCase.description}</p>
-                <p className="text-sm text-zinc-500 font-light italic">{useCase.companies}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Removed "Built for Critical Infrastructure" section */}
 
       {/* Weekly Briefing Signup */}
       <section id="briefing" className="py-20 bg-gradient-to-br from-zinc-900 to-zinc-800 text-white">
@@ -331,24 +306,12 @@ export default function SupplyChainRiskPage() {
       </section>
 
       {/* Research Credibility */}
-      <section className="py-12 bg-white/50 border-t border-zinc-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-sm font-light text-zinc-600 mb-2">Research-Grade Intelligence</p>
-            <div className="flex items-center justify-center gap-8">
-              <div className="text-zinc-900 font-light">Academic-Grade Analysis</div>
-              <div className="w-px h-8 bg-zinc-300"></div>
-              <div className="text-zinc-900 font-light">African Mining Network Analysis</div>
-              <div className="w-px h-8 bg-zinc-300"></div>
-              <div className="text-zinc-900 font-light">Real-Time Data Integration</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Removed academic branding section */}
 
-      {/* Cross-Link to Compliance Scanner */}
+      {/* Cross-Links to Other Tools */}
       <section className="py-12 px-6 bg-zinc-100/50 border-t border-zinc-200">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* BIS Entity List Scanner */}
           <div className="bg-white rounded-xl p-8 shadow-md border border-zinc-200/50">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-rose-50 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -366,6 +329,32 @@ export default function SupplyChainRiskPage() {
                   className="text-emerald-600 font-light hover:text-emerald-700 inline-flex items-center gap-2"
                 >
                   Run Free Entity List Compliance Check
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* PFAS Compliance Engine */}
+          <div className="bg-white rounded-xl p-8 shadow-md border border-zinc-200/50">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-light text-zinc-900 mb-2">
+                  PFAS Rapid Compliance Engine for Municipal Water Safety
+                </h3>
+                <p className="text-zinc-600 font-light mb-4">
+                  Convert raw PFAS sampling data into actionable compliance decisions. Track EPA MCL exceedances, evaluate treatment options, simulate compliance costs — all guided by regulatory requirements.
+                </p>
+                <Link
+                  href="/pfas-scanner"
+                  className="text-blue-600 font-light hover:text-blue-700 inline-flex items-center gap-2"
+                >
+                  Launch PFAS Scanner
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

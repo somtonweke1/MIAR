@@ -790,7 +790,7 @@ const SupplyChainOptimization: React.FC = () => {
         <div className="bg-blue-50/30 rounded-lg p-4 border border-blue-100">
           <div className="flex items-center gap-2 mb-2">
             <Shield className="w-4 h-4 text-blue-600" />
-            <div className="text-sm font-medium text-zinc-900">Optimization Modeling Quality: Research-Grade SC-GEP</div>
+            <div className="text-sm font-medium text-zinc-900">Optimization Modeling Quality: SC-GEP</div>
           </div>
           <div className="text-xs text-zinc-700 font-light leading-relaxed">
             Our supply chain optimization uses <span className="font-medium">General Equilibrium Programming (SC-GEP)</span> with

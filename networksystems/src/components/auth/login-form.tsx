@@ -39,7 +39,7 @@ export default function LoginForm() {
           className="flex items-center space-x-2 text-zinc-600 hover:text-zinc-900 font-light transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to MIAR</span>
+          <span>Back to Home</span>
         </button>
 
         <div className="text-center">
