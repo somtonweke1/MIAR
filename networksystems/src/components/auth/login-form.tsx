@@ -53,7 +53,7 @@ export default function LoginForm() {
             Secure Client Access
           </h2>
           <p className="mt-3 text-zinc-600 font-light">
-            Mining Intelligence & African Research Platform
+            Compliance Intelligence Platform
           </p>
         </div>
 
