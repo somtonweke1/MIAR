@@ -44,9 +44,12 @@ export default function LoginForm() {
 
         <div className="text-center">
           <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="bg-zinc-900 text-white px-6 py-3 text-lg font-light tracking-wide rounded">
+            <button
+              onClick={handleBackToHome}
+              className="bg-zinc-900 text-white px-6 py-3 text-lg font-light tracking-wide rounded hover:bg-emerald-600 transition-colors cursor-pointer"
+            >
               MIAR
-            </div>
+            </button>
             <Shield className="w-8 h-8 text-zinc-600" />
           </div>
           <h2 className="text-3xl font-extralight text-zinc-900 tracking-tight">

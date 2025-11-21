@@ -103,9 +103,12 @@ function HomeContent() {
         <div className="mx-auto max-w-[1800px] px-12">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-xl font-extralight text-zinc-900 tracking-wide">
+              <button
+                onClick={() => setShowLanding(true)}
+                className="text-xl font-extralight text-zinc-900 tracking-wide hover:text-emerald-600 transition-colors cursor-pointer"
+              >
                 MIAR
-              </h1>
+              </button>
 
               {/* Tab Navigation */}
               <div className="flex items-center space-x-1 bg-white/60 backdrop-blur-sm rounded-full p-1 border border-zinc-200/50">
